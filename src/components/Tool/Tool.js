@@ -37,7 +37,7 @@ class Tool extends Component {
                                     onChange={this.makeHandleChange('year')}
                                 />
                             </Col>
-                            <Col lg={6} class="map">
+                            <Col lg={6} className="map">
                                 <MonthSelector
                                     defaultValue={Tool.defaultState.month}
                                     onChange={this.makeHandleChange('month')}
