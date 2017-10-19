@@ -3,41 +3,51 @@ import { Grid, Row, Col } from 'react-bootstrap';
 
 import VariableSelector from '../VariableSelector'
 import YearSelector from '../YearSelector'
+import MonthSelector from "../MonthSelector";
 import Map from '../Map'
 
 class Tool extends Component {
     constructor(props) {
         super(props);
         this.state = Tool.defaultState;
-        this.handleVariableChange = this.handleVariableChange.bind(this);
-        this.handleYearChange = this.handleYearChange.bind(this);
     }
 
-    handleVariableChange(variable) {
-        this.setState({variable: variable});
-    }
-
-    handleYearChange(year) {
-        this.setState({year: year});
+    makeHandleChange(item) {
+        return (function(value) {
+            this.setState({[item]: value});
+        }).bind(this);
     }
 
     render() {
         return (
             <Grid fluid>
                 <Row>
-                    <Col lg={4}>
+                    <Col lg={3}>
+                        <div>Variable</div>
                         <VariableSelector
                             defaultValue={Tool.defaultState.variable}
-                            onChange={this.handleVariableChange}
+                            onChange={this.makeHandleChange('variable')}
                         />
-                        <YearSelector
-                            start={1970} end={2018}
-                            defaultValue={Tool.defaultState.year}
-                            onChange={this.handleYearChange}
-                        />
+                        <Row>
+                            <Col lg={6}>
+                                <div>Year</div>
+                                <YearSelector
+                                    start={1970} end={2018}
+                                    defaultValue={Tool.defaultState.year}
+                                    onChange={this.makeHandleChange('year')}
+                                />
+                            </Col>
+                            <Col lg={6}>
+                                <div>Month</div>
+                                <MonthSelector
+                                    defaultValue={Tool.defaultState.month}
+                                    onChange={this.makeHandleChange('month')}
+                                />
+                            </Col>
+                        </Row>
                     </Col>
-                    <Col  lg={8}>
-                        <Map variable={this.state.variable} year={this.state.year}/>
+                    <Col  lg={9}>
+                        <Map variable={this.state.variable} year={this.state.year} month={this.state.month} />
                     </Col>
                 </Row>
             </Grid>
@@ -47,7 +57,8 @@ class Tool extends Component {
 
 Tool.defaultState = {
     variable: 'precip',
-    year: 2000,
+    year: 1990,
+    month: 1,
 };
 
 export default Tool;

@@ -9,6 +9,7 @@ class Map extends Component {
                 <div>Map</div>
                 <div>Variable: {this.props.variable}</div>
                 <div>Year: {this.props.year}</div>
+                <div>Month: {this.props.month}</div>
             </div>
         )
     }
