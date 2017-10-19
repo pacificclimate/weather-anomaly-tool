@@ -22,7 +22,7 @@ class Tool extends Component {
         return (
             <Grid fluid>
                 <Row>
-                    <Col lg={3}>
+                    <Col lg={2}>
                         <div>Variable</div>
                         <VariableSelector
                             defaultValue={Tool.defaultState.variable}
@@ -46,7 +46,7 @@ class Tool extends Component {
                             </Col>
                         </Row>
                     </Col>
-                    <Col  lg={9}>
+                    <Col  lg={10}>
                         <Map variable={this.state.variable} year={this.state.year} month={this.state.month} />
                     </Col>
                 </Row>
