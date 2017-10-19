@@ -31,6 +31,7 @@ class Tool extends Component {
                             onChange={this.handleVariableChange}
                         />
                         <YearSelector
+                            start={1970} end={2018}
                             defaultValue={Tool.defaultState.year}
                             onChange={this.handleYearChange}
                         />
