@@ -13,9 +13,9 @@ class VariableSelector extends Component {
                     defaultValue={this.props.defaultValue}
                     onChange={this.props.onChange}
                 >
-                    <ToggleButton value={'precip'}>Precipitation</ToggleButton>
-                    <ToggleButton value={'tmax'}>Maximum Temperature</ToggleButton>
-                    <ToggleButton value={'tmin'}>Minimum Temperature</ToggleButton>
+                    <ToggleButton value={'precip'}><span className="glyphicon glyphicon-cloud"></span> Precipitation</ToggleButton>
+                    <ToggleButton value={'tmin'}><span className="glyphicon glyphicon-arrow-down"></span> Minimum Temperature</ToggleButton>
+                    <ToggleButton value={'tmax'}><span className="glyphicon glyphicon-arrow-up"></span> Maximum Temperature</ToggleButton>
                 </ToggleButtonGroup>
             </div>
         )
