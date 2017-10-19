@@ -1,0 +1,8 @@
+.ScrollingSelector {
+    overflow-y: scroll;
+}
+
+.ScrollingSelector .ScrollingSelector-button {
+    height: 1.5em;
+    padding-top: 0em;
+}
