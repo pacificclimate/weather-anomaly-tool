@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './VariableSelector.css';
 
-import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { ButtonToolbar, ToggleButtonGroup, ToggleButton, Glyphicon, Tooltip, Overlay } from 'react-bootstrap';
 
 class VariableSelector extends Component {
     render() {
@@ -13,18 +13,32 @@ class VariableSelector extends Component {
                     defaultValue={this.props.defaultValue}
                     onChange={this.props.onChange}
                 >
-                    <ToggleButton value={'precip'}><span className="glyphicon glyphicon-cloud"></span> Precipitation</ToggleButton>
-                    <ToggleButton value={'tmin'}><span className="glyphicon glyphicon-arrow-down"></span> Minimum Temperature</ToggleButton>
-                    <ToggleButton value={'tmax'}><span className="glyphicon glyphicon-arrow-up"></span> Maximum Temperature</ToggleButton>
+                    <ToggleButton value={'precip'}>
+                        <Glyphicon glyph="cloud"/> Precipitation
+                    </ToggleButton>
+                    <ToggleButton value={'tmin'}>
+                        <Glyphicon glyph="arrow-down"/> T<sub>min</sub>
+                    </ToggleButton>
+                    <ToggleButton value={'tmax'}>
+                        <Glyphicon glyph="arrow-up"/> T<sub>max</sub>
+                    </ToggleButton>
                 </ToggleButtonGroup>
+
+                <Overlay></Overlay>
             </div>
-        )
+        );
     }
 }
 
 VariableSelector.propTypes = {
     defaultValue: PropTypes.string,
     onChange: PropTypes.func,
+};
+
+VariableSelector.tooltips = {
+    precip: <Tooltip id="precip">Monthly total precipitation</Tooltip>,
+    tmin: <Tooltip id="tmin">Monthly average of daily minimum temperature</Tooltip>,
+    tmax: <Tooltip id="tmax">Monthly average of daily maximum temperature</Tooltip>,
 };
 
 export default VariableSelector;
