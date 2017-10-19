@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './VariableSelector.css';
 
-import { ButtonToolbar, ToggleButtonGroup, ToggleButton, Glyphicon, Tooltip, Overlay } from 'react-bootstrap';
+import { ToggleButtonGroup, ToggleButton, Glyphicon, Tooltip } from 'react-bootstrap';
 
 class VariableSelector extends Component {
     render() {
@@ -23,8 +23,6 @@ class VariableSelector extends Component {
                         <Glyphicon glyph="arrow-up"/> T<sub>max</sub>
                     </ToggleButton>
                 </ToggleButtonGroup>
-
-                <Overlay></Overlay>
             </div>
         );
     }
