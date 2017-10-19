@@ -1,5 +1,5 @@
 .ScrollingSelector {
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .ScrollingSelector .ScrollingSelector-button {

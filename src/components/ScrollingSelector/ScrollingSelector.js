@@ -37,7 +37,7 @@ class ScrollingSelector extends Component {
         return (
             <ToggleButtonGroup
                 className="ScrollingSelector"
-                style={{height: `${(this.props.height * optionItemHeightEms).toString()}em`}}
+                style={{height: `${(this.props.height * optionItemHeightEms + 0.02).toString()}em`}}
                 vertical type="radio" name={this.props.name}
                 defaultValue={this.props.defaultValue}
                 onChange={this.props.onChange}
@@ -45,7 +45,7 @@ class ScrollingSelector extends Component {
             >
                 {toggleButtons}
             </ToggleButtonGroup>
-        )
+        );
     }
 }
 
