@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import VariableSelector from '../VariableSelector'
-import YearSelector from '../YearSelector'
-import MonthSelector from "../MonthSelector";
-import Map from '../Map'
+import YearSelector from '../YearSelector';
+import MonthSelector from '../MonthSelector';
+import Map from '../Map';
+
+import './Tool.css';
 
 class Tool extends Component {
     constructor(props) {
@@ -20,25 +22,22 @@ class Tool extends Component {
 
     render() {
         return (
-            <Grid fluid>
+            <Grid fluid className="Tool">
                 <Row>
-                    <Col lg={2}>
-                        <div>Variable</div>
+                    <Col lg={2} className="selectors">
                         <VariableSelector
                             defaultValue={Tool.defaultState.variable}
                             onChange={this.makeHandleChange('variable')}
                         />
-                        <Row>
+                        <Row className="date-selectors">
                             <Col lg={6}>
-                                <div>Year</div>
                                 <YearSelector
                                     start={1970} end={2018}
                                     defaultValue={Tool.defaultState.year}
                                     onChange={this.makeHandleChange('year')}
                                 />
                             </Col>
-                            <Col lg={6}>
-                                <div>Month</div>
+                            <Col lg={6} class="map">
                                 <MonthSelector
                                     defaultValue={Tool.defaultState.month}
                                     onChange={this.makeHandleChange('month')}
