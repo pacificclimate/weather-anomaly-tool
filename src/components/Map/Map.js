@@ -7,7 +7,8 @@ class Map extends Component {
         return (
             <div>
                 <div>Map</div>
-                <div>{this.props.variable}</div>
+                <div>Variable: {this.props.variable}</div>
+                <div>Year: {this.props.year}</div>
             </div>
         )
     }
@@ -15,6 +16,7 @@ class Map extends Component {
 
 Map.propTypes = {
     variable: PropTypes.string,
-}
+    year: PropTypes.number,
+};
 
 export default Map;

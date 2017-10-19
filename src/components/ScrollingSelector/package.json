@@ -1,0 +1,6 @@
+{
+  "name": "ScrollingSelector",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ScrollingSelector.js"
+}

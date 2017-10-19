@@ -25,6 +25,6 @@ class VariableSelector extends Component {
 VariableSelector.propTypes = {
     defaultValue: PropTypes.string,
     onChange: PropTypes.func,
-}
+};
 
 export default VariableSelector;
