@@ -6,7 +6,7 @@ import ScrollingSelector from '../ScrollingSelector';
 
 class YearSelector extends Component {
     render() {
-        let years = []
+        let years = [];
         for (var  year = this.props.start; year < this.props.end + 1; year += 1) {
             years.push({value: year, label: year});
         }
@@ -18,7 +18,7 @@ class YearSelector extends Component {
                 defaultValue={this.props.defaultValue}
                 onChange={this.props.onChange}
             />
-        )
+        );
     }
 }
 
