@@ -1,10 +1,17 @@
+// BCMap: Component that establishes a map of B.C., and nothing more.
+//
+// Parent components are are responsible for adding markers and other decorations as needed. A ref callback
+// prop is provided for this purpose.
+//
+// For prop definitions, see comments in BCMap.propTypes.
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOMServer from 'react-dom/server';
 import _ from 'lodash';
+
 import { Map, TileLayer, ScaleControl } from 'react-leaflet';
 import L from 'leaflet';
-import { bindFunctions } from '../utils';
+
 import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -13,9 +20,6 @@ import './BCMap.css';
 class BCMap extends Component {
     constructor(props) {
         super(props);
-
-        // Bind event handlers
-        bindFunctions(this, 'handleMapRef');
 
         const maxRes = 7812.5;
         this.resolutions = [];
@@ -51,23 +55,6 @@ class BCMap extends Component {
         );
     }
 
-    componentDidMount() {
-        // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
-        // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
-        // let marker = L.marker(this.map.getCenter());
-        const marker = L.circleMarker(this.map.getCenter());
-        marker.addTo(this.map)
-            // Since it's pretty likely we'll want to build the station popups from a React component,
-            // this demonstrates how to do it for a simple React element.
-            .bindPopup(
-                ReactDOMServer.renderToStaticMarkup(<span>Test popup</span>)
-            );
-    }
-
-    handleMapRef(component) {
-        this.map = component.leafletElement;
-    }
-
     render() {
         const center = _.pick(BCMap.initial, 'lat', 'lng');
         return (
@@ -77,7 +64,7 @@ class BCMap extends Component {
                 zoom={BCMap.initial.zoom}
                 minZoom={0}   // ?
                 maxZoom={12}  // ? There are only 12 zoom levels defined
-                ref={this.handleMapRef}
+                ref={this.props.mapRef}
             >
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -93,7 +80,13 @@ class BCMap extends Component {
 }
 
 BCMap.propTypes = {
-    dummy: PropTypes.any,
+    mapRef: PropTypes.func,
+    // Callback to which a ref to the Map component is passed. Allows parent components to diddle with the
+    // map established here (e.g., add markers).
+};
+
+BCMap.defaultProps = {
+    mapRef: (() => null),
 };
 
 BCMap.initial = {
