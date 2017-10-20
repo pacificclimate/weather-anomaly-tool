@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReactDOMServer from 'react-dom/server';
 import _ from 'lodash';
 import { Map, TileLayer, ScaleControl } from 'react-leaflet';
-import { Marker, Popup, Circle, CircleMarker } from 'react-leaflet';
 import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
@@ -18,6 +17,7 @@ class BCMap extends Component {
         const handlerNames = 'handleMapRef'.split(/\s+/);
         handlerNames.map((name) => {
             this[name] = this[name].bind(this);
+            return null;
         });
 
         const maxRes = 7812.5;
@@ -96,7 +96,7 @@ class BCMap extends Component {
 }
 
 BCMap.propTypes = {
-
+    dummy: PropTypes.any,
 };
 
 BCMap.initial = {
