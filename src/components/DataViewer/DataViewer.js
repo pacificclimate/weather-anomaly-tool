@@ -2,9 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DataLoader from '../DataLoader';
 import DataMap from '../DataMap';
+import { bindFunctions } from '../utils';
 import './DataViewer.css';
 
 class DataViewer extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            baseline: [],
+            weather: [],
+        };
+        bindFunctions(this, 'handleDataLoaded');
+    }
+
+    handleDataLoaded(data) {
+        this.setState(data);
+    }
+
     render() {
         return (
             <div>
@@ -12,11 +26,14 @@ class DataViewer extends Component {
                     variable={this.props.variable}
                     year={this.props.year}
                     month={this.props.month}
-                    onDataLoaded={() => null}
+                    onDataLoaded={this.handleDataLoaded}
                 />
-                <DataMap baseline={[]} weather={[]}/>
+                <DataMap
+                    baseline={this.state.baseline}
+                    weather={this.state.weather}
+                />
             </div>
-        )
+        );
     }
 }
 
