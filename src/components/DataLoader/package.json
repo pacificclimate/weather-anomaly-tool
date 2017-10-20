@@ -1,0 +1,6 @@
+{
+  "name": "DataLoader",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./DataLoader.js"
+}

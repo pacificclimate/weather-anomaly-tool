@@ -4,7 +4,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import VariableSelector from '../VariableSelector'
 import YearSelector from '../YearSelector';
 import MonthSelector from '../MonthSelector';
-import MapController from '../MapController';
+import DataViewer from '../DataViewer';
 
 import './Tool.css';
 
@@ -46,7 +46,7 @@ class Tool extends Component {
                         </Row>
                     </Col>
                     <Col  lg={10}>
-                        <MapController
+                        <DataViewer
                             variable={this.state.variable}
                             year={this.state.year}
                             month={this.state.month}
