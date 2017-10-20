@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { Map, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 import 'proj4';
@@ -13,32 +14,40 @@ class MapController extends Component {
         this.state = {
             lat: 55.0,
             lng: -125,
-            zoom: 10,
+            zoom: 1,
         };
+
+        // Items for a BC Albers map. Put in separate component?
+        this.initialCenter = _.pick(this.state, 'lat', 'lng');
+
+        const maxRes = 7812.5;
+        this.resolutions = [];
+        for (let i = 0; i < 12; i += 1) {
+            this.resolutions.push(maxRes / Math.pow(2, i));
+        }
+        // const bounds = L.bounds(L.point(-1000000, -1000000), L.point(3000000, 3000000));
+        this.crs = new L.Proj.CRS(
+            'EPSG:3005',
+            '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
+            {
+                resolutions: this.resolutions,
+                // bounds,
+            }
+        );
     }
 
     render() {
-        console.log(L);
-        const position = [this.state.lat, this.state.lng];
-        const maxRes = 7812.5;
-        let resolutions = [];
-        for (let i = 0; i < 12; i += 1) {
-            resolutions.push(maxRes / Math.pow(2, i));
-        }
-        console.log(resolutions)
-        const crs = new L.Proj.CRS(
-            'EPSG:3005',
-            '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
-            { resolutions: resolutions }
-        );
         return (
             <div>
                 <div>
-                    {this.props.variable};{this.props.year}-{this.props.month}
+                    Data: {this.props.variable};{this.props.year}-{this.props.month}&nbsp;
+                    Position: ({this.state.lng}, {this.state.lat})&nbsp;
+                    Zoom: {this.state.zoom}&nbsp;
+                    &nbsp;
                 </div>
                 <Map
-                    crs={crs}
-                    center={position}
+                    crs={this.crs}
+                    center={this.initialCenter}
                     zoom={this.state.zoom}
                     minZoom={0}
                     maxZoom={12}
@@ -60,6 +69,7 @@ class MapController extends Component {
 Map.propTypes = {
     variable: PropTypes.string,
     year: PropTypes.number,
+    month: PropTypes.number,
 };
 
 export default MapController;
