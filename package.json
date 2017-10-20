@@ -6,6 +6,8 @@
     "bootstrap": "^3.3.7",
     "leaflet": "^1.2.0",
     "lodash": "^4.17.4",
+    "proj4": "^2.4.4",
+    "proj4leaflet": "^1.0.2",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
