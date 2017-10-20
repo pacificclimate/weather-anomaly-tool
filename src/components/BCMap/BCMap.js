@@ -4,6 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import _ from 'lodash';
 import { Map, TileLayer, ScaleControl } from 'react-leaflet';
 import L from 'leaflet';
+import { bindFunctions } from '../utils';
 import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -14,11 +15,7 @@ class BCMap extends Component {
         super(props);
 
         // Bind event handlers
-        const handlerNames = 'handleMapRef'.split(/\s+/);
-        handlerNames.map((name) => {
-            this[name] = this[name].bind(this);
-            return null;
-        });
+        bindFunctions(this, 'handleMapRef');
 
         const maxRes = 7812.5;
         this.resolutions = [];
