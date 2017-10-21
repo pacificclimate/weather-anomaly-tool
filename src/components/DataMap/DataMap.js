@@ -17,6 +17,7 @@ import './DataMap.css';
 class DataMap extends Component {
     constructor(props) {
         super(props);
+        this.baselineMarkers = [];
 
         // Bind event handlers
         bindFunctions(this, 'handleMapRef');
@@ -28,17 +29,21 @@ class DataMap extends Component {
 
     // Placeholder for inserting station markers based on data.
     // This should be done in lifecycle hook `componentWillReceiveProps()`.
-    displayStations() {
-        console.log('DataMap.displayStations, baseline:', this.props.baseline);
+    displayData() {
+        console.log('DataMap.displayData, baseline:', this.props.baseline);
+        this.baselineMarkers.map(marker => {
+            this.map.removeLayer(marker);
+            return null;  // prevent warning
+        });
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
-        const baselineMarkers = this.props.baseline.map((station) =>
+        this.baselineMarkers = this.props.baseline.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat})
                 .bindPopup(
                     ReactDOMServer.renderToStaticMarkup(<span>{station.station_name}</span>)
                 )
         );
-        baselineMarkers.map(marker => {
+        this.baselineMarkers.map(marker => {
             marker.addTo(this.map);
             return null;  // prevent warning
         });
@@ -54,7 +59,7 @@ class DataMap extends Component {
 
     componentDidUpdate() {
         console.log('DataMap.componentDidUpdate', this.props);
-        this.displayStations();
+        this.displayData();
     }
 
     render() {
