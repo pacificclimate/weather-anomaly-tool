@@ -64,10 +64,28 @@ const data = [
 ];
 let index = 0;
 
+// Placeholder for real async data retrieval
+function getData(delay, failProb) {
+    return new Promise((resolve, reject) => {
+        setTimeout(function() {
+            if (Math.random() >= failProb) {
+                console.log('getData: resolving', index);
+                resolve(data[index]);
+                index = (index + 1) % data.length;
+            } else {
+                console.log('getData: rejecting')
+                reject('Error')
+            }
+        }, delay);
+    });
+}
+
 class DataLoader extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            loading: false,
+        };
     }
 
     // Placeholder for loading data and calling back when loaded.
@@ -75,23 +93,11 @@ class DataLoader extends Component {
     loadData() {
         console.log('DataLoader.loadData');
 
-        // Placeholder for async data retrieval
-        function getData(delay, failProb) {
-            return new Promise((resolve, reject) => {
-                setTimeout(function() {
-                    if (Math.random() >= failProb) {
-                        console.log('getData: resolving', index);
-                        resolve(data[index]);
-                        index = (index + 1) % data.length;
-                    } else {
-                        console.log('getData: rejecting')
-                        reject('Error')
-                    }
-                }, delay);
-            });
-        }
-
-        getData(2000, 0.0).then(this.props.onDataLoaded);
+        this.setState({loading: true});
+        getData(2000, 0.0).then((data) => {
+            this.props.onDataLoaded(data);
+            this.setState({loading: false});
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -116,7 +122,10 @@ class DataLoader extends Component {
     render() {
         return (
             <div>
-                DataLoader: {this.props.variable};{this.props.year}-{this.props.month}&nbsp;
+                <p>
+                    {this.state.loading ? <span>Loading... </span> : <span>Data: </span>}
+                    {this.props.variable};{this.props.year}-{this.props.month}
+                </p>
             </div>
         );
     }
