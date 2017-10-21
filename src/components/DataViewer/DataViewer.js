@@ -16,6 +16,7 @@ class DataViewer extends Component {
     }
 
     handleDataLoaded(data) {
+        console.log('DataViewer.handleDataLoaded', data)
         this.setState(data);
     }
 

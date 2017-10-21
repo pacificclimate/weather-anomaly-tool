@@ -28,17 +28,33 @@ class DataMap extends Component {
 
     // Placeholder for inserting station markers based on data.
     // This should be done in lifecycle hook `componentWillReceiveProps()`.
-    componentDidMount() {
+    displayStations() {
+        console.log('DataMap.displayStations, baseline:', this.props.baseline);
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
-        // let marker = L.marker(this.map.getCenter());
-        const marker = L.circleMarker(this.map.getCenter());
-        marker.addTo(this.map)
-        // Since it's pretty likely we'll want to build the station popups from a React component,
-        // this demonstrates how to do it with a simple React element.
-            .bindPopup(
-                ReactDOMServer.renderToStaticMarkup(<span>Test popup</span>)
-            );
+        const baselineMarkers = this.props.baseline.map((station) =>
+            L.circleMarker({lng: station.lon, lat: station.lat})
+                .bindPopup(
+                    ReactDOMServer.renderToStaticMarkup(<span>{station.station_name}</span>)
+                )
+        );
+        baselineMarkers.map(marker => {
+            marker.addTo(this.map);
+            return null;  // prevent warning
+        });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('DataMap.componentWillReceiveProps', nextProps);
+    }
+
+    componentDidMount() {
+        console.log('DataMap.componentDidMount', this.props);
+    }
+
+    componentDidUpdate() {
+        console.log('DataMap.componentDidUpdate', this.props);
+        this.displayStations();
     }
 
     render() {
