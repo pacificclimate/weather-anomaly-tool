@@ -16,18 +16,17 @@ import StationPopup from '../StationPopup';
 import { bindFunctions } from '../utils';
 import './DataMap.css';
 
-const circleMarkerOptions = {
+const stationCircleMarkerOptions = {
+    color: '#000000',
+    radius: 1,
+    weight: 1,
+    fillOpacity: 1,
+};
+const dataCircleMarkerOptions = {
     radius: 8,
     weight: 1,
     fillOpacity: 0.5,
-};
-const baselineCircleMarkerOptions = {
-    ...circleMarkerOptions,
     color: '#3388ff',
-};
-const monthlyCircleMarkerOptions = {
-    ...circleMarkerOptions,
-    color: '#df42f4',
 };
 
 class DataMap extends Component {
@@ -36,7 +35,7 @@ class DataMap extends Component {
         this.baselineMarkers = [];
 
         // Bind event handlers
-        bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefMonthlyLayerGroup');
+        bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefMonthlyLayerGroup handleRefDataLayerGroup');
     }
 
     // This is a factory of handlers, but it doesn't work for some reason; cannot access component.leafletElement,
@@ -62,12 +61,29 @@ class DataMap extends Component {
         this.monthlyLayerGroup = component.leafletElement;
     }
 
-    displayStationData(stations, layerGroup, markerOptions) {
+    handleRefDataLayerGroup(component) {
+        this.dataLayerGroup = component.leafletElement;
+    }
+
+    displayStationLocations(stations, layerGroup, markerOptions) {
+        console.log('displayStationLocations', 'stations', stations)
         layerGroup.eachLayer(marker => {
             layerGroup.removeLayer(marker);
         });
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
+        const markers = stations.map((station) =>
+            L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
+        );
+        markers.forEach(marker => {
+            marker.addTo(layerGroup);
+        });
+    }
+
+    displayStationData(stations, layerGroup, markerOptions) {
+        layerGroup.eachLayer(marker => {
+            layerGroup.removeLayer(marker);
+        });
         const markers = stations.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
                 .bindPopup(
@@ -81,8 +97,12 @@ class DataMap extends Component {
 
     displayData() {
         console.log('DataMap.displayData');
-        this.displayStationData(this.props.baseline, this.baselineLayerGroup, baselineCircleMarkerOptions);
-        this.displayStationData(this.props.monthly, this.monthlyLayerGroup, monthlyCircleMarkerOptions);
+        this.displayStationLocations(this.props.baseline, this.baselineLayerGroup, stationCircleMarkerOptions);
+        this.displayStationLocations(this.props.monthly, this.monthlyLayerGroup, stationCircleMarkerOptions);
+        // TODO: Add computation of anomaly data!
+        if (this.props.dataset !== 'anomaly') {
+            this.displayStationData(this.props[this.props.dataset], this.dataLayerGroup, dataCircleMarkerOptions);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -101,11 +121,14 @@ class DataMap extends Component {
     render() {
         return (
             <BCMap mapRef={this.handleRefMap}>
-                <LayersControl.Overlay name='Baseline' checked>
+                <LayersControl.Overlay name='Baseline stations' checked>
                     <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
                 </LayersControl.Overlay>
-                <LayersControl.Overlay name='Monthly'>
+                <LayersControl.Overlay name='Monthly stations' checked>
                     <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
+                </LayersControl.Overlay>
+                <LayersControl.Overlay name='Data values' checked>
+                    <LayerGroup ref={this.handleRefDataLayerGroup}/>
                 </LayersControl.Overlay>
             </BCMap>
         )
@@ -113,6 +136,8 @@ class DataMap extends Component {
 }
 
 DataMap.propTypes = {
+    dataset: PropTypes.oneOf(['baseline', 'monthly', 'anomaly']).isRequired,
+    // Name of dataset to display on data layer
     baseline: PropTypes.array.isRequired,
     // Array of baseline data from monthly Anomaly Data Service.
     monthly: PropTypes.array.isRequired,

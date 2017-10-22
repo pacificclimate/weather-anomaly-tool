@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import { pick, bindFunctions } from '../utils';
 import DataLoader from '../DataLoader';
 import DataMap from '../DataMap';
-import { bindFunctions } from '../utils';
 import './DataViewer.css';
 
 class DataViewer extends Component {
@@ -24,14 +25,12 @@ class DataViewer extends Component {
         return (
             <div>
                 <DataLoader
-                    variable={this.props.variable}
-                    year={this.props.year}
-                    month={this.props.month}
+                    {...pick(this.props, 'variable year month')}
                     onDataLoaded={this.handleDataLoaded}
                 />
                 <DataMap
-                    baseline={this.state.baseline}
-                    monthly={this.state.monthly}
+                    dataset={this.props.dataset}
+                    {...pick(this.state, 'baseline monthly')}
                 />
             </div>
         );
@@ -39,6 +38,7 @@ class DataViewer extends Component {
 }
 
 DataViewer.propTypes = {
+    dataset: PropTypes.string.isRequired,
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,

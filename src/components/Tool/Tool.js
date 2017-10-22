@@ -31,17 +31,16 @@ class Tool extends Component {
                     <Col lg={3} className="selectors">
                         Display
                         <Row>
-                            <Col lg={5}>
-                                <DatasetSelector
-                                    defaultValue={Tool.defaultState.dataset}
-                                    onChange={this.makeHandleChange('dataset')}
-                                />
-                            </Col>
-                            <Col lg={1}>of</Col>
                             <Col lg={6}>
                                 <VariableSelector
                                     defaultValue={Tool.defaultState.variable}
                                     onChange={this.makeHandleChange('variable')}
+                                />
+                            </Col>
+                            <Col lg={6}>
+                                <DatasetSelector
+                                    defaultValue={Tool.defaultState.dataset}
+                                    onChange={this.makeHandleChange('dataset')}
                                 />
                             </Col>
                         </Row>
