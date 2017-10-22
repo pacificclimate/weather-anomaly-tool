@@ -8,12 +8,15 @@
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
-import { ScaleControl, LayerGroup, LayersControl } from 'react-leaflet';
+
+import { LayerGroup, LayersControl } from 'react-leaflet';
 import L from 'leaflet';
 
+import _ from 'lodash';
+
+import { bindFunctions, pick } from '../utils';
 import BCMap from '../BCMap';
 import StationPopup from '../StationPopup';
-import { bindFunctions } from '../utils';
 import './DataMap.css';
 
 const stationCircleMarkerOptions = {
@@ -99,11 +102,21 @@ class DataMap extends Component {
         console.log('DataMap.displayData');
         this.displayStationLocations(this.props.baseline, this.baselineLayerGroup, stationCircleMarkerOptions);
         this.displayStationLocations(this.props.monthly, this.monthlyLayerGroup, stationCircleMarkerOptions);
-        // TODO: Add computation of anomaly data!
-        if (this.props.dataset !== 'anomaly') {
-            this.displayStationData(this.props[this.props.dataset], this.dataLayerGroup, dataCircleMarkerOptions);
+        let stations;
+        if (this.props.dataset === 'anomaly') {
+            stations = this.props.baseline.map(baselineStation => {
+                const monthlyStation = _.find(this.props.monthly, {station_db_id: baselineStation.station_db_id});
+                const anomaly = monthlyStation && monthlyStation.statistic - baselineStation.datum;
+                return {
+                    ...pick(baselineStation, 'station_name lat lon elevation'),
+                    anomaly,
+                }
+            });
+        } else {
+            stations = this.props[this.props.dataset];
         }
-    }
+        this.displayStationData(stations, this.dataLayerGroup, dataCircleMarkerOptions);
+}
 
     componentWillReceiveProps(nextProps) {
         console.log('DataMap.componentWillReceiveProps', nextProps);

@@ -9,9 +9,10 @@ class StationPopup extends Component {
                 <div>Name: {this.props.station_name}</div>
                 <div>Lat: {this.props.lat} Lon: {this.props.lon}</div>
                 <div>Elevation: {this.props.elevation}</div>
-                {this.props.datum && <div>Datum: {this.props.datum}</div>}
-                {this.props.statistic && <div>Statistic: {this.props.statistic}</div>}
+                {this.props.datum && <div>Baseline datum: {this.props.datum}</div>}
+                {this.props.statistic && <div>Monthly statistic: {this.props.statistic}</div>}
                 {this.props.data_coverage && <div>Data coverage: {this.props.data_coverage}</div>}
+                {this.props.anomaly && <div>Anomaly: {this.props.anomaly}</div>}
             </div>
         );
     }
