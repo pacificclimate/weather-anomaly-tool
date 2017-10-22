@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "classnames": "^2.2.5",
     "leaflet": "^1.2.0",
     "lodash": "^4.17.4",
     "proj4": "^2.4.4",
