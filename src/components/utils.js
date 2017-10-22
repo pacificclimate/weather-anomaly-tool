@@ -1,12 +1,20 @@
+import _ from 'lodash';
+
+
 function bindFunctions(obj, functionNames) {
     if (typeof functionNames === 'string') {
         functionNames = functionNames.split(/\s+/);
     }
-    functionNames.map((name) => {
+    functionNames.forEach((name) => {
         obj[name] = obj[name].bind(obj);
-        return null;
     });
-    return obj;
 }
 
-export { bindFunctions };
+function pick(obj, names) {
+    if (typeof names === 'string') {
+        names = names.split(/\s+/);
+    }
+    return _.pick(obj, names);
+}
+
+export { bindFunctions, pick };
