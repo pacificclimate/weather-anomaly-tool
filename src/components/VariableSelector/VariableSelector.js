@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-bootstrap';
+import { pick } from '../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './VariableSelector.css';
 
@@ -13,7 +14,11 @@ class VariableSelector extends Component {
             { value: 'tmax', label: <span>T<sub>max</sub></span>, },
         ];
         return (
-            <RadioButtonSelector name="variable" options={variables} onChange={this.props.onChange}/>
+            <RadioButtonSelector
+                name="variable"
+                options={variables}
+                {...pick(this.props, 'defaultValue onChange')}
+            />
             // <div>
             //     <ToggleButtonGroup
             //         vertical type="radio" name="variable"
