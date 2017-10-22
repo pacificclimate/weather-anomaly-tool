@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import { Map, TileLayer } from 'react-leaflet';
+import { Map, TileLayer, LayersControl } from 'react-leaflet';
 import L from 'leaflet';
 
 import 'proj4';
@@ -73,7 +73,9 @@ class BCMap extends Component {
                     noWrap={true}
                     maxZoom={12}
                 />
-                {this.props.children}
+                <LayersControl position='topright'>
+                    {this.props.children}
+                </LayersControl>
             </Map>
         );
     }

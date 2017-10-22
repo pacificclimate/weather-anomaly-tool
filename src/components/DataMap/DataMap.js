@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
-import { ScaleControl } from 'react-leaflet';
+import { ScaleControl, LayerGroup, LayersControl } from 'react-leaflet';
 import L from 'leaflet';
 
 import BCMap from '../BCMap';
@@ -21,33 +21,53 @@ class DataMap extends Component {
         this.baselineMarkers = [];
 
         // Bind event handlers
-        bindFunctions(this, 'handleMapRef');
+        bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefWeatherLayerGroup');
     }
 
-    handleMapRef(component) {
+    // This is a factory of handlers, but it doesn't work for some reason; cannot access component.leafletElement,
+    // even though console.log(component) shows the expected component with property leafletElement. WTF????
+    // So we are reduced to cut-and-paste for ref handlers. Urk.
+    handleLeafletRef(name) {
+        return (function(component) {
+            console.log(`handleLeafletRef(${name})`, 'component', component)
+            console.log(`handleLeafletRef(${name})`, 'component.leafletElement', component.leafletElement)
+            this[name] = component.leafletElement;
+        }).bind(this);
+    }
+
+    handleRefMap(component) {
         this.map = component.leafletElement;
     }
 
-    // Placeholder for inserting station markers based on data.
-    // This should be done in lifecycle hook `componentWillReceiveProps()`.
-    displayData() {
-        console.log('DataMap.displayData, baseline:', this.props.baseline);
-        this.baselineMarkers.map(marker => {
-            this.map.removeLayer(marker);
-            return null;  // prevent warning
+    handleRefBaselineLayerGroup(component) {
+        this.baselineLayerGroup = component.leafletElement;
+    }
+
+    handleRefWeatherLayerGroup(component) {
+        this.weatherLayerGroup = component.leafletElement;
+    }
+
+    displayStationData(stations, layerGroup) {
+        layerGroup.eachLayer(marker => {
+            layerGroup.removeLayer(marker);
         });
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
-        this.baselineMarkers = this.props.baseline.map((station) =>
+        const markers = stations.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat})
                 .bindPopup(
                     ReactDOMServer.renderToStaticMarkup(<span>{station.station_name}</span>)
                 )
         );
-        this.baselineMarkers.map(marker => {
-            marker.addTo(this.map);
-            return null;  // prevent warning
+        markers.forEach(marker => {
+            marker.addTo(layerGroup);
         });
+    }
+
+    displayData() {
+        console.log('DataMap.displayData');
+        this.displayStationData(this.props.baseline, this.baselineLayerGroup);
+        this.displayStationData(this.props.weather, this.weatherLayerGroup);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -65,8 +85,13 @@ class DataMap extends Component {
 
     render() {
         return (
-            <BCMap mapRef={this.handleMapRef}>
-                <ScaleControl/>
+            <BCMap mapRef={this.handleRefMap}>
+                <LayersControl.Overlay name='Baseline stations' checked>
+                    <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
+                </LayersControl.Overlay>
+                <LayersControl.Overlay name='Weather stations'>
+                    <LayerGroup ref={this.handleRefWeatherLayerGroup}/>
+                </LayersControl.Overlay>
             </BCMap>
         )
     }
