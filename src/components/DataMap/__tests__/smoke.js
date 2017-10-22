@@ -7,7 +7,7 @@ it('renders without crashing', () => {
     ReactDOM.render(
         <DataMap
             baseline={[]}
-            weather={[]}
+            monthly={[]}
         />,
         div
     );

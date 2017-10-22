@@ -10,7 +10,7 @@ class DataViewer extends Component {
         super(props);
         this.state = {
             baseline: [],
-            weather: [],
+            monthly: [],
         };
         bindFunctions(this, 'handleDataLoaded');
     }
@@ -31,7 +31,7 @@ class DataViewer extends Component {
                 />
                 <DataMap
                     baseline={this.state.baseline}
-                    weather={this.state.weather}
+                    monthly={this.state.monthly}
                 />
             </div>
         );

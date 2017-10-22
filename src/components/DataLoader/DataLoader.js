@@ -16,7 +16,7 @@ const data = [
             "lat": 48.866667,
             "station_db_id": 1
         }],
-        weather: [{
+        monthly: [{
             "network_name": "EC",
             "history_db_id": 404,
             "data_coverage": 0.741935483870968,
@@ -45,7 +45,7 @@ const data = [
             "lat": 53.966667,
             "station_db_id": 797
         }],
-        weather: [{
+        monthly: [{
             "network_name": "EC",
             "history_db_id": 1200,
             "data_coverage": 0.870967741935484,

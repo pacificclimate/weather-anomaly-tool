@@ -1,7 +1,7 @@
 // DataMap: Component that displays a map with data.
 //
-// Currently, we're accepting data in the output format from the Weather Anomaly Data Service endpoints
-// /baseline and /weather. That may be refactored as we progress.
+// Currently, we're accepting data in the output format from the monthly Anomaly Data Service endpoints
+// /baseline and /monthly. That may be refactored as we progress.
 //
 // For prop definitions, see comments in BCMap.propTypes.
 
@@ -25,7 +25,7 @@ const baselineCircleMarkerOptions = {
     ...circleMarkerOptions,
     color: '#3388ff',
 };
-const weatherCircleMarkerOptions = {
+const monthlyCircleMarkerOptions = {
     ...circleMarkerOptions,
     color: '#df42f4',
 };
@@ -36,7 +36,7 @@ class DataMap extends Component {
         this.baselineMarkers = [];
 
         // Bind event handlers
-        bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefWeatherLayerGroup');
+        bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefMonthlyLayerGroup');
     }
 
     // This is a factory of handlers, but it doesn't work for some reason; cannot access component.leafletElement,
@@ -58,8 +58,8 @@ class DataMap extends Component {
         this.baselineLayerGroup = component.leafletElement;
     }
 
-    handleRefWeatherLayerGroup(component) {
-        this.weatherLayerGroup = component.leafletElement;
+    handleRefMonthlyLayerGroup(component) {
+        this.monthlyLayerGroup = component.leafletElement;
     }
 
     displayStationData(stations, layerGroup, markerOptions) {
@@ -82,7 +82,7 @@ class DataMap extends Component {
     displayData() {
         console.log('DataMap.displayData');
         this.displayStationData(this.props.baseline, this.baselineLayerGroup, baselineCircleMarkerOptions);
-        this.displayStationData(this.props.weather, this.weatherLayerGroup, weatherCircleMarkerOptions);
+        this.displayStationData(this.props.monthly, this.monthlyLayerGroup, monthlyCircleMarkerOptions);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -101,11 +101,11 @@ class DataMap extends Component {
     render() {
         return (
             <BCMap mapRef={this.handleRefMap}>
-                <LayersControl.Overlay name='Baseline stations' checked>
+                <LayersControl.Overlay name='Baseline' checked>
                     <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
                 </LayersControl.Overlay>
-                <LayersControl.Overlay name='Weather stations'>
-                    <LayerGroup ref={this.handleRefWeatherLayerGroup}/>
+                <LayersControl.Overlay name='Monthly'>
+                    <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
                 </LayersControl.Overlay>
             </BCMap>
         )
@@ -114,9 +114,9 @@ class DataMap extends Component {
 
 DataMap.propTypes = {
     baseline: PropTypes.array.isRequired,
-    // Array of baseline data from Weather Anomaly Data Service.
-    weather: PropTypes.array.isRequired,
-    // Array of weather data from Weather Anomaly Data Service.
+    // Array of baseline data from monthly Anomaly Data Service.
+    monthly: PropTypes.array.isRequired,
+    // Array of monthly data from monthly Anomaly Data Service.
 };
 
 export default DataMap;
