@@ -1,8 +1,5 @@
-.ScrollingSelector {
-    overflow-y: auto;
-}
-
-.ScrollingSelector .ScrollingSelector-button {
+.ScrollingSelector .RadioButtonSelector-button {
     height: 1.5em;
     padding-top: 0em;
 }
+

@@ -2,7 +2,7 @@
 //
 // For prop definitions, see ScrollingSelector.propTypes
 
-// TODO: Add props.style and pass thru to ToggleButtonGroup
+// TODO: Add props.style and pass thru to RadioButtonSelector
 // TODO: Add prop for option item height?
 // TODO: (as called for) Make vertical a prop
 // TODO: Use inline styles only
@@ -11,8 +11,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import {findIndex} from 'lodash';
+import { pick } from '../utils';
+import RadioButtonSelector from '../RadioButtonSelector';
 import './ScrollingSelector.css';
-import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 
 const optionItemHeightEms = 1.43;
 
@@ -20,31 +21,23 @@ class ScrollingSelector extends Component {
     componentDidMount() {
         // Scroll container to location of `defaultValue` option.
         const defaultIndex = findIndex(this.props.options, {value: this.props.defaultValue});
-        const node = ReactDOM.findDOMNode(this.toggleButtonGroup);
+        const node = ReactDOM.findDOMNode(this.radioButtonSelector);
         const optionItemHeight = node.children[0].offsetHeight;
         node.scrollTop = (defaultIndex - this.props.height/2) * optionItemHeight;
     }
 
     render() {
-        const toggleButtons = this.props.options.map((option) => (
-            <ToggleButton
-                className="ScrollingSelector-button"
-                key={option.value} value={option.value}
-            >
-                {option.label}
-            </ToggleButton>
-        ));
         return (
-            <ToggleButtonGroup
+            <RadioButtonSelector
                 className="ScrollingSelector"
-                style={{height: `${(this.props.height * optionItemHeightEms + 0.02).toString()}em`}}
-                vertical type="radio" name={this.props.name}
-                defaultValue={this.props.defaultValue}
-                onChange={this.props.onChange}
-                ref={(component) => { this.toggleButtonGroup = component; }}
+                style={{
+                    height: `${(this.props.height * optionItemHeightEms + 0.02).toString()}em`,
+                    overflowY: 'auto',
+                }}
+                {...pick(this.props, 'name options defaultValue onChange')}
+                ref={(component) => { this.radioButtonSelector = component; }}
             >
-                {toggleButtons}
-            </ToggleButtonGroup>
+            </RadioButtonSelector>
         );
     }
 }
