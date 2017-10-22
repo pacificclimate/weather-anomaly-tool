@@ -12,6 +12,7 @@ import { ScaleControl, LayerGroup, LayersControl } from 'react-leaflet';
 import L from 'leaflet';
 
 import BCMap from '../BCMap';
+import StationPopup from '../StationPopup';
 import { bindFunctions } from '../utils';
 import './DataMap.css';
 
@@ -70,7 +71,7 @@ class DataMap extends Component {
         const markers = stations.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
                 .bindPopup(
-                    ReactDOMServer.renderToStaticMarkup(<span>{station.station_name}</span>)
+                    ReactDOMServer.renderToStaticMarkup(<StationPopup {...station}/>)
                 )
         );
         markers.forEach(marker => {
