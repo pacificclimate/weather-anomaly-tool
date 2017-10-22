@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './MonthSelector.css';
-
+import { pick } from '../utils';
 import ScrollingSelector from '../ScrollingSelector';
+import './MonthSelector.css';
 
 class MonthSelector extends Component {
     render() {
@@ -10,11 +10,9 @@ class MonthSelector extends Component {
         const months = monthNames.map((name, i) => ({value: i+1, label: name}));
         return (
             <ScrollingSelector
-                height={this.props.height}
                 name="month"
                 options={months}
-                defaultValue={this.props.defaultValue}
-                onChange={this.props.onChange}
+                {...pick(this.props, 'height defaultValue onChange')}
             />
         )
     }

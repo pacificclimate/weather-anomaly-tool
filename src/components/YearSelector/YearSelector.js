@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { pick } from '../utils';
+import ScrollingSelector from '../ScrollingSelector';
 import './YearSelector.css';
 
-import ScrollingSelector from '../ScrollingSelector';
 
 class YearSelector extends Component {
     render() {
         let years = [];
-        for (var  year = this.props.start; year < this.props.end + 1; year += 1) {
+        for (let  year = this.props.start; year < this.props.end + 1; year += 1) {
             years.push({value: year, label: year});
         }
         return (
             <ScrollingSelector
-                height={this.props.height}
                 name="year"
                 options={years}
-                defaultValue={this.props.defaultValue}
-                onChange={this.props.onChange}
+                {...pick(this.props, 'height defaultValue onChange')}
             />
         );
     }
