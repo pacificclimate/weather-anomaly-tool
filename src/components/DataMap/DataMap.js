@@ -8,6 +8,7 @@
 import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
+import { ScaleControl } from 'react-leaflet';
 import L from 'leaflet';
 
 import BCMap from '../BCMap';
@@ -64,7 +65,9 @@ class DataMap extends Component {
 
     render() {
         return (
-            <BCMap mapRef={this.handleMapRef}/>
+            <BCMap mapRef={this.handleMapRef}>
+                <ScaleControl/>
+            </BCMap>
         )
     }
 }
