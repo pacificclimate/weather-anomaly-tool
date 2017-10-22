@@ -15,6 +15,20 @@ import BCMap from '../BCMap';
 import { bindFunctions } from '../utils';
 import './DataMap.css';
 
+const circleMarkerOptions = {
+    radius: 8,
+    weight: 1,
+    fillOpacity: 0.5,
+};
+const baselineCircleMarkerOptions = {
+    ...circleMarkerOptions,
+    color: '#3388ff',
+};
+const weatherCircleMarkerOptions = {
+    ...circleMarkerOptions,
+    color: '#df42f4',
+};
+
 class DataMap extends Component {
     constructor(props) {
         super(props);
@@ -47,14 +61,14 @@ class DataMap extends Component {
         this.weatherLayerGroup = component.leafletElement;
     }
 
-    displayStationData(stations, layerGroup) {
+    displayStationData(stations, layerGroup, markerOptions) {
         layerGroup.eachLayer(marker => {
             layerGroup.removeLayer(marker);
         });
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
         const markers = stations.map((station) =>
-            L.circleMarker({lng: station.lon, lat: station.lat})
+            L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
                 .bindPopup(
                     ReactDOMServer.renderToStaticMarkup(<span>{station.station_name}</span>)
                 )
@@ -66,8 +80,8 @@ class DataMap extends Component {
 
     displayData() {
         console.log('DataMap.displayData');
-        this.displayStationData(this.props.baseline, this.baselineLayerGroup);
-        this.displayStationData(this.props.weather, this.weatherLayerGroup);
+        this.displayStationData(this.props.baseline, this.baselineLayerGroup, baselineCircleMarkerOptions);
+        this.displayStationData(this.props.weather, this.weatherLayerGroup, weatherCircleMarkerOptions);
     }
 
     componentWillReceiveProps(nextProps) {
