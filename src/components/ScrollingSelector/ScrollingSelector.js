@@ -19,11 +19,13 @@ const optionItemHeightEms = 1.43;
 
 class ScrollingSelector extends Component {
     componentDidMount() {
-        // Scroll container to location of `defaultValue` option.
-        const defaultIndex = findIndex(this.props.options, {value: this.props.defaultValue});
-        const node = ReactDOM.findDOMNode(this.radioButtonSelector);
-        const optionItemHeight = node.children[0].offsetHeight;
-        node.scrollTop = (defaultIndex - this.props.height/2) * optionItemHeight;
+        if (this.props.height < this.props.options.length) {
+            // Scroll container to location of `defaultValue` option.
+            const defaultIndex = findIndex(this.props.options, {value: this.props.defaultValue});
+            const node = ReactDOM.findDOMNode(this.radioButtonSelector);
+            const optionItemHeight = node.children[0].offsetHeight;
+            node.scrollTop = (defaultIndex - this.props.height / 2) * optionItemHeight;
+        }
     }
 
     render() {
@@ -32,7 +34,7 @@ class ScrollingSelector extends Component {
                 className="ScrollingSelector"
                 style={{
                     height: `${(this.props.height * optionItemHeightEms + 0.02).toString()}em`,
-                    overflowY: 'auto',
+                    overflowY: (this.props.height < this.props.options.length) ? 'scroll' : 'visible',
                 }}
                 {...pick(this.props, 'name options defaultValue onChange')}
                 ref={(component) => { this.radioButtonSelector = component; }}
