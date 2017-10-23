@@ -5,10 +5,13 @@ import './StationPopup.css';
 class StationPopup extends Component {
     render() {
         return (
-            <div>
-                <div>Name: {this.props.station_name}</div>
-                <div>Lat: {this.props.lat} Lon: {this.props.lon}</div>
-                <div>Elevation: {this.props.elevation}</div>
+            <div className="StationPopup">
+                <div className="name">{this.props.station_name}</div>
+                <div className="lon-lat">
+                    <span  className="lon">{this.props.lon}</span>
+                    <span className="lat">{this.props.lat}</span>
+                </div>
+                <div className="elevation">{this.props.elevation}</div>
                 {this.props.datum && <div>Baseline datum: {this.props.datum}</div>}
                 {this.props.statistic && <div>Monthly statistic: {this.props.statistic}</div>}
                 {this.props.data_coverage && <div>Data coverage: {this.props.data_coverage}</div>}
@@ -19,15 +22,14 @@ class StationPopup extends Component {
 }
 
 StationPopup.propTypes = {
-    height: PropTypes.number,
-    start: PropTypes.number,
-    end: PropTypes.number,
-    defaultValue: PropTypes.number,
-    onChange: PropTypes.func.isRequired,
-};
-
-StationPopup.defaultProps = {
-    height: 12,
+    station_name: PropTypes.string,
+    lat: PropTypes.number,
+    lon: PropTypes.number,
+    elevation: PropTypes.number,
+    datum: PropTypes.number,            // Baseline
+    statistic: PropTypes.number,        // Monthly
+    data_coverage: PropTypes.number,    // Monthly
+    anomaly: PropTypes.number,          // Anomaly
 };
 
 export default StationPopup;
