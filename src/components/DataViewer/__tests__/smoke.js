@@ -6,7 +6,8 @@ it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
         <DataViewer
-            variable={'var'}
+            dataset={'anomaly'}
+            variable={'precip'}
             year={2000}
             month={1}
         />,
