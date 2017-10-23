@@ -21,7 +21,9 @@ class Header extends Component {
                 />
               </a>
             </Col>
-            <Col lg={4} />
+            <Col lg={4}>
+              <h1>Weather Anomaly Tool</h1>
+            </Col>
             <Col lg={4} />
           </Row>
         </Grid>
