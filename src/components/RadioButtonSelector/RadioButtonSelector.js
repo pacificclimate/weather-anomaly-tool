@@ -14,8 +14,6 @@ import classNames from 'classnames';
 import { pick } from '../utils';
 import './RadioButtonSelector.css';
 
-const optionItemHeightEms = 1.43;
-
 class RadioButtonSelector extends Component {
     render() {
         const toggleButtons = this.props.options.map((option) => (

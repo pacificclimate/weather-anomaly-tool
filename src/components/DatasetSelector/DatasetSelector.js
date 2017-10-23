@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip } from 'react-bootstrap';
 import { pick } from '../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './DatasetSelector.css';
