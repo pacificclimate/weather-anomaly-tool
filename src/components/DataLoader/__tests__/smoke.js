@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VariableSelector from '../VariableSelector';
+import DataLoader from '../DataLoader';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
-        <VariableSelector
-            onChange={() => {}}
+        <DataLoader
+            variable={'var'}
+            year={2000}
+            month={1}
+            onDataLoaded={() => null}
         />,
         div
     );

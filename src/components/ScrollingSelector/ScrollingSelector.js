@@ -2,7 +2,7 @@
 //
 // For prop definitions, see ScrollingSelector.propTypes
 
-// TODO: Add props.style and pass thru to ToggleButtonGroup
+// TODO: Add props.style and pass thru to RadioButtonSelector
 // TODO: Add prop for option item height?
 // TODO: (as called for) Make vertical a prop
 // TODO: Use inline styles only
@@ -11,40 +11,43 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import {findIndex} from 'lodash';
+import { pick } from '../utils';
+import RadioButtonSelector from '../RadioButtonSelector';
 import './ScrollingSelector.css';
-import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 
 const optionItemHeightEms = 1.43;
 
 class ScrollingSelector extends Component {
+    scrollToValue(value) {
+        if (this.props.height < this.props.options.length) {
+            // Scroll container to location of `defaultValue` option.
+            const defaultIndex = findIndex(this.props.options, {value});
+            const node = ReactDOM.findDOMNode(this.radioButtonSelector);
+            const optionItemHeight = node.children[0].offsetHeight;
+            node.scrollTop = (defaultIndex - this.props.height / 2) * optionItemHeight;
+        }
+    }
+
     componentDidMount() {
-        // Scroll container to location of `defaultValue` option.
-        const defaultIndex = findIndex(this.props.options, {value: this.props.defaultValue});
-        const node = ReactDOM.findDOMNode(this.toggleButtonGroup);
-        const optionItemHeight = node.children[0].offsetHeight;
-        node.scrollTop = (defaultIndex - this.props.height/2) * optionItemHeight;
+        this.scrollToValue(this.props.value);
+    }
+
+    componentDidUpdate() {
+        this.scrollToValue(this.props.value);
     }
 
     render() {
-        const toggleButtons = this.props.options.map((option) => (
-            <ToggleButton
-                className="ScrollingSelector-button"
-                key={option.value} value={option.value}
-            >
-                {option.label}
-            </ToggleButton>
-        ));
         return (
-            <ToggleButtonGroup
+            <RadioButtonSelector
                 className="ScrollingSelector"
-                style={{height: `${(this.props.height * optionItemHeightEms + 0.02).toString()}em`}}
-                vertical type="radio" name={this.props.name}
-                defaultValue={this.props.defaultValue}
-                onChange={this.props.onChange}
-                ref={(component) => { this.toggleButtonGroup = component; }}
+                style={{
+                    height: `${(this.props.height * optionItemHeightEms + 0.02).toString()}em`,
+                    overflowY: (this.props.height < this.props.options.length) ? 'scroll' : 'visible',
+                }}
+                {...pick(this.props, 'name options value onChange')}
+                ref={(component) => { this.radioButtonSelector = component; }}
             >
-                {toggleButtons}
-            </ToggleButtonGroup>
+            </RadioButtonSelector>
         );
     }
 }
@@ -57,8 +60,8 @@ ScrollingSelector.propTypes = {
     options: PropTypes.array.isRequired,
     // Array of selector options, specified by objects with keys `value`, `label`.
     // `value` is the value taken by the option; `label` is the displayed name of the option.
-    defaultValue: PropTypes.any,
-    // Default value for selector.
+    value: PropTypes.any,
+    // Value of selector
     onChange: PropTypes.func.isRequired,
     // Callback called when selection changes.
 };
