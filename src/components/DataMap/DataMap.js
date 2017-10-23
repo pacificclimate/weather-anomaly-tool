@@ -70,9 +70,7 @@ class DataMap extends Component {
 
     displayStationLocations(stations, layerGroup, markerOptions) {
         console.log('displayStationLocations', 'stations', stations)
-        layerGroup.eachLayer(marker => {
-            layerGroup.removeLayer(marker);
-        });
+        layerGroup.clearLayers();
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
         const markers = stations.map((station) =>
@@ -84,9 +82,7 @@ class DataMap extends Component {
     }
 
     displayStationData(stations, layerGroup, markerOptions) {
-        layerGroup.eachLayer(marker => {
-            layerGroup.removeLayer(marker);
-        });
+        layerGroup.clearLayers();
         const markers = stations.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
                 .bindPopup(
