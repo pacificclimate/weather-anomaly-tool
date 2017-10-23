@@ -9,9 +9,9 @@ import './DatasetSelector.css';
 class DatasetSelector extends Component {
     render() {
         const datasets = [
-            { value: 'baseline', label: 'Baseline', },
-            { value: 'monthly', label: 'Monthly', },
             { value: 'anomaly', label: 'Anomaly', },
+            { value: 'monthly', label: 'Monthly', },
+            { value: 'baseline', label: 'Baseline', },
         ];
         return (
             <RadioButtonSelector

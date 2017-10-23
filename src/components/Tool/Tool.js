@@ -75,7 +75,7 @@ class Tool extends Component {
 }
 
 Tool.defaultState = {
-    dataset: 'baseline',
+    dataset: 'anomaly',
     variable: 'precip',
     year: 1990,
     month: 6,
