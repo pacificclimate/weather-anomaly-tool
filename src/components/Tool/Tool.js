@@ -33,13 +33,13 @@ class Tool extends Component {
                         <Row>
                             <Col lg={6}>
                                 <VariableSelector
-                                    defaultValue={Tool.defaultState.variable}
+                                    value={this.state.variable}
                                     onChange={this.makeHandleChange('variable')}
                                 />
                             </Col>
                             <Col lg={6}>
                                 <DatasetSelector
-                                    defaultValue={Tool.defaultState.dataset}
+                                    value={this.state.dataset}
                                     onChange={this.makeHandleChange('dataset')}
                                 />
                             </Col>
@@ -49,14 +49,14 @@ class Tool extends Component {
                             <Col lg={isBaselineDataset ? 12 : 6}>
                                 <YearSelector
                                     start={1970} end={2018}
-                                    defaultValue={Tool.defaultState.year}
+                                    value={this.state.year}
                                     onChange={this.makeHandleChange('year')}
                                 />
                             </Col>
                             {!isBaselineDataset &&
                             <Col lg={6} className="map">
                                 <MonthSelector
-                                    defaultValue={Tool.defaultState.month}
+                                    value={this.state.month}
                                     onChange={this.makeHandleChange('month')}
                                 />
                             </Col>
@@ -78,7 +78,7 @@ Tool.defaultState = {
     dataset: 'baseline',
     variable: 'precip',
     year: 1990,
-    month: 1,
+    month: 6,
 };
 
 export default Tool;

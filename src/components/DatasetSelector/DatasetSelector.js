@@ -17,15 +17,15 @@ class DatasetSelector extends Component {
             <RadioButtonSelector
                 name="dataset"
                 options={datasets}
-                {...pick(this.props, 'defaultValue onChange')}
+                {...pick(this.props, 'value onChange')}
             />
         );
     }
 }
 
 DatasetSelector.propTypes = {
-    defaultValue: PropTypes.string,
-    onChange: PropTypes.func,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
 };
 
 export default DatasetSelector;

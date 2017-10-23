@@ -12,7 +12,7 @@ class MonthSelector extends Component {
             <ScrollingSelector
                 name="month"
                 options={months}
-                {...pick(this.props, 'height defaultValue onChange')}
+                {...pick(this.props, 'height value onChange')}
             />
         )
     }
@@ -22,7 +22,7 @@ MonthSelector.propTypes = {
     height: PropTypes.number,
     start: PropTypes.number,
     end: PropTypes.number,
-    defaultValue: PropTypes.number,
+    value: PropTypes.number,
     onChange: PropTypes.func.isRequired,
 };
 

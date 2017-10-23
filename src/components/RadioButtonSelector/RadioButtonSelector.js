@@ -31,7 +31,7 @@ class RadioButtonSelector extends Component {
                 className={classNames('RadioButtonSelector', this.props.className)}
                 vertical
                 type="radio"
-                {...pick(this.props, 'style name defaultValue onChange')}
+                {...pick(this.props, 'style name value onChange')}
                 ref={(component) => { this.toggleButtonGroup = component; }}
             >
                 {toggleButtons}
@@ -46,7 +46,7 @@ RadioButtonSelector.propTypes = {
     options: PropTypes.array.isRequired,
     // Array of selector options, specified by objects with keys `value`, `label`.
     // `value` is the value taken by the option; `label` is the displayed name of the option.
-    defaultValue: PropTypes.any,
+    value: PropTypes.any,
     // Default value for selector.
     onChange: PropTypes.func.isRequired,
     // Callback called when selection changes.

@@ -17,7 +17,7 @@ class VariableSelector extends Component {
             <RadioButtonSelector
                 name="variable"
                 options={variables}
-                {...pick(this.props, 'defaultValue onChange')}
+                {...pick(this.props, 'value onChange')}
             />
             // <div>
             //     <ToggleButtonGroup
@@ -41,7 +41,7 @@ class VariableSelector extends Component {
 }
 
 VariableSelector.propTypes = {
-    defaultValue: PropTypes.string,
+    value: PropTypes.string,
     onChange: PropTypes.func,
 };
 

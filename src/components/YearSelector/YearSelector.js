@@ -15,7 +15,7 @@ class YearSelector extends Component {
             <ScrollingSelector
                 name="year"
                 options={years}
-                {...pick(this.props, 'height defaultValue onChange')}
+                {...pick(this.props, 'height value onChange')}
             />
         );
     }
@@ -23,9 +23,13 @@ class YearSelector extends Component {
 
 YearSelector.propTypes = {
     height: PropTypes.number,
+    // Height of selector, in number of option items
     start: PropTypes.number,
+    // Start year
     end: PropTypes.number,
-    defaultValue: PropTypes.number,
+    // End year
+    value: PropTypes.number,
+    // Current value (year)
     onChange: PropTypes.func.isRequired,
 };
 
