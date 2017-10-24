@@ -19,6 +19,10 @@ import BCMap from '../BCMap';
 import StationPopup from '../StationPopup';
 import './DataMap.css';
 
+function now() {
+    return (new Date()).getSeconds();
+}
+
 const stationCircleMarkerOptions = {
     color: '#000000',
     radius: 1,
@@ -68,9 +72,19 @@ class DataMap extends Component {
         this.dataLayerGroup = component.leafletElement;
     }
 
-    displayStationLocations(stations, layerGroup, markerOptions) {
-        console.log('displayStationLocations', 'stations', stations)
-        layerGroup.clearLayers();
+    removeAllStationMarkers() {
+        console.log('DataMap.removeAllStationMarkers', now());
+        this.baselineLayerGroup.clearLayers();
+        this.monthlyLayerGroup.clearLayers();
+        this.dataLayerGroup.clearLayers();
+        // TODO: This errors. WTF?
+        // [this.baselineLayerGroup, this.monthlyLayerGroup, this.dataLayerGroup].forEach(group => {
+        //     group.clearLayers();
+        // });
+    }
+
+    addStationLocationMarkers(stations, layerGroup, markerOptions) {
+        // console.log('DataMap.addStationLocationMarkers');
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
         const markers = stations.map((station) =>
@@ -81,8 +95,8 @@ class DataMap extends Component {
         });
     }
 
-    displayStationData(stations, layerGroup, markerOptions) {
-        layerGroup.clearLayers();
+    addStationDataMarkers(stations, layerGroup, markerOptions) {
+        // console.log('DataMap.addStationDataMarkers');
         const markers = stations.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
                 .bindPopup(
@@ -94,10 +108,10 @@ class DataMap extends Component {
         });
     }
 
-    displayData() {
-        console.log('DataMap.displayData');
-        this.displayStationLocations(this.props.baseline, this.baselineLayerGroup, stationCircleMarkerOptions);
-        this.displayStationLocations(this.props.monthly, this.monthlyLayerGroup, stationCircleMarkerOptions);
+    addAllStationMarkers() {
+        console.log('DataMap.addAllStationMarkers', now());
+        this.addStationLocationMarkers(this.props.baseline, this.baselineLayerGroup, stationCircleMarkerOptions);
+        this.addStationLocationMarkers(this.props.monthly, this.monthlyLayerGroup, stationCircleMarkerOptions);
         let stations;
         if (this.props.dataset === 'anomaly') {
             stations = this.props.baseline.map(baselineStation => {
@@ -111,11 +125,12 @@ class DataMap extends Component {
         } else {
             stations = this.props[this.props.dataset];
         }
-        this.displayStationData(stations, this.dataLayerGroup, dataCircleMarkerOptions);
+        this.addStationDataMarkers(stations, this.dataLayerGroup, dataCircleMarkerOptions);
 }
 
     componentWillReceiveProps(nextProps) {
         console.log('DataMap.componentWillReceiveProps', nextProps);
+        this.removeAllStationMarkers();
     }
 
     componentDidMount() {
@@ -124,7 +139,7 @@ class DataMap extends Component {
 
     componentDidUpdate() {
         console.log('DataMap.componentDidUpdate', this.props);
-        this.displayData();
+        this.addAllStationMarkers();
     }
 
     render() {
