@@ -113,13 +113,17 @@ class DataMap extends Component {
         this.addStationLocationMarkers(this.props.monthly, this.monthlyLayerGroup, stationCircleMarkerOptions);
         let stations;
         if (this.props.dataset === 'anomaly') {
-            stations = this.props.baseline.map(baselineStation => {
-                const monthlyStation = _.find(this.props.monthly, {station_db_id: baselineStation.station_db_id});
-                const anomaly = monthlyStation && monthlyStation.statistic - baselineStation.datum;
-                return {
-                    ...pick(baselineStation, 'station_name lat lon elevation'),
-                    anomaly,
-                }
+            const monthlyByStationDbId = _.groupBy(this.props.monthly, 'station_db_id');
+            stations = [];
+            this.props.baseline.forEach(baselineStation => {
+               const monthlyStation = monthlyByStationDbId[baselineStation.station_db_id];
+               if (monthlyStation) {
+                   const anomaly = monthlyStation[0].statistic - baselineStation.datum;
+                   stations.push({
+                       ...pick(baselineStation, 'station_name lat lon elevation'),
+                       anomaly,
+                   });
+               }
             });
         } else {
             stations = this.props[this.props.dataset];
@@ -128,7 +132,7 @@ class DataMap extends Component {
     }
 
     dataChanged(props) {
-        const dataPropnames = 'baseline monthly anomaly';
+        const dataPropnames = 'dataset baseline monthly';
         // TODO: Replace with a more efficient comparison
         return !_.isEqual(pick(props, dataPropnames), pick(this.props, dataPropnames));
     }
