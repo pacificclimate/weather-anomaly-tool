@@ -17,12 +17,18 @@ class DataViewer extends Component {
 
     handleDataWillLoad(data) {
         console.log('DataViewer.handleDataWillLoad', data);
-        this.setState(DataViewer.noDataState);
+        this.setState({
+            ...DataViewer.noDataState,
+            message: 'Data loading ...',
+        });
     }
 
     handleDataDidLoad(data) {
         console.log('DataViewer.handleDataDidLoad', data);
-        this.setState(data);
+        this.setState({
+            ...data,
+            message: null,
+        });
     }
 
     render() {
@@ -35,7 +41,7 @@ class DataViewer extends Component {
                 />
                 <DataMap
                     dataset={this.props.dataset}
-                    {...pick(this.state, 'baseline monthly')}
+                    {...pick(this.state, 'baseline monthly message')}
                 />
             </div>
         );
