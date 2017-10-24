@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { pick, bindFunctions } from '../utils';
-import DataLoader from '../DataLoader';
+// import DataLoader from '../DataLoader';
+import TestDataLoader from '../TestDataLoader';
+// import FakeDataLoader from '../FakeDataLoader';
 import DataMap from '../DataMap';
 import './DataViewer.css';
 
@@ -24,7 +26,7 @@ class DataViewer extends Component {
     render() {
         return (
             <div>
-                <DataLoader
+                <TestDataLoader
                     {...pick(this.props, 'variable year month')}
                     onDataLoaded={this.handleDataLoaded}
                 />
