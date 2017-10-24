@@ -58,6 +58,7 @@ class DataMap extends Component {
 
     handleRefMap(component) {
         this.map = component.leafletElement;
+        this.createMessageControl();
     }
 
     handleRefBaselineLayerGroup(component) {
@@ -124,20 +125,64 @@ class DataMap extends Component {
             stations = this.props[this.props.dataset];
         }
         this.addStationDataMarkers(stations, this.dataLayerGroup, dataCircleMarkerOptions);
-}
+    }
+
+    dataChanged(props) {
+        const dataPropnames = 'baseline monthly anomaly';
+        // TODO: Replace with a more efficient comparison
+        return !_.isEqual(pick(props, dataPropnames), pick(this.props, dataPropnames));
+    }
+
+    messageChanged(props) {
+        return props.message !== this.props.message;
+    }
+
+    createMessageControl() {
+        console.log('DataMap.createMessageControl')
+        const messageControl = this.messageControl = L.control();
+
+        messageControl.onAdd = map => {
+            console.log('DataMap.messageControl.onAdd', this);
+            this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+            messageControl.update();
+            return this._div;
+        };
+
+        messageControl.update = message => {
+            this._div.innerHTML = message;
+        };
+
+        messageControl.addTo(this.map);
+    }
+
+    updateMessageControl(message) {
+        if (message) {
+            console.log('DataMap.updateMessageControl: adding')
+            this.messageControl.addTo(this.map);
+            this.messageControl.update(message);
+        } else {
+            console.log('DataMap.updateMessageControl: removing')
+            this.messageControl.remove();
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         console.log('DataMap.componentWillReceiveProps', nextProps);
-        this.removeAllStationMarkers();
     }
 
     componentDidMount() {
         console.log('DataMap.componentDidMount', this.props);
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         console.log('DataMap.componentDidUpdate', this.props);
-        this.addAllStationMarkers();
+        if (this.dataChanged(prevProps)) {
+            this.removeAllStationMarkers();
+            this.addAllStationMarkers();
+        }
+        if (this.messageChanged(prevProps)) {
+            this.updateMessageControl(this.props.message);
+        }
     }
 
     render() {
@@ -166,6 +211,8 @@ DataMap.propTypes = {
     // Array of baseline data from monthly Anomaly Data Service.
     monthly: PropTypes.array.isRequired,
     // Array of monthly data from monthly Anomaly Data Service.
+    message: PropTypes.string,  // Component?
+    // Optional message to display on map (e.g., "Loading...")
 };
 
 export default DataMap;
