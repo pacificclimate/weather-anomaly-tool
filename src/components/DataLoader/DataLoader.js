@@ -16,31 +16,33 @@ class DataLoader extends Component {
         };
     }
 
-    loadData() {
+    loadData({variable, year, month}) {
         console.log('DataLoader.loadData', this.state, this.props);
 
         this.setState({loading: true});
+        this.props.onDataWillLoad();
 
         // This may be inefficient when only month changes
-        const baselineP = getBaselineData(this.props.variable, this.props.month);
-        const monthlyP = getMonthlyData(this.props.variable, this.props.year, this.props.month);
-        Promise.all([baselineP, monthlyP])
-            .then(({baseline, monthly}) => {
-                this.setState({baseline, monthly , loading: false});
-            });
+        const baselineP = getBaselineData(variable, month);
+        const monthlyP = getMonthlyData(variable, year, month);
+        Promise.all([baselineP, monthlyP]).then(([baseline, monthly]) => {
+            console.log('DataLoader.loadData: data loaded, baseline', baseline)
+            this.props.onDataDidLoad({baseline: baseline.data, monthly: monthly.data});
+            this.setState({loading: false});
+        });
         // TODO: catch errors!
     }
 
     componentDidMount() {
         console.log('DataLoader.componentDidMount', this.props);
-        this.loadData();
+        this.loadData(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         console.log('DataLoader.componentWillReceiveProps', nextProps);
         const checkKeys = 'variable year month'.split(' ');
         if (!_.isEqual(_.pick(nextProps, checkKeys), _.pick(this.props, checkKeys))) {
-            this.loadData();
+            this.loadData(nextProps);
         }
     }
 
@@ -63,7 +65,8 @@ DataLoader.propTypes = {
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,
-    onDataLoaded: PropTypes.func.isRequired,
+    onDataWillLoad: PropTypes.func.isRequired,
+    onDataDidLoad: PropTypes.func.isRequired,
 };
 
 export default DataLoader;
