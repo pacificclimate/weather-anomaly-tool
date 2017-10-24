@@ -74,13 +74,11 @@ class DataMap extends Component {
 
     removeAllStationMarkers() {
         console.log('DataMap.removeAllStationMarkers', now());
-        this.baselineLayerGroup.clearLayers();
-        this.monthlyLayerGroup.clearLayers();
-        this.dataLayerGroup.clearLayers();
-        // TODO: This errors. WTF?
-        // [this.baselineLayerGroup, this.monthlyLayerGroup, this.dataLayerGroup].forEach(group => {
-        //     group.clearLayers();
-        // });
+        [this.baselineLayerGroup, this.monthlyLayerGroup, this.dataLayerGroup].forEach(group => {
+            if (group) {
+                group.clearLayers();
+            }
+        });
     }
 
     addStationLocationMarkers(stations, layerGroup, markerOptions) {
