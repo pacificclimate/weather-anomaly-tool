@@ -73,9 +73,7 @@ class BCMap extends Component {
                     noWrap={true}
                     maxZoom={12}
                 />
-                <LayersControl position='topright'>
-                    {this.props.children}
-                </LayersControl>
+                {this.props.children}
             </Map>
         );
     }

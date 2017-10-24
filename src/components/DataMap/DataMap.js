@@ -130,15 +130,17 @@ class DataMap extends Component {
     render() {
         return (
             <BCMap mapRef={this.handleRefMap}>
-                <LayersControl.Overlay name='Baseline stations' checked>
-                    <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
-                </LayersControl.Overlay>
-                <LayersControl.Overlay name='Monthly stations' checked>
-                    <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
-                </LayersControl.Overlay>
-                <LayersControl.Overlay name='Data values' checked>
-                    <LayerGroup ref={this.handleRefDataLayerGroup}/>
-                </LayersControl.Overlay>
+                <LayersControl position='topright'>
+                    <LayersControl.Overlay name='Baseline stations' checked>
+                        <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay name='Monthly stations' checked>
+                        <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay name='Data values' checked>
+                        <LayerGroup ref={this.handleRefDataLayerGroup}/>
+                    </LayersControl.Overlay>
+                </LayersControl>
             </BCMap>
         )
     }
