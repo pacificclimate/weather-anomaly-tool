@@ -12,7 +12,7 @@ class DataViewer extends Component {
     constructor(props) {
         super(props);
         this.state = DataViewer.noDataState;
-        bindFunctions(this, 'handleDataWillLoad handleDataDidLoad');
+        bindFunctions(this, 'handleDataWillLoad handleDataDidLoad handleDidCatch');
     }
 
     handleDataWillLoad(data) {
@@ -31,6 +31,13 @@ class DataViewer extends Component {
         });
     }
 
+    handleDidCatch(error) {
+        console.log('DataViewer.handleDidCatch', error);
+        this.setState({
+            message: 'Error loading data:' + error.message,
+        });
+    }
+
     render() {
         return (
             <div>
@@ -38,6 +45,7 @@ class DataViewer extends Component {
                     {...pick(this.props, 'variable year month')}
                     onDataWillLoad={this.handleDataWillLoad}
                     onDataDidLoad={this.handleDataDidLoad}
+                    onDidCatch={this.handleDidCatch}
                 />
                 <DataMap
                     dataset={this.props.dataset}

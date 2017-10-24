@@ -34,7 +34,7 @@ function getFakeData(delay, failProb) {
                 index = (index + 1) % data.length;
             } else {
                 console.log('getFakeData: rejecting', {time: (new Date()).getSeconds()});
-                reject('Error')
+                reject(new Error('You lose'))
             }
         }, delay);
     });
@@ -61,8 +61,10 @@ class FakeDataLoader extends Component {
         getFakeData(this.state.delay, this.state.failProb).then((data) => {
             this.props.onDataDidLoad(data);
             this.setState({loading: false});
+        }).catch(error => {
+            this.props.onDidCatch(error);
+            this.setState({loading: false});
         });
-        // TODO: Handle errors
     }
 
     componentDidMount() {
@@ -124,6 +126,7 @@ FakeDataLoader.propTypes = {
     month: PropTypes.number.isRequired,
     onDataWillLoad: PropTypes.func.isRequired,
     onDataDidLoad: PropTypes.func.isRequired,
+    onDidCatch: PropTypes.func.isRequired,
 };
 
 export default FakeDataLoader;

@@ -29,8 +29,10 @@ class DataLoader extends Component {
             console.log('DataLoader.loadData: data loaded, baseline', baseline)
             this.props.onDataDidLoad({baseline: baseline.data, monthly: monthly.data});
             this.setState({loading: false});
+        }).catch(error => {
+            this.props.onDidCatch(error);
+            this.setState({loading: false});
         });
-        // TODO: catch errors!
     }
 
     componentDidMount() {
