@@ -26,8 +26,8 @@ class TestDataLoader extends Component {
                 <Col lg={10}>
                     {
                         this.state.mode === 'fake'
-                        ? <FakeDataLoader {...pick(this.props, 'variable month year onDataLoaded')}/>
-                        : <DataLoader {...pick(this.props, 'variable month year onDataLoaded')}/>
+                        ? <FakeDataLoader {...pick(this.props, 'variable month year onDataWillLoad onDataDidLoad')}/>
+                        : <DataLoader {...pick(this.props, 'variable month year onDataWillLoad onDataDidLoad')}/>
                     }
                 </Col>
             </Row>
@@ -39,7 +39,8 @@ TestDataLoader.propTypes = {
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,
-    onDataLoaded: PropTypes.func.isRequired,
+    onDataWillLoad: PropTypes.func.isRequired,
+    onDataDidLoad: PropTypes.func.isRequired,
 };
 
 export default TestDataLoader;

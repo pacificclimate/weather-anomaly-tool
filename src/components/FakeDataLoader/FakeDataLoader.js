@@ -56,9 +56,10 @@ class FakeDataLoader extends Component {
         console.log('FakeDataLoader.loadData', this.state, this.props);
 
         this.setState({loading: true});
+        this.props.onDataWillLoad();
 
         getFakeData(this.state.delay, this.state.failProb).then((data) => {
-            this.props.onDataLoaded(data);
+            this.props.onDataDidLoad(data);
             this.setState({loading: false});
         });
         // TODO: Handle errors
@@ -121,7 +122,8 @@ FakeDataLoader.propTypes = {
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,
-    onDataLoaded: PropTypes.func.isRequired,
+    onDataWillLoad: PropTypes.func.isRequired,
+    onDataDidLoad: PropTypes.func.isRequired,
 };
 
 export default FakeDataLoader;
