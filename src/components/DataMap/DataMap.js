@@ -189,7 +189,7 @@ class DataMap extends Component {
         return (
             <BCMap mapRef={this.handleRefMap}>
                 <LayersControl position='topright'>
-                    <LayersControl.Overlay name='Baseline stations' checked>
+                    <LayersControl.Overlay name='Baseline stations'>
                         <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
                     </LayersControl.Overlay>
                     <LayersControl.Overlay name='Monthly stations' checked>
