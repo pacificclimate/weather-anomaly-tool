@@ -9,7 +9,9 @@ it('renders without crashing', () => {
             variable={'var'}
             year={2000}
             month={1}
-            onDataLoaded={() => null}
+            onDataWillLoad={() => {}}
+            onDataDidLoad={() => {}}
+            onDidCatch={() => {}}
         />,
         div
     );
