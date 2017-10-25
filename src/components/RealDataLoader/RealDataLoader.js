@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import { getBaselineData, getMonthlyData } from '../../data-services/weather-anomaly-data-service';
 
-import './DataLoader.css';
+import './RealDataLoader.css';
 
 class DataLoader extends Component {
     constructor(props) {
@@ -50,6 +50,7 @@ class DataLoader extends Component {
 
     render() {
         return (
+            this.props.render &&
             <div>
                 <Row>
                     Real Data Loader: Goes out to the WADS!
@@ -67,8 +68,14 @@ DataLoader.propTypes = {
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,
+    render: PropTypes.bool,
     onDataWillLoad: PropTypes.func.isRequired,
     onDataDidLoad: PropTypes.func.isRequired,
+};
+
+
+DataLoader.defaultProps = {
+    render: false,
 };
 
 export default DataLoader;

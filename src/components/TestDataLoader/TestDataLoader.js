@@ -5,7 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import { pick } from '../utils';
 import DataLoaderMode from '../DataLoaderMode';
 import FakeDataLoader from "../FakeDataLoader/FakeDataLoader";
-import DataLoader from "../DataLoader/DataLoader";
+import RealDataLoader from "../RealDataLoader";
 
 import './TestDataLoader.css';
 
@@ -28,7 +28,7 @@ class TestDataLoader extends Component {
                     {
                         this.state.mode === 'fake'
                         ? <FakeDataLoader {...dataLoaderProps}/>
-                        : <DataLoader {...dataLoaderProps}/>
+                        : <RealDataLoader {...dataLoaderProps} render={true}/>
                     }
                 </Col>
             </Row>
