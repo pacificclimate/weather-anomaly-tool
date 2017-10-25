@@ -23,23 +23,36 @@ function now() {
     return (new Date()).getSeconds();
 }
 
+const datasetToDataValueName = {'anomaly': 'anomaly', 'monthly': 'statistic', 'baseline': 'datum'};
+
 const stationCircleMarkerOptions = {
     color: '#000000',
     radius: 1,
     weight: 1,
     fillOpacity: 1,
 };
+
 const dataCircleMarkerOptions = {
     radius: 8,
     weight: 1,
     fillOpacity: 0.5,
 };
-const colorForVariable = {
+
+const colorsForVariable = {
     'precip': '#36ff32',
     'tmin': '#3388ff',
     'tmax': '#ff6831',
 
 };
+
+const coloursForClassAndDatasetAndVariable = {
+    'anomaly': {
+        'precip': [ '#8c510a','#d8b365','#f6e8c3','#f5f5f5','#c7eae5','#5ab4ac','#01665e' ],
+        'tmin': [ '#4575b4', '#91bfdb', '#e0f3f8', '#ffffbf', '#fee090', '#fc8d59', '#d73027' ],
+        'tmax': [ '#4575b4', '#91bfdb', '#e0f3f8', '#ffffbf', '#fee090', '#fc8d59', '#d73027' ],
+    },
+    // Omit monthly and baseline for now. Defaults to simple one colour scheme above.
+}
 
 class DataMap extends Component {
     constructor(props) {
@@ -101,11 +114,48 @@ class DataMap extends Component {
 
     addStationDataMarkers(stations, layerGroup, markerOptions) {
         // console.log('DataMap.addStationDataMarkers');
+
+        const dataValueName = datasetToDataValueName[this.props.dataset];
+        const dataMin = stations.reduce((acc, stn) => Math.min(acc, stn[dataValueName]), Infinity);
+        const dataMax = stations.reduce((acc, stn) => Math.max(acc, stn[dataValueName]), -Infinity);
+        const dataAbsMax = Math.max(Math.abs(dataMin), Math.abs(dataMax));
+        console.log('####', dataMin, dataMax, dataAbsMax);
+
+        const coloursForClass =
+            coloursForClassAndDatasetAndVariable[this.props.dataset] &&
+            coloursForClassAndDatasetAndVariable[this.props.dataset][this.props.variable];
+
+        const colorForVariable = colorsForVariable[this.props.variable];
+
+        function valueClass(value) {
+            // 7 classes
+            return (
+                value < -0.75 * dataAbsMax ?    0 :
+                value < -0.50 * dataAbsMax ?    1 :
+                value < -0.25 * dataAbsMax ?    2 :
+                value <  0.00 * dataAbsMax ?    3 :
+                value <  0.25 * dataAbsMax ?    4 :
+                value <  0.50 * dataAbsMax ?    5 :
+                value <  0.75 * dataAbsMax ?    6 :
+                                                7
+            );
+        }
+
+        function colour(value) {
+            if (coloursForClass) {
+                return coloursForClass[valueClass(value)];
+            } else {
+                return colorForVariable;
+            }
+        }
+
         const markers = stations.map((station) =>
-            L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
-                .bindPopup(
-                    ReactDOMServer.renderToStaticMarkup(<StationPopup variable={this.props.variable} {...station}/>)
-                )
+            L.circleMarker(
+                {lng: station.lon, lat: station.lat},
+                {...markerOptions, color: colour(station[dataValueName])}
+            ).bindPopup(
+                ReactDOMServer.renderToStaticMarkup(<StationPopup variable={this.props.variable} {...station}/>)
+            )
         );
         markers.forEach(marker => {
             marker.addTo(layerGroup);
@@ -133,10 +183,8 @@ class DataMap extends Component {
         } else {
             stations = this.props[this.props.dataset];
         }
-        this.addStationDataMarkers(stations, this.dataLayerGroup, {
-            ...dataCircleMarkerOptions,
-            color: colorForVariable[this.props.variable],
-        });
+
+        this.addStationDataMarkers(stations, this.dataLayerGroup, dataCircleMarkerOptions);
     }
 
     dataChanged(props) {
