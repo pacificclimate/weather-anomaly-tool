@@ -18,7 +18,7 @@ class RadioButtonSelector extends Component {
     render() {
         const toggleButtons = this.props.options.map((option) => (
             <ToggleButton
-                className="RadioButtonSelector-button"
+                className={classNames('RadioButtonSelector-button', this.props.className)}
                 key={option.value} value={option.value}
             >
                 {option.label}

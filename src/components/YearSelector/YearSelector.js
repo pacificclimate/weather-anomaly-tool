@@ -13,6 +13,7 @@ class YearSelector extends Component {
         }
         return (
             <ScrollingSelector
+                className={this.props.className}
                 name="year"
                 options={years}
                 {...pick(this.props, 'height value onChange')}

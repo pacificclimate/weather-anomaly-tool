@@ -14,6 +14,7 @@ class DatasetSelector extends Component {
         ];
         return (
             <RadioButtonSelector
+                className={this.props.className}
                 name="dataset"
                 options={datasets}
                 {...pick(this.props, 'value onChange')}

@@ -10,6 +10,7 @@ class MonthSelector extends Component {
         const months = monthNames.map((name, i) => ({value: i+1, label: name}));
         return (
             <ScrollingSelector
+                className={this.props.className}
                 name="month"
                 options={months}
                 {...pick(this.props, 'height value onChange')}
