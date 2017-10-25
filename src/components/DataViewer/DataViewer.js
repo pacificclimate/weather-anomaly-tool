@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { pick, bindFunctions } from '../utils';
-// import DataLoader from '../DataLoader';
 import TestDataLoader from '../TestDataLoader';
-// import FakeDataLoader from '../FakeDataLoader';
+import FakeDataLoader from '../FakeDataLoader';
+import RealDataLoader from '../RealDataLoader';
 import DataMap from '../DataMap';
 import './DataViewer.css';
+import DataLoader from "../RealDataLoader/RealDataLoader";
 
 class DataViewer extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class DataViewer extends Component {
     render() {
         return (
             <div>
-                <TestDataLoader
+                <RealDataLoader
                     {...pick(this.props, 'variable year month')}
                     onDataWillLoad={this.handleDataWillLoad}
                     onDataDidLoad={this.handleDataDidLoad}
