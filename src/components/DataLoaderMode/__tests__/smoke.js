@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DataMap from '../DataMap';
+import DataLoaderMode from '../DataLoaderMode';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
-        <DataMap
-            dataset={'baseline'}
-            variable={'precip'}
-            baseline={[]}
-            monthly={[]}
+        <DataLoaderMode
+            onChange={() => {}}
         />,
         div
     );

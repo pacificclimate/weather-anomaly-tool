@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DataLoader from '../DataLoader';
+import FakeDataLoader from '../FakeDataLoader';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
-        <DataLoader
+        <FakeDataLoader
             variable={'var'}
             year={2000}
             month={1}
-            onDataLoaded={() => null}
+            onDataWillLoad={() => {}}
+            onDataDidLoad={() => {}}
+            onDidCatch={() => {}}
         />,
         div
     );

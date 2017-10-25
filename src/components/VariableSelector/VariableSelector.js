@@ -15,6 +15,7 @@ class VariableSelector extends Component {
         ];
         return (
             <RadioButtonSelector
+                className={this.props.className}
                 name="variable"
                 options={variables}
                 {...pick(this.props, 'value onChange')}

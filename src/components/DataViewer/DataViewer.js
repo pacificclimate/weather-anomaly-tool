@@ -2,35 +2,57 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { pick, bindFunctions } from '../utils';
-import DataLoader from '../DataLoader';
+// import TestDataLoader from '../TestDataLoader';
+// import FakeDataLoader from '../FakeDataLoader';
+import RealDataLoader from '../RealDataLoader';
 import DataMap from '../DataMap';
 import './DataViewer.css';
 
 class DataViewer extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            baseline: [],
-            monthly: [],
-        };
-        bindFunctions(this, 'handleDataLoaded');
+        this.state = DataViewer.noDataState;
+        bindFunctions(this, 'handleDataWillLoad handleDataDidLoad handleDidCatch');
     }
 
-    handleDataLoaded(data) {
-        console.log('DataViewer.handleDataLoaded', data)
-        this.setState(data);
+    handleDataWillLoad(data) {
+        console.log('DataViewer.handleDataWillLoad', data);
+        this.setState({
+            ...DataViewer.noDataState,
+            message: 'Data loading ...',
+        });
+    }
+
+    handleDataDidLoad(data) {
+        console.log('DataViewer.handleDataDidLoad', data);
+        this.setState({
+            ...data,
+            message: null,
+        });
+    }
+
+    handleDidCatch(error) {
+        console.log('DataViewer.handleDidCatch', error);
+        this.setState({
+            message: 'Error loading data: ' + error.message,
+        });
     }
 
     render() {
         return (
             <div>
-                <DataLoader
+                <RealDataLoader
                     {...pick(this.props, 'variable year month')}
-                    onDataLoaded={this.handleDataLoaded}
+                    onDataWillLoad={this.handleDataWillLoad}
+                    onDataDidLoad={this.handleDataDidLoad}
+                    onDidCatch={this.handleDidCatch}
+                    errorTest
                 />
                 <DataMap
-                    dataset={this.props.dataset}
-                    {...pick(this.state, 'baseline monthly')}
+                    {...{
+                        ...pick(this.props, 'dataset variable'),
+                        ...pick(this.state, 'baseline monthly message'),
+                    }}
                 />
             </div>
         );
@@ -42,6 +64,11 @@ DataViewer.propTypes = {
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,
+};
+
+DataViewer.noDataState = {
+    baseline: [],
+    monthly: [],
 };
 
 export default DataViewer;

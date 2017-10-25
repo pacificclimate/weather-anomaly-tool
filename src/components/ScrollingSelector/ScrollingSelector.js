@@ -10,7 +10,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+
 import {findIndex} from 'lodash';
+import classNames from 'classnames';
+
 import { pick } from '../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './ScrollingSelector.css';
@@ -39,7 +42,7 @@ class ScrollingSelector extends Component {
     render() {
         return (
             <RadioButtonSelector
-                className="ScrollingSelector"
+                className={classNames("ScrollingSelector", this.props.className)}
                 style={{
                     height: `${(this.props.height * optionItemHeightEms + 0.02).toString()}em`,
                     overflowY: (this.props.height < this.props.options.length) ? 'scroll' : 'visible',

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.0",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "leaflet": "^1.2.0",
@@ -13,7 +14,8 @@
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
     "react-leaflet": "^1.7.1",
-    "react-scripts": "1.0.14"
+    "react-scripts": "1.0.14",
+    "url-join": "^2.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

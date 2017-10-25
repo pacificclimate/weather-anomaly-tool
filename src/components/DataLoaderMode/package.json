@@ -1,0 +1,6 @@
+{
+  "name": "DataLoaderMode",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./DataLoaderMode.js"
+}

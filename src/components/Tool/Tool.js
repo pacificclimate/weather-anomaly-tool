@@ -46,21 +46,21 @@ class Tool extends Component {
                         </Row>
                         for
                         <Row>
-                            <Col lg={isBaselineDataset ? 12 : 6}>
+                            {!isBaselineDataset &&
+                            <Col lg={6}>
                                 <YearSelector
                                     start={1970} end={2018}
                                     value={this.state.year}
                                     onChange={this.makeHandleChange('year')}
                                 />
                             </Col>
-                            {!isBaselineDataset &&
-                            <Col lg={6} className="map">
+                            }
+                            <Col lg={isBaselineDataset ? 12 : 6} className="map">
                                 <MonthSelector
                                     value={this.state.month}
                                     onChange={this.makeHandleChange('month')}
                                 />
                             </Col>
-                            }
                         </Row>
                     </Col>
                     <Col  lg={9}>

@@ -19,6 +19,10 @@ import BCMap from '../BCMap';
 import StationPopup from '../StationPopup';
 import './DataMap.css';
 
+function now() {
+    return (new Date()).getSeconds();
+}
+
 const stationCircleMarkerOptions = {
     color: '#000000',
     radius: 1,
@@ -29,13 +33,18 @@ const dataCircleMarkerOptions = {
     radius: 8,
     weight: 1,
     fillOpacity: 0.5,
-    color: '#3388ff',
+};
+const colorForVariable = {
+    'precip': '#36ff32',
+    'tmin': '#3388ff',
+    'tmax': '#ff6831',
+
 };
 
 class DataMap extends Component {
     constructor(props) {
         super(props);
-        this.baselineMarkers = [];
+        this.baselineMarkers = [];  // Necessary?
 
         // Bind event handlers
         bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefMonthlyLayerGroup handleRefDataLayerGroup');
@@ -54,6 +63,7 @@ class DataMap extends Component {
 
     handleRefMap(component) {
         this.map = component.leafletElement;
+        this.createMessageControl();
     }
 
     handleRefBaselineLayerGroup(component) {
@@ -68,9 +78,17 @@ class DataMap extends Component {
         this.dataLayerGroup = component.leafletElement;
     }
 
-    displayStationLocations(stations, layerGroup, markerOptions) {
-        console.log('displayStationLocations', 'stations', stations)
-        layerGroup.clearLayers();
+    removeAllStationMarkers() {
+        console.log('DataMap.removeAllStationMarkers', now());
+        [this.baselineLayerGroup, this.monthlyLayerGroup, this.dataLayerGroup].forEach(group => {
+            if (group) {
+                group.clearLayers();
+            }
+        });
+    }
+
+    addStationLocationMarkers(stations, layerGroup, markerOptions) {
+        // console.log('DataMap.addStationLocationMarkers');
         // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
         // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
         const markers = stations.map((station) =>
@@ -81,12 +99,12 @@ class DataMap extends Component {
         });
     }
 
-    displayStationData(stations, layerGroup, markerOptions) {
-        layerGroup.clearLayers();
+    addStationDataMarkers(stations, layerGroup, markerOptions) {
+        // console.log('DataMap.addStationDataMarkers');
         const markers = stations.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
                 .bindPopup(
-                    ReactDOMServer.renderToStaticMarkup(<StationPopup {...station}/>)
+                    ReactDOMServer.renderToStaticMarkup(<StationPopup variable={this.props.variable} {...station}/>)
                 )
         );
         markers.forEach(marker => {
@@ -94,25 +112,71 @@ class DataMap extends Component {
         });
     }
 
-    displayData() {
-        console.log('DataMap.displayData');
-        this.displayStationLocations(this.props.baseline, this.baselineLayerGroup, stationCircleMarkerOptions);
-        this.displayStationLocations(this.props.monthly, this.monthlyLayerGroup, stationCircleMarkerOptions);
+    addAllStationMarkers() {
+        console.log('DataMap.addAllStationMarkers', now());
+        this.addStationLocationMarkers(this.props.baseline, this.baselineLayerGroup, stationCircleMarkerOptions);
+        this.addStationLocationMarkers(this.props.monthly, this.monthlyLayerGroup, stationCircleMarkerOptions);
         let stations;
         if (this.props.dataset === 'anomaly') {
-            stations = this.props.baseline.map(baselineStation => {
-                const monthlyStation = _.find(this.props.monthly, {station_db_id: baselineStation.station_db_id});
-                const anomaly = monthlyStation && monthlyStation.statistic - baselineStation.datum;
-                return {
-                    ...pick(baselineStation, 'station_name lat lon elevation'),
-                    anomaly,
-                }
+            const monthlyByStationDbId = _.groupBy(this.props.monthly, 'station_db_id');
+            stations = [];
+            this.props.baseline.forEach(baselineStation => {
+               const monthlyStation = monthlyByStationDbId[baselineStation.station_db_id];
+               if (monthlyStation) {
+                   const anomaly = monthlyStation[0].statistic - baselineStation.datum;
+                   stations.push({
+                       ...pick(baselineStation, 'station_name lat lon elevation'),
+                       anomaly,
+                   });
+               }
             });
         } else {
             stations = this.props[this.props.dataset];
         }
-        this.displayStationData(stations, this.dataLayerGroup, dataCircleMarkerOptions);
-}
+        this.addStationDataMarkers(stations, this.dataLayerGroup, {
+            ...dataCircleMarkerOptions,
+            color: colorForVariable[this.props.variable],
+        });
+    }
+
+    dataChanged(props) {
+        const dataPropnames = 'dataset baseline monthly';
+        // TODO: Replace with a more efficient comparison
+        return !_.isEqual(pick(props, dataPropnames), pick(this.props, dataPropnames));
+    }
+
+    messageChanged(props) {
+        return props.message !== this.props.message;
+    }
+
+    createMessageControl() {
+        console.log('DataMap.createMessageControl')
+        const messageControl = this.messageControl = L.control();
+
+        messageControl.onAdd = map => {
+            console.log('DataMap.messageControl.onAdd', this);
+            this._div = L.DomUtil.create('div', 'DataMap-message leaflet-control-layers');
+            messageControl.update();
+            return this._div;
+        };
+
+        messageControl.update = message => {
+            this._div.innerHTML = message;
+        };
+
+        messageControl.addTo(this.map);
+    }
+
+    updateMessageControl(message) {
+        if (message) {
+            console.log('DataMap.updateMessageControl: adding')
+            this.messageControl.addTo(this.map);
+            this.messageControl.update(message);
+        } else {
+            console.log('DataMap.updateMessageControl: removing')
+            this.messageControl.remove();
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         console.log('DataMap.componentWillReceiveProps', nextProps);
@@ -122,23 +186,31 @@ class DataMap extends Component {
         console.log('DataMap.componentDidMount', this.props);
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         console.log('DataMap.componentDidUpdate', this.props);
-        this.displayData();
+        if (this.dataChanged(prevProps)) {
+            this.removeAllStationMarkers();
+            this.addAllStationMarkers();
+        }
+        if (this.messageChanged(prevProps)) {
+            this.updateMessageControl(this.props.message);
+        }
     }
 
     render() {
         return (
             <BCMap mapRef={this.handleRefMap}>
-                <LayersControl.Overlay name='Baseline stations' checked>
-                    <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
-                </LayersControl.Overlay>
-                <LayersControl.Overlay name='Monthly stations' checked>
-                    <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
-                </LayersControl.Overlay>
-                <LayersControl.Overlay name='Data values' checked>
-                    <LayerGroup ref={this.handleRefDataLayerGroup}/>
-                </LayersControl.Overlay>
+                <LayersControl position='topright'>
+                    <LayersControl.Overlay name='Baseline stations'>
+                        <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay name='Monthly stations' checked>
+                        <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay name='Data values' checked>
+                        <LayerGroup ref={this.handleRefDataLayerGroup}/>
+                    </LayersControl.Overlay>
+                </LayersControl>
             </BCMap>
         )
     }
@@ -147,10 +219,18 @@ class DataMap extends Component {
 DataMap.propTypes = {
     dataset: PropTypes.oneOf(['baseline', 'monthly', 'anomaly']).isRequired,
     // Name of dataset to display on data layer
+    variable: PropTypes.string,  // TODO: .oneOf ?
+    // Variable we are displaying ... may affect how/what we show
     baseline: PropTypes.array.isRequired,
     // Array of baseline data from monthly Anomaly Data Service.
     monthly: PropTypes.array.isRequired,
     // Array of monthly data from monthly Anomaly Data Service.
+    message: PropTypes.string,  // Component?
+    // Optional message to display on map (e.g., "Loading...")
+};
+
+DataMap.defaultProps = {
+    message: null,
 };
 
 export default DataMap;
