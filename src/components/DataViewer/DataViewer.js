@@ -35,7 +35,7 @@ class DataViewer extends Component {
     handleDidCatch(error) {
         console.log('DataViewer.handleDidCatch', error);
         this.setState({
-            message: 'Error loading data:' + error.message,
+            message: 'Error loading data: ' + error.message,
         });
     }
 

@@ -155,7 +155,7 @@ class DataMap extends Component {
 
         messageControl.onAdd = map => {
             console.log('DataMap.messageControl.onAdd', this);
-            this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+            this._div = L.DomUtil.create('div', 'DataMap-message leaflet-control-layers');
             messageControl.update();
             return this._div;
         };
