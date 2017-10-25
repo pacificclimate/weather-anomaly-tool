@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
 import _ from 'lodash';
 
@@ -8,7 +8,7 @@ import { getBaselineData, getMonthlyData } from '../../data-services/weather-ano
 
 import './RealDataLoader.css';
 
-class DataLoader extends Component {
+class RealDataLoader extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,16 +17,16 @@ class DataLoader extends Component {
     }
 
     loadData({variable, year, month}) {
-        console.log('DataLoader.loadData', this.state, this.props);
+        console.log('RealDataLoader.loadData', this.state, this.props);
 
         this.setState({loading: true});
         this.props.onDataWillLoad();
 
         // This may be inefficient when only month changes
-        const baselineP = getBaselineData(variable, month);
+        const baselineP = getBaselineData(variable, this.props.errorTest && month === 12 ? 13: month);
         const monthlyP = getMonthlyData(variable, year, month);
         Promise.all([baselineP, monthlyP]).then(([baseline, monthly]) => {
-            console.log('DataLoader.loadData: data loaded, baseline', baseline)
+            console.log('RealDataLoader.loadData: data loaded, baseline', baseline)
             this.props.onDataDidLoad({baseline: baseline.data, monthly: monthly.data});
             this.setState({loading: false});
         }).catch(error => {
@@ -36,12 +36,12 @@ class DataLoader extends Component {
     }
 
     componentDidMount() {
-        console.log('DataLoader.componentDidMount', this.props);
+        console.log('RealDataLoader.componentDidMount', this.props);
         this.loadData(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('DataLoader.componentWillReceiveProps', nextProps);
+        console.log('RealDataLoader.componentWillReceiveProps', nextProps);
         const checkKeys = 'variable year month'.split(' ');
         if (!_.isEqual(_.pick(nextProps, checkKeys), _.pick(this.props, checkKeys))) {
             this.loadData(nextProps);
@@ -64,18 +64,21 @@ class DataLoader extends Component {
     }
 }
 
-DataLoader.propTypes = {
+RealDataLoader.propTypes = {
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,
     render: PropTypes.bool,
+    errorTest: PropTypes.bool,
     onDataWillLoad: PropTypes.func.isRequired,
     onDataDidLoad: PropTypes.func.isRequired,
+    onDidCatch: PropTypes.func.isRequired,
 };
 
 
-DataLoader.defaultProps = {
+RealDataLoader.defaultProps = {
     render: false,
+    errorTest: false,
 };
 
-export default DataLoader;
+export default RealDataLoader;
