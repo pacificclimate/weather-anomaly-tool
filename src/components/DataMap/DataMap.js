@@ -44,7 +44,7 @@ const colorForVariable = {
 class DataMap extends Component {
     constructor(props) {
         super(props);
-        this.baselineMarkers = [];
+        this.baselineMarkers = [];  // Necessary?
 
         // Bind event handlers
         bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefMonthlyLayerGroup handleRefDataLayerGroup');
@@ -227,6 +227,10 @@ DataMap.propTypes = {
     // Array of monthly data from monthly Anomaly Data Service.
     message: PropTypes.string,  // Component?
     // Optional message to display on map (e.g., "Loading...")
+};
+
+DataMap.defaultProps = {
+    message: null,
 };
 
 export default DataMap;
