@@ -33,7 +33,12 @@ const dataCircleMarkerOptions = {
     radius: 8,
     weight: 1,
     fillOpacity: 0.5,
-    color: '#3388ff',
+};
+const colorForVariable = {
+    'precip': '#36ff32',
+    'tmin': '#3388ff',
+    'tmax': '#ff6831',
+
 };
 
 class DataMap extends Component {
@@ -99,7 +104,7 @@ class DataMap extends Component {
         const markers = stations.map((station) =>
             L.circleMarker({lng: station.lon, lat: station.lat}, markerOptions)
                 .bindPopup(
-                    ReactDOMServer.renderToStaticMarkup(<StationPopup {...station}/>)
+                    ReactDOMServer.renderToStaticMarkup(<StationPopup variable={this.props.variable} {...station}/>)
                 )
         );
         markers.forEach(marker => {
@@ -128,7 +133,10 @@ class DataMap extends Component {
         } else {
             stations = this.props[this.props.dataset];
         }
-        this.addStationDataMarkers(stations, this.dataLayerGroup, dataCircleMarkerOptions);
+        this.addStationDataMarkers(stations, this.dataLayerGroup, {
+            ...dataCircleMarkerOptions,
+            color: colorForVariable[this.props.variable],
+        });
     }
 
     dataChanged(props) {
@@ -211,6 +219,8 @@ class DataMap extends Component {
 DataMap.propTypes = {
     dataset: PropTypes.oneOf(['baseline', 'monthly', 'anomaly']).isRequired,
     // Name of dataset to display on data layer
+    variable: PropTypes.string,  // TODO: .oneOf ?
+    // Variable we are displaying ... may affect how/what we show
     baseline: PropTypes.array.isRequired,
     // Array of baseline data from monthly Anomaly Data Service.
     monthly: PropTypes.array.isRequired,

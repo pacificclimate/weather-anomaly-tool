@@ -48,8 +48,10 @@ class DataViewer extends Component {
                     onDidCatch={this.handleDidCatch}
                 />
                 <DataMap
-                    dataset={this.props.dataset}
-                    {...pick(this.state, 'baseline monthly message')}
+                    {...{
+                        ...pick(this.props, 'dataset variable'),
+                        ...pick(this.state, 'baseline monthly message'),
+                    }}
                 />
             </div>
         );
