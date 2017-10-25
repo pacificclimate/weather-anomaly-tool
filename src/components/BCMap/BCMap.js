@@ -31,15 +31,6 @@ class BCMap extends Component {
             '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
             {
                 resolutions: this.resolutions,
-
-                // TODO: Remove when it becomes obvious these have no point ... i.e., soon
-                // bounds: L.bounds(L.point(35043.6538, 440006.8768), L.point(1885895.3117, 1735643.8497)); // from http://spatialreference.org/ref/epsg/nad83-bc-albers/ x, y
-                // bounds: L.bounds(L.point(440006.8768, 35043.6538), L.point(1735643.8497, 1885895.3117)); // from http://spatialreference.org/ref/epsg/nad83-bc-albers/ y, x
-                // bounds: L.bounds(L.point(-139.0500, 48.3000), L.point(-114.0300, 60.0000)); // from http://spatialreference.org/ref/epsg/nad83-bc-albers/ x, y (lon-lat)
-                // bounds: L.bounds(L.point(48.3000, -139.0500), L.point(60.0000, -114.0300)); // from http://spatialreference.org/ref/epsg/nad83-bc-albers/ y, x (lat lon)
-                // bounds: L.bounds(L.point(-3816000.49, -609246.88), L.point(2368556.22, 4942147.44)); // from https://epsg.io/3005 x, y
-                // bounds: L.bounds(L.point(-609246.88, -3816000.49), L.point(4942147.44, 2368556.22)); // from https://epsg.io/3005 y, x
-
                 // If we don't set the origin correctly, then the projection transforms BC Albers coordinates to lat-lng
                 // coordinates incorrectly. You have to know the magic origin value.
                 //
