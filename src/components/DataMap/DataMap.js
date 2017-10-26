@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
 
-import { LayerGroup, LayersControl } from 'react-leaflet';
+import { LayerGroup, LayersControl, GridLayer } from 'react-leaflet';
 import L from 'leaflet';
 
 import _ from 'lodash';
@@ -17,6 +17,7 @@ import _ from 'lodash';
 import { bindFunctions, pick } from '../utils';
 import BCMap from '../BCMap';
 import StationPopup from '../StationPopup';
+import RadioButtonSelector from '../RadioButtonSelector';
 import './DataMap.css';
 
 function now() {
@@ -35,7 +36,7 @@ const stationCircleMarkerOptions = {
 const dataCircleMarkerOptions = {
     radius: 8,
     weight: 1,
-    fillOpacity: 0.5,
+    fillOpacity: 0.75,
 };
 
 const colorsForVariable = {
@@ -57,10 +58,17 @@ const coloursForClassAndDatasetAndVariable = {
 class DataMap extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            fader: {
+                color: '#777777',
+                opacity: 0.5,
+            }
+        };
+
         this.baselineMarkers = [];  // Necessary?
 
         // Bind event handlers
-        bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefMonthlyLayerGroup handleRefDataLayerGroup');
+        bindFunctions(this, 'handleRefMap handleRefBaselineLayerGroup handleRefMonthlyLayerGroup handleRefDataLayerGroup handleRefFaderLayer');
     }
 
     // This is a factory of handlers, but it doesn't work for some reason; cannot access component.leafletElement,
@@ -89,6 +97,18 @@ class DataMap extends Component {
 
     handleRefDataLayerGroup(component) {
         this.dataLayerGroup = component.leafletElement;
+    }
+
+    handleRefFaderLayer(component) {
+        this.faderLayer = component.leafletElement;
+        this.faderLayer.createTile = () => {
+            const tile = document.createElement('div');
+            tile.style.background = this.state.fader.color;
+            // tile.style.background = '#000000';
+            // tile.style.background = '#ffffff';
+            return tile;
+        };
+        this.faderLayer.redraw();
     }
 
     removeAllStationMarkers() {
@@ -247,20 +267,59 @@ class DataMap extends Component {
 
     render() {
         return (
-            <BCMap mapRef={this.handleRefMap}>
-                <LayersControl position='topright'>
-                    <LayersControl.Overlay name='Baseline stations'>
-                        <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
-                    </LayersControl.Overlay>
-                    <LayersControl.Overlay name='Monthly stations' checked>
-                        <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
-                    </LayersControl.Overlay>
-                    <LayersControl.Overlay name='Data values' checked>
-                        <LayerGroup ref={this.handleRefDataLayerGroup}/>
-                    </LayersControl.Overlay>
-                </LayersControl>
-            </BCMap>
-        )
+            <div>
+                {'Base map fader: '}
+                {'Opacity '}
+                <input
+                    style={{width: '20%', display: 'inline'}}
+                    type={'range'}
+                    min={0} max={1} step={0.05}
+                    value={this.state.fader.opacity}
+                    onChange={e => {
+                        this.setState({
+                            fader: {...this.state.fader, opacity: e.target.value}
+                        });
+                    }}
+                />
+                <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
+                    ({this.state.fader.opacity})
+                </span>
+                {' '}
+                {'Color '}
+                <RadioButtonSelector
+                    name={'fader-color'}
+                    options={[
+                        { label: 'Black', value: 'black' },
+                        { label: 'Grey', value: '#777777' },
+                        { label: 'White', value: 'white' },
+                    ]}
+                    value={this.state.fader.color}
+                    onChange={value => {
+                        this.setState(
+                            {fader: {...this.state.fader, color: value,}},
+                            () => { this.faderLayer.redraw(); }
+                        );
+
+                    }}
+                />
+                <BCMap mapRef={this.handleRefMap}>
+                    <LayersControl position='topright'>
+                        <LayersControl.Overlay name='Fader' checked>
+                            <GridLayer ref={this.handleRefFaderLayer} opacity={this.state.fader.opacity}/>
+                        </LayersControl.Overlay>
+                        <LayersControl.Overlay name='Baseline stations'>
+                            <LayerGroup ref={this.handleRefBaselineLayerGroup}/>
+                        </LayersControl.Overlay>
+                        <LayersControl.Overlay name='Monthly stations' checked>
+                            <LayerGroup ref={this.handleRefMonthlyLayerGroup}/>
+                        </LayersControl.Overlay>
+                        <LayersControl.Overlay name='Data values' checked>
+                            <LayerGroup ref={this.handleRefDataLayerGroup}/>
+                        </LayersControl.Overlay>
+                    </LayersControl>
+                </BCMap>
+            </div>
+        );
     }
 }
 
