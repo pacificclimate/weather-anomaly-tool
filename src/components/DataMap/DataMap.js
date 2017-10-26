@@ -6,8 +6,10 @@
 // For prop definitions, see comments in BCMap.propTypes.
 
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
+import { Checkbox, FormControl, ControlLabel } from 'react-bootstrap';
 
 import { LayerGroup, LayersControl, GridLayer } from 'react-leaflet';
 import L from 'leaflet';
@@ -59,6 +61,7 @@ class DataMap extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            showFaderControls: false,
             fader: {
                 color: '#777777',
                 opacity: 0.5,
@@ -84,7 +87,6 @@ class DataMap extends Component {
 
     handleRefMap(component) {
         this.map = component.leafletElement;
-        this.createMessageControl();
     }
 
     handleRefBaselineLayerGroup(component) {
@@ -246,12 +248,38 @@ class DataMap extends Component {
         }
     }
 
+    createFaderControl() {
+        const faderControl = this.faderControl = L.control();
+
+        faderControl.onAdd = map => {
+            this.container = L.DomUtil.create('div', 'DataMap-message leaflet-control-layers');
+            ReactDOM.render(
+                <label>
+                    <Checkbox
+                        value={this.state.showFaderControls}
+                        onChange={e => {
+                            console.log('####', e.target.checked);
+                            this.setState({showFaderControls: e.target.checked});
+                        }}
+                    >
+                        Basemap fader controls
+                    </Checkbox>
+                </label>,
+                this.container);
+            return this.container;
+        };
+
+        faderControl.addTo(this.map);
+    }
+
     componentWillReceiveProps(nextProps) {
         console.log('DataMap.componentWillReceiveProps', nextProps);
     }
 
     componentDidMount() {
         console.log('DataMap.componentDidMount', this.props);
+        this.createMessageControl();
+        this.createFaderControl();
     }
 
     componentDidUpdate(prevProps) {
@@ -268,40 +296,42 @@ class DataMap extends Component {
     render() {
         return (
             <div>
-                {'Base map fader: '}
-                {'Opacity '}
-                <input
-                    style={{width: '20%', display: 'inline'}}
-                    type={'range'}
-                    min={0} max={1} step={0.05}
-                    value={this.state.fader.opacity}
-                    onChange={e => {
-                        this.setState({
-                            fader: {...this.state.fader, opacity: e.target.value}
-                        });
-                    }}
-                />
-                <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
-                    ({this.state.fader.opacity})
-                </span>
-                {' '}
-                {'Color '}
-                <RadioButtonSelector
-                    name={'fader-color'}
-                    options={[
-                        { label: 'Black', value: 'black' },
-                        { label: 'Grey', value: '#777777' },
-                        { label: 'White', value: 'white' },
-                    ]}
-                    value={this.state.fader.color}
-                    onChange={value => {
-                        this.setState(
-                            {fader: {...this.state.fader, color: value,}},
-                            () => { this.faderLayer.redraw(); }
-                        );
+                {this.state.showFaderControls &&
+                <div>
+                    <ControlLabel>Base map fader:</ControlLabel>{' '}
+                    <ControlLabel>Opacity </ControlLabel>{' '}
+                    <FormControl
+                        style={{width: '20%', display: 'inline'}}
+                        type={'range'}
+                        min={0} max={1} step={0.05}
+                        value={this.state.fader.opacity}
+                        onChange={e => {
+                            this.setState({
+                                fader: {...this.state.fader, opacity: e.target.value}
+                            });
+                        }}
+                    />
+                    <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
+                        ({this.state.fader.opacity})
+                    </span>
+                    <ControlLabel>Color </ControlLabel>{' '}
+                    <RadioButtonSelector
+                        name={'fader-color'}
+                        options={[
+                            { label: 'Black', value: 'black' },
+                            { label: 'Grey', value: '#777777' },
+                            { label: 'White', value: 'white' },
+                        ]}
+                        value={this.state.fader.color}
+                        onChange={value => {
+                            this.setState(
+                                {fader: {...this.state.fader, color: value,}},
+                                () => { this.faderLayer.redraw(); }
+                            );
 
-                    }}
-                />
+                        }}
+                    />
+                </div>}
                 <BCMap mapRef={this.handleRefMap}>
                     <LayersControl position='topright'>
                         <LayersControl.Overlay name='Fader' checked>
