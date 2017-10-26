@@ -5,3 +5,7 @@
 .Tool .selectors .date-selectors {
     padding-top: 1em;
 }
+
+.Tool .selectors .row {
+    margin-bottom: 0.5em;
+}
