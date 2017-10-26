@@ -9,6 +9,7 @@ import MonthSelector from '../MonthSelector';
 import IncrementDecrement from '../IncrementDecrement';
 import DataViewer from '../DataViewer';
 
+import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 
 class Tool extends Component {
@@ -61,24 +62,23 @@ class Tool extends Component {
                             <Col lg={2}/>
                         </Row>
                         <Row>for</Row>
+                        {!isBaselineDataset &&
                         <Row>
-                            <Col lg={2}/>
-                            {!isBaselineDataset &&
-                            <Col lg={4}>
+                            <Col lg={12}>
                                 <YearSelector
                                     start={1970} end={2018}
                                     value={this.state.year}
                                     onChange={this.makeHandleChange('year')}
                                 />
                             </Col>
-                            }
-                            <Col lg={isBaselineDataset ? 8 : 4} className="map">
+                        </Row>}
+                        <Row>
+                            <Col lg={12} className="map">
                                 <MonthSelector
                                     value={this.state.month}
                                     onChange={this.makeHandleChange('month')}
                                 />
                             </Col>
-                            <Col lg={2}/>
                         </Row>
                         <Row>
                             <Col lg={2}/>
