@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 
 import { MapControl } from 'react-leaflet';
@@ -11,8 +12,8 @@ class MessageControl extends MapControl {
         const leafletElement = L.control();
 
         leafletElement.onAdd = map => {
-            this.container = L.DomUtil.create('div', 'leaflet-control-layers');
-            this.container.innerHTML = props.message;
+            this.container = L.DomUtil.create('div', 'MessageControl leaflet-control');
+             ReactDom.render(props.children, this.container);
             return this.container;
         };
 
@@ -20,7 +21,9 @@ class MessageControl extends MapControl {
     }
 
     updateLeafletElement (fromProps, toProps) {
-        this.container.innerHTML = toProps.message;
+        if (fromProps.children !== toProps.children) {
+            ReactDom.render(toProps.children, this.container);
+        }
     }
 }
 
