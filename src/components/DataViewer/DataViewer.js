@@ -46,7 +46,7 @@ class DataViewer extends Component {
                     onDataWillLoad={this.handleDataWillLoad}
                     onDataDidLoad={this.handleDataDidLoad}
                     onDidCatch={this.handleDidCatch}
-                    errorTest
+                    // errorTest
                 />
                 <DataMap
                     {...{
