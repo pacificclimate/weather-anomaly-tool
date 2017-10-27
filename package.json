@@ -13,6 +13,7 @@
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
+    "react-input-range": "^1.2.1",
     "react-leaflet": "^1.7.1",
     "react-scripts": "1.0.14",
     "url-join": "^2.0.2"

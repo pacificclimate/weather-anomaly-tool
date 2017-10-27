@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import InputRange from 'react-input-range';
+
 import { pick } from '../utils';
-import ScrollingSelector from '../ScrollingSelector';
+
 import './MonthSelector.css';
 
 class MonthSelector extends Component {
     render() {
         const monthNames = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
-        const months = monthNames.map((name, i) => ({value: i+1, label: name}));
         return (
-            <ScrollingSelector
+            <InputRange
                 className={this.props.className}
-                name="month"
-                options={months}
-                {...pick(this.props, 'height value onChange')}
+                minValue={1}
+                maxValue={12}
+                formatLabel={value => monthNames[value-1]}
+                {...pick(this.props, 'value onChange')}
             />
         )
     }

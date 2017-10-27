@@ -9,6 +9,7 @@ import MonthSelector from '../MonthSelector';
 import IncrementDecrement from '../IncrementDecrement';
 import DataViewer from '../DataViewer';
 
+import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 
 class Tool extends Component {
@@ -62,32 +63,10 @@ class Tool extends Component {
                         </Row>
                         <Row>for</Row>
                         <Row>
-                            <Col lg={2}/>
-                            {!isBaselineDataset &&
-                            <Col lg={4}>
-                                <YearSelector
-                                    start={1970} end={2018}
-                                    value={this.state.year}
-                                    onChange={this.makeHandleChange('year')}
-                                />
-                            </Col>
-                            }
-                            <Col lg={isBaselineDataset ? 8 : 4} className="map">
+                            <Col lg={8}>
                                 <MonthSelector
                                     value={this.state.month}
                                     onChange={this.makeHandleChange('month')}
-                                />
-                            </Col>
-                            <Col lg={2}/>
-                        </Row>
-                        <Row>
-                            <Col lg={2}/>
-                            <Col lg={4}>
-                                <IncrementDecrement
-                                    id="year-increment"
-                                    bsSize="xsmall"
-                                    by={[1, 2, 3, 4, 5, 10]}
-                                    onIncrement={this.handleIncrementYear}
                                 />
                             </Col>
                             <Col lg={4}>
@@ -98,8 +77,25 @@ class Tool extends Component {
                                     onIncrement={this.handleIncrementMonth}
                                 />
                             </Col>
-                            <Col lg={2}/>
                         </Row>
+                        {!isBaselineDataset &&
+                        <Row>
+                            <Col lg={8}>
+                                <YearSelector
+                                    start={1970} end={2018}
+                                    value={this.state.year}
+                                    onChange={this.makeHandleChange('year')}
+                                />
+                            </Col>
+                            <Col lg={4}>
+                                <IncrementDecrement
+                                    id="year-increment"
+                                    bsSize="xsmall"
+                                    by={[1, 2, 3, 4, 5, 10]}
+                                    onIncrement={this.handleIncrementYear}
+                                />
+                            </Col>
+                        </Row>}
                     </Col>
                     <Col  lg={9}>
                         <DataViewer
