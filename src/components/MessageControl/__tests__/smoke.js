@@ -4,5 +4,10 @@ import MessageControl from '../';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<MessageControl/>, div);
+    ReactDOM.render(
+        <MessageControl position='topright'>
+            Test
+        </MessageControl>,
+        div
+    );
 });

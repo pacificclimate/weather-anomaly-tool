@@ -1,6 +1,4 @@
-import React from 'react';
 import ReactDom from 'react-dom';
-import PropTypes from 'prop-types';
 
 import { MapControl } from 'react-leaflet';
 import L from 'leaflet';
@@ -26,9 +24,5 @@ class MessageControl extends MapControl {
         }
     }
 }
-
-MessageControl.propTypes = {
-    message: PropTypes.string,
-};
 
 export default MessageControl;
