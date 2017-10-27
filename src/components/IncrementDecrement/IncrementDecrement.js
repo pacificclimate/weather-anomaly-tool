@@ -23,7 +23,9 @@ class IncrementDecrement extends Component {
                     title={this.state.by}
                     onSelect={by => this.setState({by: +by})}
                 >
-                    {this.props.by.map(by => <MenuItem eventKey={by}>{by}</MenuItem>)}
+                    {this.props.by.map(by =>
+                        <MenuItem eventKey={by} className={'btn-xs'}>{by}</MenuItem>
+                    )}
                 </DropdownButton>
             );
             // This works, but DropdownButton is intended child for ButtonGroup, and FormControl is not.
