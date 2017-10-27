@@ -62,6 +62,14 @@ class Tool extends Component {
                             <Col lg={2}/>
                         </Row>
                         <Row>for</Row>
+                        <Row>
+                            <Col lg={12} className="map">
+                                <MonthSelector
+                                    value={this.state.month}
+                                    onChange={this.makeHandleChange('month')}
+                                />
+                            </Col>
+                        </Row>
                         {!isBaselineDataset &&
                         <Row>
                             <Col lg={12}>
