@@ -16,6 +16,7 @@ import _ from 'lodash';
 
 import { bindFunctions, pick } from '../utils';
 import BCMap from '../BCMap';
+import MessageControl from '../MessageControl';
 import StationPopup from '../StationPopup';
 import './DataMap.css';
 
@@ -211,6 +212,7 @@ class DataMap extends Component {
                         <LayerGroup ref={this.handleRefDataLayerGroup}/>
                     </LayersControl.Overlay>
                 </LayersControl>
+                <MessageControl position='topright' message={this.props.message}/>
             </BCMap>
         )
     }
