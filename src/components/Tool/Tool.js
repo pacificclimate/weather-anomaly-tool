@@ -63,7 +63,7 @@ class Tool extends Component {
                         </Row>
                         <Row>for</Row>
                         <Row>
-                            <Col lg={8} className="map">
+                            <Col lg={8}>
                                 <MonthSelector
                                     value={this.state.month}
                                     onChange={this.makeHandleChange('month')}
