@@ -83,10 +83,16 @@ class Tool extends Component {
                         <Row>
                             <Col lg={2}/>
                             <Col lg={4}>
-                                <IncrementDecrement onIncrement={this.handleIncrementYear}/>
+                                <IncrementDecrement
+                                    by={[1, 2, 3, 4, 5, 10]}
+                                    onIncrement={this.handleIncrementYear}
+                                />
                             </Col>
                             <Col lg={4}>
-                                <IncrementDecrement onIncrement={this.handleIncrementMonth}/>
+                                <IncrementDecrement
+                                    by={[1, 3, 6]}
+                                    onIncrement={this.handleIncrementMonth}
+                                />
                             </Col>
                             <Col lg={2}/>
                         </Row>
