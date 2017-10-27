@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ButtonGroup, Button, Glyphicon, FormControl, DropdownButton, MenuItem } from 'react-bootstrap';
+import { ButtonGroup, Button, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import classNames from 'classnames';
 
@@ -28,17 +28,6 @@ class IncrementDecrement extends Component {
                     )}
                 </DropdownButton>
             );
-            // This works, but DropdownButton is intended child for ButtonGroup, and FormControl is not.
-            // selector = (
-            //     <FormControl
-            //         componentClass="select"
-            //         className={'btn btn-xs btn-default'}
-            //         style={{width: 'auto', height: '22px', display: 'inline-block'}}
-            //         onChange={e => this.setState({by: +e.target.value}) }
-            //     >
-            //         {this.props.by.map(by => <option value={by}>{by}</option>)}
-            //     </FormControl>
-            // );
         }
 
         return (
