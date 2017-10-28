@@ -175,11 +175,7 @@ class DataMap extends Component {
                         <LayerGroup ref={this.handleRefDataLayerGroup}/>
                     </LayersControl.Overlay>
                 </LayersControl>
-                {this.props.message &&
-                    <MessageControl position='topright'>
-                        {this.props.message}
-                    </MessageControl>
-                }
+                {this.props.message && <MessageControl position='topright'>{this.props.message}</MessageControl>}
             </BCMap>
         )
     }
