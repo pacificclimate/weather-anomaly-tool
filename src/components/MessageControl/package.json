@@ -1,0 +1,6 @@
+{
+  "name": "MessageControl",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./MessageControl.js"
+}

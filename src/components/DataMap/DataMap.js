@@ -16,6 +16,7 @@ import _ from 'lodash';
 
 import { bindFunctions, pick } from '../utils';
 import BCMap from '../BCMap';
+import MessageControl from '../MessageControl';
 import StationPopup from '../StationPopup';
 import './DataMap.css';
 
@@ -63,7 +64,6 @@ class DataMap extends Component {
 
     handleRefMap(component) {
         this.map = component.leafletElement;
-        this.createMessageControl();
     }
 
     handleRefBaselineLayerGroup(component) {
@@ -145,39 +145,6 @@ class DataMap extends Component {
         return !_.isEqual(pick(props, dataPropnames), pick(this.props, dataPropnames));
     }
 
-    messageChanged(props) {
-        return props.message !== this.props.message;
-    }
-
-    createMessageControl() {
-        console.log('DataMap.createMessageControl')
-        const messageControl = this.messageControl = L.control();
-
-        messageControl.onAdd = map => {
-            console.log('DataMap.messageControl.onAdd', this);
-            this._div = L.DomUtil.create('div', 'DataMap-message leaflet-control-layers');
-            messageControl.update();
-            return this._div;
-        };
-
-        messageControl.update = message => {
-            this._div.innerHTML = message;
-        };
-
-        messageControl.addTo(this.map);
-    }
-
-    updateMessageControl(message) {
-        if (message) {
-            console.log('DataMap.updateMessageControl: adding')
-            this.messageControl.addTo(this.map);
-            this.messageControl.update(message);
-        } else {
-            console.log('DataMap.updateMessageControl: removing')
-            this.messageControl.remove();
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         console.log('DataMap.componentWillReceiveProps', nextProps);
     }
@@ -191,9 +158,6 @@ class DataMap extends Component {
         if (this.dataChanged(prevProps)) {
             this.removeAllStationMarkers();
             this.addAllStationMarkers();
-        }
-        if (this.messageChanged(prevProps)) {
-            this.updateMessageControl(this.props.message);
         }
     }
 
@@ -211,6 +175,7 @@ class DataMap extends Component {
                         <LayerGroup ref={this.handleRefDataLayerGroup}/>
                     </LayersControl.Overlay>
                 </LayersControl>
+                {this.props.message && <MessageControl position='topright'>{this.props.message}</MessageControl>}
             </BCMap>
         )
     }
