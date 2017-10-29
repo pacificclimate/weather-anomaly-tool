@@ -18,7 +18,7 @@ import MessageControl from '../MessageControl';
 import StationPopup from '../StationPopup';
 import './DataMap.css';
 
-const stationLocationMarkerOptions = {
+const locationMarkerOptions = {
     color: '#000000',
     radius: 1,
     weight: 1,
@@ -40,21 +40,27 @@ function uniqueKey(station) {
     return station.station_db_id.toString() + station.network_variable_name;
 }
 
-// TODO: Make this into a component
-function stationLocationMarkers(stations, markerOptions) {
+function StationLocationMarkers({stations}) {
     // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
     // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
-    return stations.map((station) =>
-        // TODO: use a more certainly unique key than station_native_id. But backend doesn't provide yet.
-        <CircleMarker key={uniqueKey(station)} center={{lng: station.lon, lat: station.lat}} {...markerOptions} />
+    return stations.map(station =>
+        <CircleMarker
+            key={uniqueKey(station)}
+            center={{lng: station.lon, lat: station.lat}}
+            {...locationMarkerOptions}
+        />
     );
 }
 
-// TODO: Make this into a component
-function stationDataMarkers(variable, stations, markerOptions) {
+function StationDataMarkers({variable, stations}) {
     // console.log('DataMap.addStationDataMarkers');
     return stations.map(station =>
-        <CircleMarker key={uniqueKey(station)} center={{lng: station.lon, lat: station.lat}} {...markerOptions}>
+        <CircleMarker
+            key={uniqueKey(station)}
+            center={{lng: station.lon, lat: station.lat}}
+            {...dataMarkerOptions}
+            color={colorForVariable[variable]}
+        >
             <StationPopup variable={variable} {...station}/>
         </CircleMarker>
     );
@@ -90,19 +96,17 @@ class DataMap extends Component {
                 <LayersControl position='topright'>
                     <LayersControl.Overlay name='Baseline stations'>
                         <LayerGroup>
-                            {stationLocationMarkers(this.props.baseline, stationLocationMarkerOptions)}
+                            <StationLocationMarkers stations={this.props.baseline}/>
                         </LayerGroup>
                     </LayersControl.Overlay>
                     <LayersControl.Overlay name='Monthly stations' checked>
                         <LayerGroup>
-                            {stationLocationMarkers(this.props.monthly, stationLocationMarkerOptions)}
+                            <StationLocationMarkers stations={this.props.monthly}/>
                         </LayerGroup>
                     </LayersControl.Overlay>
                     <LayersControl.Overlay name='Data values' checked>
                         <LayerGroup>
-                            {stationDataMarkers(this.props.variable, this.stationsForDataset(),
-                                {...dataMarkerOptions, color: colorForVariable[this.props.variable]})
-                            }
+                            <StationDataMarkers variable={this.props.variable} stations={this.stationsForDataset()}/>
                         </LayerGroup>
                     </LayersControl.Overlay>
                 </LayersControl>
