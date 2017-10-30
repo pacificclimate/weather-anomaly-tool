@@ -1,12 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ShallowRenderer from 'react-test-renderer/shallow';
+
+import { Popup } from 'react-leaflet';
+
 import StationPopup from '../StationPopup';
 
 it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(
-        <StationPopup
-        />,
-        div
-    );
+    const renderer = new ShallowRenderer();
+    renderer.render(<StationPopup />);
+    const result = renderer.getRenderOutput();
+    expect(result.type).toBe(Popup);
 });
