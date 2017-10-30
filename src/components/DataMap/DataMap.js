@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { LayerGroup, LayersControl, CircleMarker, Popup } from 'react-leaflet';
+import { LayerGroup, LayersControl, CircleMarker } from 'react-leaflet';
 
 import _ from 'lodash';
 
