@@ -24,11 +24,13 @@ const locationMarkerOptions = {
     weight: 1,
     fillOpacity: 1,
 };
+
 const dataMarkerOptions = {
     radius: 8,
     weight: 1,
     fillOpacity: 0.5,
 };
+
 const colorForVariable = {
     'precip': '#36ff32',
     'tmin': '#3388ff',
@@ -41,7 +43,8 @@ function uniqueKey(station) {
 }
 
 function StationLocationMarkers({stations}) {
-    // Icon markers (L.marker) don't work in this environment. I think it is because Webpack isn't including the
+    // Return a set of markers (<CircleMarker/>) for the locations of each station in `props.station`.
+    // Icon markers `<Marker/>` don't work in this environment. I think it is because Webpack isn't including the
     // image files that are needed. Certainly the GETs for those images fail. But circle markers work.
     return stations.map(station =>
         <CircleMarker
@@ -53,7 +56,7 @@ function StationLocationMarkers({stations}) {
 }
 
 function StationDataMarkers({variable, stations}) {
-    // console.log('DataMap.addStationDataMarkers');
+    // Return a set of markers (<CircleMarker/>) for the data for each station in `props.station`.
     return stations.map(station =>
         <CircleMarker
             key={uniqueKey(station)}
@@ -68,8 +71,9 @@ function StationDataMarkers({variable, stations}) {
 
 class DataMap extends Component {
     stationsForDataset() {
-        // Return a set of stations determined by `this.props.dataset`. For `anomaly` stations,
-        // compute the anomaly for stations for which there is both baseline and monthly data.
+        // Return a set of stations determined by `this.props.dataset`.
+        // For `baseline` and `monthly`, return the respective station sets.
+        // For `anomaly`, compute the anomaly for stations for which there is both baseline and monthly data.
         let stations;
         if (this.props.dataset === 'anomaly') {
             const monthlyByStationDbId = _.groupBy(this.props.monthly, 'station_db_id');
