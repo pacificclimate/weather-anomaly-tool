@@ -15,10 +15,9 @@ class VariableSelector extends Component {
         ];
         return (
             <RadioButtonSelector
-                className={this.props.className}
+                {...pick(this.props, 'className disabled value onChange')}
                 name="variable"
                 options={variables}
-                {...pick(this.props, 'value onChange')}
             />
             // <div>
             //     <ToggleButtonGroup
@@ -42,8 +41,12 @@ class VariableSelector extends Component {
 }
 
 VariableSelector.propTypes = {
+    disabled: PropTypes.boolean,
+    // Is control disabled
     value: PropTypes.string,
+    // Current value of control
     onChange: PropTypes.func,
+    // Callback when new option selected
 };
 
 VariableSelector.tooltips = {

@@ -19,7 +19,9 @@ class RadioButtonSelector extends Component {
         const toggleButtons = this.props.options.map((option) => (
             <ToggleButton
                 className={classNames('RadioButtonSelector-button', this.props.className)}
-                key={option.value} value={option.value}
+                disabled={this.props.disabled}
+                key={option.value}
+                value={option.value}
             >
                 {option.label}
             </ToggleButton>
@@ -39,6 +41,8 @@ class RadioButtonSelector extends Component {
 }
 
 RadioButtonSelector.propTypes = {
+    disabled: PropTypes.boolean,
+    // Is control disabled
     name: PropTypes.string.isRequired,
     // An HTML <input> name for each child button
     options: PropTypes.array.isRequired,
@@ -51,7 +55,7 @@ RadioButtonSelector.propTypes = {
 };
 
 RadioButtonSelector.defaultProps = {
-    height: 10,
+    disabled: false,
 };
 
 export default RadioButtonSelector;
