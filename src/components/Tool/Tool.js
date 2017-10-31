@@ -16,8 +16,14 @@ import './Tool.css';
 class Tool extends Component {
     constructor(props) {
         super(props);
-        this.state = Tool.defaultState;
-        bindFunctions(this, 'handleIncrementYear handleIncrementMonth');
+        this.state = {
+            dataset: 'anomaly',
+            variable: 'precip',
+            year: 1990,
+            month: 6,
+            dataLoading: false,
+        };
+        bindFunctions(this, 'handleIncrementYear handleIncrementMonth handleDataIsLoading handleDataIsNotLoading');
     }
 
     makeHandleChange(item) {
@@ -38,6 +44,14 @@ class Tool extends Component {
         this.setState({month, year});
     }
 
+    handleDataIsLoading() {
+        this.setState({dataLoading: true});
+    }
+
+    handleDataIsNotLoading() {
+        this.setState({dataLoading: false});
+    }
+
     render() {
         logger.log(this);
         const isBaselineDataset = this.state.dataset === 'baseline';
@@ -50,6 +64,7 @@ class Tool extends Component {
                             <Col lg={2}/>
                             <Col lg={4}>
                                 <VariableSelector
+                                    disabled={this.state.dataLoading}
                                     value={this.state.variable}
                                     onChange={this.makeHandleChange('variable')}
                                 />
@@ -66,12 +81,14 @@ class Tool extends Component {
                         <Row>
                             <Col lg={8}>
                                 <MonthSelector
+                                    disabled={this.state.dataLoading}
                                     value={this.state.month}
                                     onChange={this.makeHandleChange('month')}
                                 />
                             </Col>
                             <Col lg={4}>
                                 <IncrementDecrement
+                                    disabled={this.state.dataLoading}
                                     id="month-increment"
                                     bsSize="xsmall"
                                     by={[1, 3, 6]}
@@ -83,6 +100,7 @@ class Tool extends Component {
                         <Row>
                             <Col lg={8}>
                                 <YearSelector
+                                    disabled={this.state.dataLoading}
                                     start={1970} end={2018}
                                     value={this.state.year}
                                     onChange={this.makeHandleChange('year')}
@@ -90,6 +108,7 @@ class Tool extends Component {
                             </Col>
                             <Col lg={4}>
                                 <IncrementDecrement
+                                    disabled={this.state.dataLoading}
                                     id="year-increment"
                                     bsSize="xsmall"
                                     by={[1, 2, 3, 4, 5, 10]}
@@ -101,6 +120,9 @@ class Tool extends Component {
                     <Col  lg={9}>
                         <DataViewer
                             {...pick(this.state, 'dataset variable year month')}
+                            onDataWillLoad={this.handleDataIsLoading}
+                            onDataDidLoad={this.handleDataIsNotLoading}
+                            onDataDidCatch={this.handleDataIsNotLoading}
                         />
                     </Col>
                 </Row>
@@ -108,12 +130,5 @@ class Tool extends Component {
         )
     }
 }
-
-Tool.defaultState = {
-    dataset: 'anomaly',
-    variable: 'precip',
-    year: 1990,
-    month: 6,
-};
 
 export default Tool;
