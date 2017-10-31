@@ -22,6 +22,7 @@ class DataViewer extends Component {
             ...DataViewer.noDataState,
             message: 'Data loading ...',
         });
+        this.props.onDataWillLoad();
     }
 
     handleDataDidLoad(data) {
@@ -30,6 +31,7 @@ class DataViewer extends Component {
             ...data,
             message: null,
         });
+        this.props.onDataDidLoad(data);
     }
 
     handleDidCatch(error) {
@@ -37,6 +39,7 @@ class DataViewer extends Component {
         this.setState({
             message: 'Error loading data: ' + error.message,
         });
+        this.props.onDataDidCatch(error);
     }
 
     render() {
@@ -65,6 +68,9 @@ DataViewer.propTypes = {
     variable: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,
+    onDataWillLoad: PropTypes.func,
+    onDataDidLoad: PropTypes.func,
+    onDataDidCatch: PropTypes.func,
 };
 
 DataViewer.noDataState = {
