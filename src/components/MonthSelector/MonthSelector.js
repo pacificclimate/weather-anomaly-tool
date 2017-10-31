@@ -3,35 +3,55 @@ import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
-import { pick } from '../utils';
+import { bindFunctions } from '../utils';
 
 import './MonthSelector.css';
 
+const monthNames = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
+const formatLabel = value => monthNames[value-1];
+
 class MonthSelector extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: props.value
+        };
+        bindFunctions(this, 'handleChange');
+    }
+
+    handleChange(value) {
+        this.setState({value})
+    }
+
     render() {
-        const monthNames = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
         return (
             <InputRange
                 className={this.props.className}
-                minValue={1}
-                maxValue={12}
-                formatLabel={value => monthNames[value-1]}
-                {...pick(this.props, 'value onChange')}
+                minValue={this.props.start}
+                maxValue={this.props.end}
+                formatLabel={formatLabel}
+                value={this.state.value}
+                onChange={this.handleChange}
+                onChangeComplete={this.props.onChange}
             />
         )
     }
 }
 
 MonthSelector.propTypes = {
-    height: PropTypes.number,
     start: PropTypes.number,
+    // Start month
     end: PropTypes.number,
+    // End month
     value: PropTypes.number,
+    // Current value (year)
     onChange: PropTypes.func.isRequired,
+    // Called with value when dragging complete (no intermediate values)
 };
 
 MonthSelector.defaultProps = {
-    height: 12,
+    start: 1,
+    end: 12,
 };
 
 

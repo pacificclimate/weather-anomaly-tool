@@ -3,27 +3,39 @@ import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
-import { pick } from '../utils';
+import { bindFunctions } from '../utils';
 
 import './YearSelector.css';
 
 
 class YearSelector extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: props.value
+        };
+        bindFunctions(this, 'handleChange');
+    }
+
+    handleChange(value) {
+        this.setState({value})
+    }
+
     render() {
         return (
             <InputRange
                 className={this.props.className}
-                minValue={1970}
-                maxValue={2018}
-                {...pick(this.props, 'value onChange')}
+                minValue={this.props.start}
+                maxValue={this.props.end}
+                value={this.state.value}
+                onChange={this.handleChange}
+                onChangeComplete={this.props.onChange}
             />
         );
     }
 }
 
 YearSelector.propTypes = {
-    height: PropTypes.number,
-    // Height of selector, in number of option items
     start: PropTypes.number,
     // Start year
     end: PropTypes.number,
@@ -31,10 +43,12 @@ YearSelector.propTypes = {
     value: PropTypes.number,
     // Current value (year)
     onChange: PropTypes.func.isRequired,
+    // Called with value when dragging complete (no intermediate values)
 };
 
 YearSelector.defaultProps = {
-    height: 12,
+    start: 1970,
+    end: 2018,
 };
 
 
