@@ -1,3 +1,5 @@
+// TODO: YearSelector and MonthSelector are nearly identical. Use a HOC for them both.
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -21,6 +23,12 @@ class MonthSelector extends Component {
 
     handleChange(value) {
         this.setState({value})
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.state.value) {
+            this.setState({value: nextProps.value});
+        }
     }
 
     render() {
