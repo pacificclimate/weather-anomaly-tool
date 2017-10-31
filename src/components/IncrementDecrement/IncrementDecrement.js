@@ -41,12 +41,22 @@ class IncrementDecrement extends Component {
         }
 
         return (
-            <ButtonGroup className={classNames('IncrementDecrement', this.props.className)}>
-                <Button bsSize={this.props.bsSize} onClick={() => this.props.onIncrement(-this.state.by)}>
+            <ButtonGroup
+                className={classNames('IncrementDecrement', this.props.className)}
+            >
+                <Button
+                    bsSize={this.props.bsSize}
+                    disabled={this.props.disabled}
+                    onClick={() => this.props.onIncrement(-this.state.by)}
+                >
                     <Glyphicon glyph={'minus'}/>
                 </Button>
                 {selector}
-                <Button bsSize={this.props.bsSize} onClick={() => this.props.onIncrement(this.state.by)}>
+                <Button
+                    bsSize={this.props.bsSize}
+                    disabled={this.props.disabled}
+                    onClick={() => this.props.onIncrement(this.state.by)}
+                >
                     <Glyphicon glyph={'plus'}/>
                 </Button>
             </ButtonGroup>
@@ -55,6 +65,8 @@ class IncrementDecrement extends Component {
 }
 
 IncrementDecrement.propTypes = {
+    disabled: PropTypes.boolean,
+    // Is control disabled
     by: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.arrayOf(PropTypes.number)
@@ -68,6 +80,7 @@ IncrementDecrement.propTypes = {
 };
 
 IncrementDecrement.defaultProps = {
+    disabled: false,
     by: 1,
 };
 
