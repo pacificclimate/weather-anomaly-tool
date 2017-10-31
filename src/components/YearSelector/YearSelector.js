@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
-import { bindFunctions, pick } from '../utils';
+import { bindFunctions } from '../utils';
 
 import './YearSelector.css';
 
