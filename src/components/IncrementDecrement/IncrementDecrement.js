@@ -65,7 +65,7 @@ class IncrementDecrement extends Component {
 }
 
 IncrementDecrement.propTypes = {
-    disabled: PropTypes.boolean,
+    disabled: PropTypes.bool,
     // Is control disabled
     by: PropTypes.oneOfType([
         PropTypes.number,
