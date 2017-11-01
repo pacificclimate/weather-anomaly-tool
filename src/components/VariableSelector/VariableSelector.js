@@ -41,7 +41,7 @@ class VariableSelector extends Component {
 }
 
 VariableSelector.propTypes = {
-    disabled: PropTypes.boolean,
+    disabled: PropTypes.bool,
     // Is control disabled
     value: PropTypes.string,
     // Current value of control

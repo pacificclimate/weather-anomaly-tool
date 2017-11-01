@@ -47,7 +47,7 @@ class MonthSelector extends Component {
 }
 
 MonthSelector.propTypes = {
-    disabled: PropTypes.boolean,
+    disabled: PropTypes.bool,
     // Is control disabled
     start: PropTypes.number,
     // Start month

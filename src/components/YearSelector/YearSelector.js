@@ -44,7 +44,7 @@ class YearSelector extends Component {
 }
 
 YearSelector.propTypes = {
-    disabled: PropTypes.boolean,
+    disabled: PropTypes.bool,
     // Is control disabled
     start: PropTypes.number,
     // Start year

@@ -41,7 +41,7 @@ class RadioButtonSelector extends Component {
 }
 
 RadioButtonSelector.propTypes = {
-    disabled: PropTypes.boolean,
+    disabled: PropTypes.bool,
     // Is control disabled
     name: PropTypes.string.isRequired,
     // An HTML <input> name for each child button
