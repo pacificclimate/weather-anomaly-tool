@@ -19,7 +19,7 @@ class Logger {
     }
 }
 
-const nameFromStackLine = /^\s*at (\w+\.\w+) .*$/;
+const nameFromStackLine = /^\s*at (\S+) .*$/;
 
 [
     'error',
@@ -46,6 +46,9 @@ const nameFromStackLine = /^\s*at (\w+\.\w+) .*$/;
 
     Logger.prototype[level] = method;
 });
+
+Logger.prototype.group = console.group;
+Logger.prototype.groupEnd = console.groupEnd;
 
 
 export default new Logger();
