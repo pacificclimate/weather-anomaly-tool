@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 
+import logger from '../../logger';
 import { bindFunctions, pick } from '../utils';
 import DatasetSelector from '../DatasetSelector'
 import VariableSelector from '../VariableSelector'
@@ -26,7 +27,7 @@ class Tool extends Component {
     }
 
     handleIncrementYear(by) {
-        console.log('handleIncrementYear', this, by)
+        logger.log(this, this, by);
         this.setState({'year': this.state.year + by});
     }
 
@@ -38,7 +39,7 @@ class Tool extends Component {
     }
 
     render() {
-
+        logger.log(this);
         const isBaselineDataset = this.state.dataset === 'baseline';
         return (
             <Grid fluid className="Tool">
