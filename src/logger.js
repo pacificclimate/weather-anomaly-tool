@@ -21,7 +21,9 @@ class Logger {
 
 const nameFromStackLine = /^\s*at (\S+) .*$/;
 
+// Add the fancy logging methods to Logger.prototype
 [
+    'assert',
     'error',
     'info',
     'log',
@@ -47,8 +49,23 @@ const nameFromStackLine = /^\s*at (\S+) .*$/;
     Logger.prototype[level] = method;
 });
 
-Logger.prototype.group = console.group;
-Logger.prototype.groupEnd = console.groupEnd;
-
+// Proxy other console methods through Logger
+[
+    'count',
+    'group',
+    'groupCollapsed',
+    'groupEnd',
+    'table',
+    'time',
+    'timeEnd',
+    'trace',
+].forEach(name => {
+    function method(...args) {
+        if (this._config.active) {
+            console[name](...args);
+        }
+    }
+    Logger.prototype[name] = method;
+});
 
 export default new Logger();
