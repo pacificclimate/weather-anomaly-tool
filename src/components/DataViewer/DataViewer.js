@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import logger from '../../logger';
 import { pick, bindFunctions } from '../utils';
 // import TestDataLoader from '../TestDataLoader';
 // import FakeDataLoader from '../FakeDataLoader';
@@ -16,7 +17,7 @@ class DataViewer extends Component {
     }
 
     handleDataWillLoad(data) {
-        console.log('DataViewer.handleDataWillLoad', data);
+        logger.log(this, data);
         this.setState({
             ...DataViewer.noDataState,
             message: 'Data loading ...',
@@ -24,7 +25,7 @@ class DataViewer extends Component {
     }
 
     handleDataDidLoad(data) {
-        console.log('DataViewer.handleDataDidLoad', data);
+        logger.log(this, data);
         this.setState({
             ...data,
             message: null,
@@ -32,7 +33,7 @@ class DataViewer extends Component {
     }
 
     handleDidCatch(error) {
-        console.log('DataViewer.handleDidCatch', error);
+        logger.log(this, error);
         this.setState({
             message: 'Error loading data: ' + error.message,
         });
