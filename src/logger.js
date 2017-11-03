@@ -7,19 +7,23 @@ class Logger {
         this._config = {
             active: true,
             // Log?
-            componentName: false,
-            // Include component name in context. Not necessary if callerName is true.
+            componentName: true,
+            // Include component name in context.
             callerName: true,
-            // Include component method name in context. Includes component name.
+            // Include caller name in context.
         };
     }
 
     configure(options) {
         return Object.assign(this._config, options);
     }
+
+    isActive() {
+        return this._config.active;
+    }
 }
 
-const nameFromStackLine = /^\s*at (\S+) .*$/;
+const nameFromStackLine = /^\s*at (?:\w+\.)?(\w+) .*$/;
 
 // Add the fancy logging methods to Logger.prototype
 [
@@ -33,7 +37,11 @@ const nameFromStackLine = /^\s*at (\S+) .*$/;
         if (this._config.active) {
             let context = [];
             if (this._config.componentName) {
-                context.push(instance.constructor.name);
+                context.push(
+                    instance && instance.constructor ?
+                        instance.constructor.displayName || instance.constructor.name :
+                        '<no constructor>'
+                );
             }
             if (this._config.callerName) {
                 // This cleverness courtesy of https://stackoverflow.com/a/38435618/1858846
@@ -42,7 +50,7 @@ const nameFromStackLine = /^\s*at (\S+) .*$/;
                 const methodName = match && match[1];
                 context.push(methodName);
             }
-            console[level](`[${context.join('; ')}]`, ...args);
+            console[level](`[${context.join('.')}]`, ...args);
         }
     }
 
