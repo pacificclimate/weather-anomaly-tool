@@ -26,7 +26,7 @@ let index = 0;
 
 // Placeholder for real async data retrieval
 function getFakeData(delay, failProb) {
-    console.log(this, 'getFakeData', {time:  (new Date()).getSeconds(), delay, failProb});
+    logger.log(this, {delay, failProb});
     return new Promise((resolve, reject) => {
         setTimeout(function() {
             if (Math.random() >= failProb) {

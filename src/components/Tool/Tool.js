@@ -33,11 +33,12 @@ class Tool extends Component {
     }
 
     handleIncrementYear(by) {
-        logger.log(this, this, by);
+        logger.log(this);
         this.setState({'year': this.state.year + by});
     }
 
     handleIncrementMonth(by) {
+        logger.log(this);
         let monthsSinceEpoch = this.state.year * 12 + this.state.month - 1 + by;
         const month = monthsSinceEpoch % 12 + 1;
         const year = Math.floor(monthsSinceEpoch / 12);
