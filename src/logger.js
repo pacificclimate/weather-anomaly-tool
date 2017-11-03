@@ -1,10 +1,10 @@
 // Simple logging utility.
 // Exports a singleton. See "Module instance" in https://medium.com/@dmnsgn/singleton-pattern-in-es6-d2d021d150ae.
-// Optionally logs context info, controlled by _config.
+// Optionally logs context info, controlled by _options.
 
 class Logger {
     constructor() {
-        this._config = {
+        this._options = {
             active: true,
             // Log?
             componentName: true,
@@ -15,11 +15,11 @@ class Logger {
     }
 
     configure(options) {
-        return Object.assign(this._config, options);
+        return Object.assign(this._options, options);
     }
 
     isActive() {
-        return this._config.active;
+        return this._options.active;
     }
 }
 
@@ -34,16 +34,16 @@ const nameFromStackLine = /^\s*at (?:\w+\.)?(\w+) .*$/;
     'warn'
 ].forEach(level => {
     function method(instance, ...args) {
-        if (this._config.active) {
+        if (this._options.active) {
             let context = [];
-            if (this._config.componentName) {
+            if (this._options.componentName) {
                 context.push(
                     instance && instance.constructor ?
                         instance.constructor.displayName || instance.constructor.name :
                         '<no constructor>'
                 );
             }
-            if (this._config.callerName) {
+            if (this._options.callerName) {
                 // This cleverness courtesy of https://stackoverflow.com/a/38435618/1858846
                 const stackLines = new Error().stack.split('\n');
                 const match = stackLines[2].match(nameFromStackLine);
@@ -69,7 +69,7 @@ const nameFromStackLine = /^\s*at (?:\w+\.)?(\w+) .*$/;
     'trace',
 ].forEach(name => {
     function method(...args) {
-        if (this._config.active) {
+        if (this._options.active) {
             console[name](...args);
         }
     }
