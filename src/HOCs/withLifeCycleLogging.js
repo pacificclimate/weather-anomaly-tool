@@ -61,7 +61,7 @@ import PropTypes from 'prop-types';
 
 import omit from 'lodash/omit';
 
-import logger from './logger';
+import logger from '../logger';
 
 
 function getDisplayName(WrappedComponent) {
