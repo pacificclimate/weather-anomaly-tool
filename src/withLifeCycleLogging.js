@@ -108,56 +108,9 @@ class WithLifeCycleLogging {
                 options() {
                     return localOptions(this.props.lifeCycleLogging);
                 }
+
+                // Most lifecycle methods are manufactured and assigned to prototype below.
                 
-                componentWillMount() {
-                    const opts = this.options();
-                    if (opts.active && opts.componentWillMount) {
-                        logger.log(this, opts.message);
-                    }
-                }
-
-                componentDidMount() {
-                    const opts = this.options();
-                    if (opts.active && opts.componentDidMount) {
-                        logger.log(this, opts.message);
-                    }
-                }
-
-                componentWillReceiveProps() {
-                    const opts = this.options();
-                    if (opts.active && opts.componentWillReceiveProps) {
-                        logger.log(this, opts.message);
-                    }
-                }
-
-                componentWillUpdate() {
-                    const opts = this.options();
-                    if (opts.active && opts.componentWillUpdate) {
-                        logger.log(this, opts.message);
-                    }
-                }
-
-                componentDidUpdate() {
-                    const opts = this.options();
-                    if (opts.active && opts.componentDidUpdate) {
-                        logger.log(this, opts.message);
-                    }
-                }
-
-                componentWillUnmount() {
-                    const opts = this.options();
-                    if (opts.active && opts.componentWillUnmount) {
-                        logger.log(this, opts.message);
-                    }
-                }
-
-                componentDidCatch() {
-                    const opts = this.options();
-                    if (opts.active && opts.componentDidCatch) {
-                        logger.log(this, opts.message);
-                    }
-                }
-
                 render() {
                     const opts = this.options();
                     if (opts.active && opts.render) {
@@ -166,6 +119,29 @@ class WithLifeCycleLogging {
                     return <WrappedComponent {...omit(this.props, 'lifeCycleLogging')}/>
                 }
             }
+
+            [
+                'componentWillMount',
+                'componentDidMount',
+                'componentWillReceiveProps',
+                'componentWillUpdate',
+                'componentDidUpdate',
+                'componentWillUnmount',
+                'componentDidCatch',
+            ].forEach(methodName => {
+                // This creates a dynamically named function. It creates an anonymous function and then gives it
+                // a name by assigning it to a named property. Only way to do it that I know of. Works in Chrome.
+                // A named function is necessary so that the logger can log an informative method name.
+                const methods = {
+                    [methodName]: function() {
+                        const opts = this.options();
+                        if (opts.active && opts[methodName]) {
+                            logger.log(this, opts.message);
+                        }
+                    }
+                };
+                Wrapper.prototype[methodName] = methods[methodName];
+            });
 
             Wrapper.propTypes = {
                 lifeCycleLogging: PropTypes.object,
