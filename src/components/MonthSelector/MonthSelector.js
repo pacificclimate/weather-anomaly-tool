@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
+import logger from '../../logger';
 import { bindFunctions, pick } from '../utils';
 
 import './MonthSelector.css';
@@ -26,12 +27,14 @@ class MonthSelector extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        logger.log(this, nextProps);
         if (nextProps.value !== this.state.value) {
             this.setState({value: nextProps.value});
         }
     }
 
     render() {
+        logger.log(this, this.props);
         return (
             <InputRange
                 {...pick(this.props, 'className disabled')}

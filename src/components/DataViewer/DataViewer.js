@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import logger from '../../logger';
 import { pick, bindFunctions } from '../utils';
-// import TestDataLoader from '../TestDataLoader';
+import TestDataLoader from '../TestDataLoader';
 // import FakeDataLoader from '../FakeDataLoader';
 import RealDataLoader from '../RealDataLoader';
 import DataMap from '../DataMap';
@@ -45,12 +45,12 @@ class DataViewer extends Component {
     render() {
         return (
             <div>
-                <RealDataLoader
+                <TestDataLoader
                     {...pick(this.props, 'variable year month')}
                     onDataWillLoad={this.handleDataWillLoad}
                     onDataDidLoad={this.handleDataDidLoad}
                     onDidCatch={this.handleDidCatch}
-                    // errorTest
+                    errorTest
                 />
                 <DataMap
                     {...{
