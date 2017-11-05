@@ -59,10 +59,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import isEqual from 'lodash/isEqual';
 import omit from 'lodash/omit';
+import union from 'lodash/union';
 
 import logger from '../logger';
 
+
+function diff(a, b) {
+    if (!a) a = {};
+    if (!b) b = {};
+    return union(Object.keys(a), Object.keys(b)).reduce((d, key) => {
+        if (a[key] !==  b[key]) {
+        // if (!isEqual(a[key],  b[key])) {
+            d[key] = [a[key],  b[key]];
+        }
+        return d;
+    }, {});
+}
+
+function stringDiff(a, b) {
+    let r = {};
+    for (const [key, value] of Object.entries(diff(a, b))) {
+        r[key] = value.join(' -> ');
+    }
+    return r;
+}
 
 function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -109,8 +131,36 @@ class WithLifeCycleLogging {
                     return localOptions(this.props.lifeCycleLogging);
                 }
 
-                // Most lifecycle methods are manufactured and assigned to prototype below.
-                
+                componentWillReceiveProps(nextProps) {
+                    const opts = this.options();
+                    if (opts.active && opts.render) {
+                        logger.log(this, opts.message, 'props -> nextProps:', stringDiff(this.props, nextProps));
+                    }
+                }
+
+                componentWillUpdate(nextProps, nextState) {
+                    const opts = this.options();
+                    if (opts.active && opts.render) {
+                        logger.log(this, opts.message, 'props -> nextProps:', stringDiff(this.props, nextProps),
+                        'state -> nextState:', stringDiff(this.state, nextState));
+                    }
+                }
+
+                componentDidUpdate(prevProps, prevState) {
+                    const opts = this.options();
+                    if (opts.active && opts.render) {
+                        logger.log(this, opts.message, 'prevProps -> props:', stringDiff(prevProps, this.props),
+                            'prevState -> state:', stringDiff(prevState, this.state));
+                    }
+                }
+
+                componentDidCatch(error, info) {
+                    const opts = this.options();
+                    if (opts.active && opts.render) {
+                        logger.log(this, opts.message, 'error:', error, 'info:', info);
+                    }
+                }
+
                 render() {
                     const opts = this.options();
                     if (opts.active && opts.render) {
@@ -118,16 +168,18 @@ class WithLifeCycleLogging {
                     }
                     return <WrappedComponent {...omit(this.props, 'lifeCycleLogging')}/>
                 }
+
+                // Remaining lifecycle methods are manufactured and assigned to prototype below.
             }
 
             [
                 'componentWillMount',
                 'componentDidMount',
-                'componentWillReceiveProps',
-                'componentWillUpdate',
-                'componentDidUpdate',
+                // 'componentWillReceiveProps',
+                // 'componentWillUpdate',
+                // 'componentDidUpdate',
                 'componentWillUnmount',
-                'componentDidCatch',
+                // 'componentDidCatch',
             ].forEach(methodName => {
                 // This creates a dynamically named function. It creates an anonymous function and then gives it
                 // a name by assigning it to a named property. Only way to do it that I know of. Works in Chrome.
@@ -135,8 +187,8 @@ class WithLifeCycleLogging {
                 const methods = {
                     [methodName]: function() {
                         const opts = this.options();
-                        if (opts.active && opts[methodName]) {
-                            logger.log(this, opts.message);
+                        if (opts.active && opts.render) {
+                            logger.log(this, opts.message, );
                         }
                     }
                 };
