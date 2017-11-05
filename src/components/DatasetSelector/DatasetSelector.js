@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick } from '../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './DatasetSelector.css';
@@ -28,4 +30,4 @@ DatasetSelector.propTypes = {
     onChange: PropTypes.func.isRequired,
 };
 
-export default DatasetSelector;
+export default withLifeCycleLogging.hoc()(DatasetSelector);

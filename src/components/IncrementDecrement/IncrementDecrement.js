@@ -12,6 +12,7 @@ import { ButtonGroup, Button, Glyphicon, DropdownButton, MenuItem } from 'react-
 
 import classNames from 'classnames';
 
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick } from '../utils';
 
 import './IncrementDecrement.css';
@@ -84,4 +85,4 @@ IncrementDecrement.defaultProps = {
     by: 1,
 };
 
-export default IncrementDecrement;
+export default withLifeCycleLogging.hoc()(IncrementDecrement);

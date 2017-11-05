@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import logger from '../../logger';
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick, bindFunctions } from '../utils';
 import TestDataLoader from '../TestDataLoader';
 // import FakeDataLoader from '../FakeDataLoader';
@@ -84,4 +85,4 @@ DataViewer.noDataState = {
     monthly: [],
 };
 
-export default DataViewer;
+export default withLifeCycleLogging.hoc()(DataViewer);

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
 
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick } from '../utils';
 import DataLoaderMode from '../DataLoaderMode';
 import FakeDataLoader from "../FakeDataLoader/FakeDataLoader";
@@ -45,4 +46,4 @@ TestDataLoader.propTypes = {
     onDidCatch: PropTypes.func.isRequired,
 };
 
-export default TestDataLoader;
+export default withLifeCycleLogging.hoc()(TestDataLoader);

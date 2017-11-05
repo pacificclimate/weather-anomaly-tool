@@ -12,6 +12,7 @@ import { LayerGroup, LayersControl, CircleMarker } from 'react-leaflet';
 
 import _ from 'lodash';
 
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick } from '../utils';
 import BCMap from '../BCMap';
 import MessageControl from '../MessageControl';
@@ -137,4 +138,4 @@ DataMap.defaultProps = {
     message: null,
 };
 
-export default DataMap;
+export default withLifeCycleLogging.hoc()(DataMap);

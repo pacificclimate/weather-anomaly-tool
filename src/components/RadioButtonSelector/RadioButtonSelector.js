@@ -11,6 +11,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import classNames from 'classnames';
+
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick } from '../utils';
 import './RadioButtonSelector.css';
 
@@ -58,4 +60,4 @@ RadioButtonSelector.defaultProps = {
     disabled: false,
 };
 
-export default RadioButtonSelector;
+export default withLifeCycleLogging.hoc({active: false})(RadioButtonSelector);

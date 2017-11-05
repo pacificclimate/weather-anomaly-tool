@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-bootstrap';
+
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick } from '../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './VariableSelector.css';
@@ -55,4 +57,4 @@ VariableSelector.tooltips = {
     tmax: <Tooltip id="tmax">Monthly average of daily maximum temperature</Tooltip>,
 };
 
-export default VariableSelector;
+export default withLifeCycleLogging.hoc()(VariableSelector);
