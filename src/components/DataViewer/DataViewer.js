@@ -73,6 +73,12 @@ DataViewer.propTypes = {
     onDataDidCatch: PropTypes.func,
 };
 
+DataViewer.defaultProps ={
+    onDataWillLoad: () => {},
+    onDataDidLoad: () => {},
+    onDataDidCatch: () => {},
+};
+
 DataViewer.noDataState = {
     baseline: [],
     monthly: [],
