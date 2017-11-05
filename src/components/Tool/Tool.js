@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import logger from '../../logger';
+import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { bindFunctions, pick } from '../utils';
 import DatasetSelector from '../DatasetSelector'
 import VariableSelector from '../VariableSelector'
@@ -23,13 +24,23 @@ class Tool extends Component {
             month: 6,
             dataLoading: false,
         };
-        bindFunctions(this, 'handleIncrementYear handleIncrementMonth handleDataIsLoading handleDataIsNotLoading');
+        bindFunctions(this, 'handleChangeVariable handleChangeDataset handleChangeMonth handleChangeYear handleIncrementYear handleIncrementMonth handleDataIsLoading handleDataIsNotLoading');
     }
 
-    makeHandleChange(item) {
-        return (function(value) {
-            this.setState({[item]: value});
-        }).bind(this);
+    handleChangeVariable(variable) {
+        this.setState({variable});
+    }
+
+    handleChangeDataset(dataset) {
+        this.setState({dataset});
+    }
+
+    handleChangeMonth(month) {
+        this.setState({month});
+    }
+
+    handleChangeYear(year) {
+        this.setState({year});
     }
 
     handleIncrementYear(by) {
@@ -54,7 +65,6 @@ class Tool extends Component {
     }
 
     render() {
-        logger.log(this);
         const isBaselineDataset = this.state.dataset === 'baseline';
         return (
             <Grid fluid className="Tool">
@@ -67,13 +77,13 @@ class Tool extends Component {
                                 <VariableSelector
                                     disabled={this.state.dataLoading}
                                     value={this.state.variable}
-                                    onChange={this.makeHandleChange('variable')}
+                                    onChange={this.handleChangeVariable}
                                 />
                             </Col>
                             <Col lg={4}>
                                 <DatasetSelector
                                     value={this.state.dataset}
-                                    onChange={this.makeHandleChange('dataset')}
+                                    onChange={this.handleChangeDataset}
                                 />
                             </Col>
                             <Col lg={2}/>
@@ -84,7 +94,7 @@ class Tool extends Component {
                                 <MonthSelector
                                     disabled={this.state.dataLoading}
                                     value={this.state.month}
-                                    onChange={this.makeHandleChange('month')}
+                                    onChange={this.handleChangeMonth}
                                 />
                             </Col>
                             <Col lg={4}>
@@ -104,7 +114,7 @@ class Tool extends Component {
                                     disabled={this.state.dataLoading}
                                     start={1970} end={2018}
                                     value={this.state.year}
-                                    onChange={this.makeHandleChange('year')}
+                                    onChange={this.handleChangeYear}
                                 />
                             </Col>
                             <Col lg={4}>
@@ -132,4 +142,4 @@ class Tool extends Component {
     }
 }
 
-export default Tool;
+export default withLifeCycleLogging.hoc()(Tool);
