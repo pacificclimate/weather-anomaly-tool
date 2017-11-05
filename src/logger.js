@@ -76,4 +76,7 @@ const nameFromStackLine = /^\s*at (?:\w+\.)?(\w+) .*$/;
     Logger.prototype[name] = method;
 });
 
-export default new Logger();
+const logger = new Logger();
+logger.configure({active: !process.env.CI || process.env.CI === 'log'});
+
+export default logger;
