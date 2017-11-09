@@ -123,10 +123,8 @@ class DataMap extends PureComponent {
         super(props);
         this.state = {
             showFaderControls: false,
-            fader: {
-                color: '#777777',
-                opacity: 0.5,
-            }
+            faderColor: '#777777',
+            faderOpacity: 0.5,
         };
 
         this.baselineMarkers = [];  // Necessary?
@@ -143,7 +141,7 @@ class DataMap extends PureComponent {
         this.faderLayer = component.leafletElement;
         this.faderLayer.createTile = () => {
             const tile = document.createElement('div');
-            tile.style.background = this.state.fader.color;
+            tile.style.background = this.state.faderColor;
             // tile.style.background = '#000000';
             // tile.style.background = '#ffffff';
             return tile;
@@ -186,15 +184,13 @@ class DataMap extends PureComponent {
                         style={{width: '20%', display: 'inline'}}
                         type={'range'}
                         min={0} max={1} step={0.05}
-                        value={this.state.fader.opacity}
+                        value={this.state.faderOpacity}
                         onChange={e => {
-                            this.setState({
-                                fader: {...this.state.fader, opacity: e.target.value}
-                            });
+                            this.setState({faderOpacity: e.target.value});
                         }}
                     />
                     <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
-                        ({this.state.fader.opacity})
+                        ({this.state.faderOpacity})
                     </span>
                     <ControlLabel>Color </ControlLabel>{' '}
                     <RadioButtonSelector
@@ -204,10 +200,10 @@ class DataMap extends PureComponent {
                             { label: 'Grey', value: '#777777' },
                             { label: 'White', value: 'white' },
                         ]}
-                        value={this.state.fader.color}
-                        onChange={value => {
+                        value={this.state.faderColor}
+                        onChange={faderColor => {
                             this.setState(
-                                {fader: {...this.state.fader, color: value,}},
+                                {faderColor},
                                 () => { this.faderLayer.redraw(); }
                             );
 
@@ -218,7 +214,7 @@ class DataMap extends PureComponent {
                 <BCMap mapRef={this.handleRefMap}>
                     <LayersControl position='topright'>
                         <LayersControl.Overlay name='Fader' checked>
-                            <GridLayer ref={this.handleRefFaderLayer} opacity={this.state.fader.opacity}/>
+                            <GridLayer ref={this.handleRefFaderLayer} opacity={this.state.faderOpacity}/>
                         </LayersControl.Overlay>
                         <LayersControl.Overlay name='Baseline stations'>
                             <LayerGroup>
