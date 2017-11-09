@@ -56,7 +56,7 @@ class DataViewer extends PureComponent {
                     onDataWillLoad={this.handleDataWillLoad}
                     onDataDidLoad={this.handleDataDidLoad}
                     onDidCatch={this.handleDidCatch}
-                    errorTest
+                    // errorTest
                 />
                 <DataMap
                     {...pick(this.props, 'dataset variable')}
