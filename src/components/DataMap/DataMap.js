@@ -6,12 +6,10 @@
 // For prop definitions, see comments in BCMap.propTypes.
 
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Checkbox, FormControl, ControlLabel } from 'react-bootstrap';
+import { FormControl, ControlLabel } from 'react-bootstrap';
 
 import { LayerGroup, LayersControl, GridLayer, CircleMarker } from 'react-leaflet';
-import L from 'leaflet';
 
 import _ from 'lodash';
 
@@ -134,16 +132,11 @@ class DataMap extends PureComponent {
         this.baselineMarkers = [];  // Necessary?
 
         // Bind event handlers
-        bindFunctions(this, 'handleMapFaderControlChange handleRefMap handleRefFaderLayer');
+        bindFunctions(this, 'handleMapFaderControlChange handleRefFaderLayer');
     }
 
     handleMapFaderControlChange(showFaderControls) {
         this.setState({showFaderControls});
-    }
-
-    // TODO: Remove?
-    handleRefMap(component) {
-        this.map = component.leafletElement;
     }
 
     handleRefFaderLayer(component) {
@@ -181,18 +174,6 @@ class DataMap extends PureComponent {
         }
         return stations;
     }
-
-    // TODO: Remove
-    // componentDidUpdate(prevProps) {
-    //     console.log('DataMap.componentDidUpdate', this.props);
-    //     if (this.dataChanged(prevProps)) {
-    //         this.removeAllStationMarkers();
-    //         this.addAllStationMarkers();
-    //     }
-    //     if (this.messageChanged(prevProps)) {
-    //         this.updateMessageControl(this.props.message);
-    //     }
-    // }
 
     render() {
         return (
