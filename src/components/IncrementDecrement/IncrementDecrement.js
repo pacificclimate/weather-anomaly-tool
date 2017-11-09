@@ -6,23 +6,32 @@
 // Increment/decrement amount can be a single fixed number, or can be selected by dropdown control
 // from an array of numbers, according to the type of property `by`.
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonGroup, Button, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import classNames from 'classnames';
 
 import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
-import { pick } from '../utils';
+import { bindFunctions, pick } from '../utils';
 
 import './IncrementDecrement.css';
 
-class IncrementDecrement extends Component {
+class IncrementDecrement extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             by: Array.isArray(this.props.by) ? this.props.by[0] : this.props.by,
         };
+        bindFunctions(this, 'onDecrement onIncrement')
+    }
+
+    onDecrement() {
+        this.props.onIncrement(-this.state.by)
+    }
+
+    onIncrement() {
+        this.props.onIncrement(this.state.by)
     }
 
     render() {
@@ -48,7 +57,7 @@ class IncrementDecrement extends Component {
                 <Button
                     bsSize={this.props.bsSize}
                     disabled={this.props.disabled}
-                    onClick={() => this.props.onIncrement(-this.state.by)}
+                    onClick={this.onDecrement}
                 >
                     <Glyphicon glyph={'minus'}/>
                 </Button>
@@ -56,7 +65,7 @@ class IncrementDecrement extends Component {
                 <Button
                     bsSize={this.props.bsSize}
                     disabled={this.props.disabled}
-                    onClick={() => this.props.onIncrement(this.state.by)}
+                    onClick={this.onIncrement}
                 >
                     <Glyphicon glyph={'plus'}/>
                 </Button>
