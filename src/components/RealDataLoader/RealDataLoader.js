@@ -5,7 +5,6 @@ import { Row } from 'react-bootstrap';
 import _ from 'lodash';
 
 import logger from '../../logger';
-import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { bindFunctions } from '../utils';
 import { getBaselineData, getMonthlyData } from '../../data-services/weather-anomaly-data-service';
 
@@ -90,4 +89,4 @@ RealDataLoader.defaultProps = {
     errorTest: false,
 };
 
-export default withLifeCycleLogging.hoc()(RealDataLoader);
+export default RealDataLoader;

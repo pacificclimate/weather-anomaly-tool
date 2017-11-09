@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
-import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { bindFunctions, pick } from '../utils';
 
 import './MonthSelector.css';
@@ -67,4 +66,4 @@ MonthSelector.defaultProps = {
 };
 
 
-export default withLifeCycleLogging.hoc()(MonthSelector);
+export default MonthSelector;

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import logger from '../../logger';
-import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { bindFunctions, pick } from '../utils';
 import DatasetSelector from '../DatasetSelector'
 import VariableSelector from '../VariableSelector'
@@ -142,4 +141,4 @@ class Tool extends PureComponent {
     }
 }
 
-export default withLifeCycleLogging.hoc()(Tool);
+export default Tool;

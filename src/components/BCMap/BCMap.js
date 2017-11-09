@@ -16,7 +16,6 @@ import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 
 import './BCMap.css';
 
@@ -86,4 +85,4 @@ BCMap.initial = {
     zoom: 2,
 };
 
-export default withLifeCycleLogging.hoc()(BCMap);
+export default BCMap;

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import logger from '../../logger';
 import Header from '../Header';
 import Tool from '../Tool'
@@ -20,4 +19,4 @@ class App extends Component {
     }
 }
 
-export default withLifeCycleLogging.hoc()(App);
+export default App;

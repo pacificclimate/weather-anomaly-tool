@@ -5,7 +5,6 @@ import { Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 
 import logger from '../../logger';
-import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import './FakeDataLoader.css';
 
 import baseline_precip_1 from './dummy-data/baseline-precip-1.json';
@@ -131,4 +130,4 @@ FakeDataLoader.propTypes = {
     onDidCatch: PropTypes.func.isRequired,
 };
 
-export default withLifeCycleLogging.hoc()(FakeDataLoader);
+export default FakeDataLoader;
