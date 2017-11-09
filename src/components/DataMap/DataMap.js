@@ -5,7 +5,7 @@
 //
 // For prop definitions, see comments in BCMap.propTypes.
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { LayerGroup, LayersControl, CircleMarker } from 'react-leaflet';
@@ -69,7 +69,7 @@ function StationDataMarkers({variable, stations}) {
     );
 }
 
-class DataMap extends Component {
+class DataMap extends PureComponent {
     stationsForDataset() {
         // Return a set of stations determined by `this.props.dataset`.
         // For `baseline` and `monthly`, return the respective station sets.

@@ -10,7 +10,6 @@ logger.configure({active: true});
 
 class App extends Component {
     render() {
-        logger.log(this);
         return (
             <div className="App">
                 <Header/>

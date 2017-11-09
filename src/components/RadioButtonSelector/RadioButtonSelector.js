@@ -1,25 +1,32 @@
 // RadioButtonSelector - a component that provides a selector as a vertical scrollable list of (radio) buttons.
 //
 // For prop definitions, see RadioButtonSelector.propTypes
+//
+// CAUTION: This is a PureComponent, and therefore props.options must be an immutable value, or
+// else PureComponent's shallow comparison will not pick up changes to it and not update correctly.
+// In present use, this is the case.
 
 // TODO: Add props.style and pass thru to ToggleButtonGroup
 // TODO: Add prop for option item height?
 // TODO: (as called for) Make vertical a prop
 // TODO: Use inline styles only
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import classNames from 'classnames';
+
 import { pick } from '../utils';
 import './RadioButtonSelector.css';
 
-class RadioButtonSelector extends Component {
+class RadioButtonSelector extends PureComponent {
     render() {
         const toggleButtons = this.props.options.map((option) => (
             <ToggleButton
                 className={classNames('RadioButtonSelector-button', this.props.className)}
-                key={option.value} value={option.value}
+                disabled={this.props.disabled}
+                key={option.value}
+                value={option.value}
             >
                 {option.label}
             </ToggleButton>
@@ -39,6 +46,8 @@ class RadioButtonSelector extends Component {
 }
 
 RadioButtonSelector.propTypes = {
+    disabled: PropTypes.bool,
+    // Is control disabled
     name: PropTypes.string.isRequired,
     // An HTML <input> name for each child button
     options: PropTypes.array.isRequired,
@@ -51,7 +60,7 @@ RadioButtonSelector.propTypes = {
 };
 
 RadioButtonSelector.defaultProps = {
-    height: 10,
+    disabled: false,
 };
 
 export default RadioButtonSelector;

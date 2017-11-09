@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Row } from 'react-bootstrap';
 
@@ -10,7 +10,7 @@ import { getBaselineData, getMonthlyData } from '../../data-services/weather-ano
 
 import './RealDataLoader.css';
 
-class RealDataLoader extends Component {
+class RealDataLoader extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -37,7 +37,7 @@ class RealDataLoader extends Component {
         this.setState({loading: true});
         this.props.onDataWillLoad();
 
-        // This may be inefficient when only month changes
+        // TODO: Don't reload baseline data when month doesn't change
         const baselineP = getBaselineData(variable, this.props.errorTest && month === 12 ? 13: month);
         const monthlyP = getMonthlyData(variable, year, month);
         Promise.all([baselineP, monthlyP]).then(this.dataDidLoad).catch(this.dataLoadError);

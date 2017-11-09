@@ -1,16 +1,16 @@
 // TODO: YearSelector and MonthSelector are nearly identical. Use a HOC for them both.
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
-import { bindFunctions } from '../utils';
+import { bindFunctions, pick } from '../utils';
 
 import './YearSelector.css';
 
 
-class YearSelector extends Component {
+class YearSelector extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,7 +32,7 @@ class YearSelector extends Component {
     render() {
         return (
             <InputRange
-                className={this.props.className}
+                {...pick(this.props, 'className disabled')}
                 minValue={this.props.start}
                 maxValue={this.props.end}
                 value={this.state.value}
@@ -44,6 +44,8 @@ class YearSelector extends Component {
 }
 
 YearSelector.propTypes = {
+    disabled: PropTypes.bool,
+    // Is control disabled
     start: PropTypes.number,
     // Start year
     end: PropTypes.number,
@@ -55,6 +57,7 @@ YearSelector.propTypes = {
 };
 
 YearSelector.defaultProps = {
+    disabled: false,
     start: 1970,
     end: 2018,
 };

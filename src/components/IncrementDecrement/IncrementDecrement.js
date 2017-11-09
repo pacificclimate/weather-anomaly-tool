@@ -6,22 +6,31 @@
 // Increment/decrement amount can be a single fixed number, or can be selected by dropdown control
 // from an array of numbers, according to the type of property `by`.
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonGroup, Button, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import classNames from 'classnames';
 
-import { pick } from '../utils';
+import { bindFunctions, pick } from '../utils';
 
 import './IncrementDecrement.css';
 
-class IncrementDecrement extends Component {
+class IncrementDecrement extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             by: Array.isArray(this.props.by) ? this.props.by[0] : this.props.by,
         };
+        bindFunctions(this, 'onDecrement onIncrement')
+    }
+
+    onDecrement() {
+        this.props.onIncrement(-this.state.by)
+    }
+
+    onIncrement() {
+        this.props.onIncrement(this.state.by)
     }
 
     render() {
@@ -41,12 +50,22 @@ class IncrementDecrement extends Component {
         }
 
         return (
-            <ButtonGroup className={classNames('IncrementDecrement', this.props.className)}>
-                <Button bsSize={this.props.bsSize} onClick={() => this.props.onIncrement(-this.state.by)}>
+            <ButtonGroup
+                className={classNames('IncrementDecrement', this.props.className)}
+            >
+                <Button
+                    bsSize={this.props.bsSize}
+                    disabled={this.props.disabled}
+                    onClick={this.onDecrement}
+                >
                     <Glyphicon glyph={'minus'}/>
                 </Button>
                 {selector}
-                <Button bsSize={this.props.bsSize} onClick={() => this.props.onIncrement(this.state.by)}>
+                <Button
+                    bsSize={this.props.bsSize}
+                    disabled={this.props.disabled}
+                    onClick={this.onIncrement}
+                >
                     <Glyphicon glyph={'plus'}/>
                 </Button>
             </ButtonGroup>
@@ -55,6 +74,8 @@ class IncrementDecrement extends Component {
 }
 
 IncrementDecrement.propTypes = {
+    disabled: PropTypes.bool,
+    // Is control disabled
     by: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.arrayOf(PropTypes.number)
@@ -68,6 +89,7 @@ IncrementDecrement.propTypes = {
 };
 
 IncrementDecrement.defaultProps = {
+    disabled: false,
     by: 1,
 };
 

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 import './StationPopup.css';
 
 const unitsForVariable = {
-    'precip': 'mm/day',
+    'precip': 'mm/mon',
     'tmin': 'C',
     'tmax': 'C',
 };
@@ -14,7 +14,7 @@ const decimalPlacesForVariable = {
     'tmax': 2,
 };
 
-class StationPopup extends Component {
+class StationPopup extends PureComponent {
     render() {
         const units = unitsForVariable[this.props.variable];
         const decimalPlaces = decimalPlacesForVariable[this.props.variable];
