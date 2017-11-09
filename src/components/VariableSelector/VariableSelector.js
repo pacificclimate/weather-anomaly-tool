@@ -1,24 +1,25 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-bootstrap';
+
 import { pick } from '../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './VariableSelector.css';
 
 
-class VariableSelector extends Component {
+const variables = [
+    { value: 'precip', label: 'Precipitation', },
+    { value: 'tmin', label: <span>T<sub>min</sub></span>, },
+    { value: 'tmax', label: <span>T<sub>max</sub></span>, },
+];
+
+class VariableSelector extends PureComponent {
     render() {
-        const variables = [
-            { value: 'precip', label: 'Precipitation', },
-            { value: 'tmin', label: <span>T<sub>min</sub></span>, },
-            { value: 'tmax', label: <span>T<sub>max</sub></span>, },
-        ];
         return (
             <RadioButtonSelector
-                className={this.props.className}
+                {...pick(this.props, 'className disabled value onChange')}
                 name="variable"
                 options={variables}
-                {...pick(this.props, 'value onChange')}
             />
             // <div>
             //     <ToggleButtonGroup
@@ -42,8 +43,12 @@ class VariableSelector extends Component {
 }
 
 VariableSelector.propTypes = {
+    disabled: PropTypes.bool,
+    // Is control disabled
     value: PropTypes.string,
+    // Current value of control
     onChange: PropTypes.func,
+    // Callback when new option selected
 };
 
 VariableSelector.tooltips = {

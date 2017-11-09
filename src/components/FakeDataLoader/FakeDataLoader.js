@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import _ from 'lodash';
 
+import logger from '../../logger';
 import './FakeDataLoader.css';
 
 import baseline_precip_1 from './dummy-data/baseline-precip-1.json';
@@ -25,15 +26,15 @@ let index = 0;
 
 // Placeholder for real async data retrieval
 function getFakeData(delay, failProb) {
-    console.log('getFakeData', {time:  (new Date()).getSeconds(), delay, failProb});
+    logger.log(this, {delay, failProb});
     return new Promise((resolve, reject) => {
         setTimeout(function() {
             if (Math.random() >= failProb) {
-                console.log('getFakeData: resolving', {time: (new Date()).getSeconds(), index});
+                logger.log(this, 'getFakeData: resolving', {time: (new Date()).getSeconds(), index});
                 resolve(data[index]);
                 index = (index + 1) % data.length;
             } else {
-                console.log('getFakeData: rejecting', {time: (new Date()).getSeconds()});
+                logger.log(this, 'getFakeData: rejecting', {time: (new Date()).getSeconds()});
                 reject(new Error('You lose'))
             }
         }, delay);
@@ -53,7 +54,7 @@ class FakeDataLoader extends Component {
     }
 
     loadData() {
-        console.log('FakeDataLoader.loadData', this.state, this.props);
+        logger.log(this, this.state, this.props);
 
         this.setState({loading: true});
         this.props.onDataWillLoad();
@@ -68,12 +69,12 @@ class FakeDataLoader extends Component {
     }
 
     componentDidMount() {
-        console.log('FakeDataLoader.componentDidMount', this.props);
+        logger.log(this, this.props);
         this.loadData();
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('FakeDataLoader.componentWillReceiveProps', nextProps);
+        logger.log(this, nextProps);
         const checkKeys = 'variable year month'.split(' ');
         if (!_.isEqual(_.pick(nextProps, checkKeys), _.pick(this.props, checkKeys))) {
             this.loadData();

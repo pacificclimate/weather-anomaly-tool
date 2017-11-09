@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MonthSelector from '../MonthSelector';
+import IncrementDecrement from '../';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
-        <MonthSelector
-            value={1}
-            onChange={() => {}}
+        <IncrementDecrement
+            id="test"
+            onDecrement={() => {}}
+            onIncrement={() => {}}
         />,
         div
     );
