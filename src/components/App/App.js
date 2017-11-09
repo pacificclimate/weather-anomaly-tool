@@ -7,7 +7,7 @@ import Tool from '../Tool'
 
 import './App.css';
 
-logger.configure({active: !!process.env.LOGGING});
+logger.configure({active: true});
 
 class App extends Component {
     render() {
