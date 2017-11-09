@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import logger from '../../logger';
@@ -14,7 +14,7 @@ import DataViewer from '../DataViewer';
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 
-class Tool extends Component {
+class Tool extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
