@@ -17,7 +17,7 @@ import _ from 'lodash';
 
 import { bindFunctions, pick } from '../utils';
 import BCMap from '../BCMap';
-import MessageControl from '../MessageControl';
+import StaticControl from '../StaticControl';
 import StationPopup from '../StationPopup';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './DataMap.css';
@@ -177,35 +177,6 @@ class DataMap extends PureComponent {
         return stations;
     }
 
-    createFaderControl() {
-        const faderControl = this.faderControl = L.control();
-
-        faderControl.onAdd = map => {
-            this.container = L.DomUtil.create('div', 'DataMap-message leaflet-control-layers');
-            ReactDOM.render(
-                <label>
-                    <Checkbox
-                        value={this.state.showFaderControls}
-                        onChange={e => {
-                            console.log('####', e.target.checked);
-                            this.setState({showFaderControls: e.target.checked});
-                        }}
-                    >
-                        Basemap fader controls
-                    </Checkbox>
-                </label>,
-                this.container);
-            return this.container;
-        };
-
-        faderControl.addTo(this.map);
-    }
-
-    componentDidMount() {
-        console.log('DataMap.componentDidMount', this.props);
-        this.createFaderControl();
-    }
-
     // TODO: Remove
     // componentDidUpdate(prevProps) {
     //     console.log('DataMap.componentDidUpdate', this.props);
@@ -283,7 +254,20 @@ class DataMap extends PureComponent {
                             </LayerGroup>
                         </LayersControl.Overlay>
                     </LayersControl>
-                    {this.props.message && <MessageControl position='topright'>{this.props.message}</MessageControl>}
+                    {this.props.message && <StaticControl position='topright'>{this.props.message}</StaticControl>}
+                    <StaticControl>
+                        <label>
+                            <Checkbox
+                                value={this.state.showFaderControls}
+                                onChange={e => {
+                                    console.log('####', e.target.checked);
+                                    this.setState({showFaderControls: e.target.checked});
+                                }}
+                            >
+                                Basemap fader controls
+                            </Checkbox>
+                        </label>
+                    </StaticControl>
                 </BCMap>
 
             </div>
