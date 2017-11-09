@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
-import logger from '../../logger';
 import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { bindFunctions, pick } from '../utils';
 
