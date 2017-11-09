@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-bootstrap';
 
@@ -8,13 +8,14 @@ import RadioButtonSelector from '../RadioButtonSelector';
 import './VariableSelector.css';
 
 
-class VariableSelector extends Component {
+const variables = [
+    { value: 'precip', label: 'Precipitation', },
+    { value: 'tmin', label: <span>T<sub>min</sub></span>, },
+    { value: 'tmax', label: <span>T<sub>max</sub></span>, },
+];
+
+class VariableSelector extends PureComponent {
     render() {
-        const variables = [
-            { value: 'precip', label: 'Precipitation', },
-            { value: 'tmin', label: <span>T<sub>min</sub></span>, },
-            { value: 'tmax', label: <span>T<sub>max</sub></span>, },
-        ];
         return (
             <RadioButtonSelector
                 {...pick(this.props, 'className disabled value onChange')}
