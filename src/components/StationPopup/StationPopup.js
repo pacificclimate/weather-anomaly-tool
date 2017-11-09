@@ -4,7 +4,7 @@ import { Popup } from 'react-leaflet'
 import './StationPopup.css';
 
 const unitsForVariable = {
-    'precip': 'mm/day',
+    'precip': 'mm/mon',
     'tmin': 'C',
     'tmax': 'C',
 };
