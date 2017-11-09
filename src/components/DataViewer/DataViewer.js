@@ -5,10 +5,16 @@ import logger from '../../logger';
 import withLifeCycleLogging from '../../HOCs/withLifeCycleLogging';
 import { pick, bindFunctions } from '../utils';
 import TestDataLoader from '../TestDataLoader';
-// import FakeDataLoader from '../FakeDataLoader';
+import FakeDataLoader from '../FakeDataLoader';
 import RealDataLoader from '../RealDataLoader';
 import DataMap from '../DataMap';
 import './DataViewer.css';
+
+const DataLoader = {
+    'test': TestDataLoader,
+    'fake': FakeDataLoader,
+    'real': RealDataLoader,
+}[process.env.DATA_LOADER || 'real'];
 
 class DataViewer extends PureComponent {
     constructor(props) {
@@ -46,7 +52,7 @@ class DataViewer extends PureComponent {
     render() {
         return (
             <div>
-                <TestDataLoader
+                <DataLoader
                     {...pick(this.props, 'variable year month')}
                     onDataWillLoad={this.handleDataWillLoad}
                     onDataDidLoad={this.handleDataDidLoad}
@@ -54,10 +60,8 @@ class DataViewer extends PureComponent {
                     errorTest
                 />
                 <DataMap
-                    {...{
-                        ...pick(this.props, 'dataset variable'),
-                        ...pick(this.state, 'baseline monthly message'),
-                    }}
+                    {...pick(this.props, 'dataset variable')}
+                    {...pick(this.state, 'baseline monthly message')}
                 />
             </div>
         );
