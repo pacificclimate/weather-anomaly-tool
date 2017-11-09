@@ -1,6 +1,6 @@
 // TODO: YearSelector and MonthSelector are nearly identical. Use a HOC for them both.
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
@@ -11,7 +11,7 @@ import { bindFunctions, pick } from '../utils';
 import './YearSelector.css';
 
 
-class YearSelector extends Component {
+class YearSelector extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
