@@ -18,6 +18,7 @@ import _ from 'lodash';
 import { bindFunctions, pick } from '../utils';
 import BCMap from '../BCMap';
 import StaticControl from '../StaticControl';
+import MapFaderControl from '../MapFaderControl';
 import StationPopup from '../StationPopup';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './DataMap.css';
@@ -133,7 +134,11 @@ class DataMap extends PureComponent {
         this.baselineMarkers = [];  // Necessary?
 
         // Bind event handlers
-        bindFunctions(this, 'handleRefMap handleRefFaderLayer');
+        bindFunctions(this, 'handleMapFaderControlChange handleRefMap handleRefFaderLayer');
+    }
+
+    handleMapFaderControlChange(showFaderControls) {
+        this.setState({showFaderControls});
     }
 
     // TODO: Remove?
@@ -255,19 +260,10 @@ class DataMap extends PureComponent {
                         </LayersControl.Overlay>
                     </LayersControl>
                     {this.props.message && <StaticControl position='topright'>{this.props.message}</StaticControl>}
-                    <StaticControl>
-                        <label>
-                            <Checkbox
-                                value={this.state.showFaderControls}
-                                onChange={e => {
-                                    console.log('####', e.target.checked);
-                                    this.setState({showFaderControls: e.target.checked});
-                                }}
-                            >
-                                Basemap fader controls
-                            </Checkbox>
-                        </label>
-                    </StaticControl>
+                    <MapFaderControl
+                        value={this.state.showFaderControls}
+                        onChange={this.handleMapFaderControlChange}
+                    />
                 </BCMap>
 
             </div>
