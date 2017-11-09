@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Row } from 'react-bootstrap';
 
@@ -11,7 +11,7 @@ import { getBaselineData, getMonthlyData } from '../../data-services/weather-ano
 
 import './RealDataLoader.css';
 
-class RealDataLoader extends Component {
+class RealDataLoader extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
