@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import logger from '../../logger';
@@ -10,7 +10,7 @@ import RealDataLoader from '../RealDataLoader';
 import DataMap from '../DataMap';
 import './DataViewer.css';
 
-class DataViewer extends Component {
+class DataViewer extends PureComponent {
     constructor(props) {
         super(props);
         this.state = DataViewer.noDataState;
