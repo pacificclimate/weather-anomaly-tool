@@ -1,6 +1,6 @@
 // TODO: YearSelector and MonthSelector are nearly identical. Use a HOC for them both.
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
@@ -14,7 +14,7 @@ import './MonthSelector.css';
 const monthNames = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
 const formatLabel = value => monthNames[value-1];
 
-class MonthSelector extends Component {
+class MonthSelector extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
