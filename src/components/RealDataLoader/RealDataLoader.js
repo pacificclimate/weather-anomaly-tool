@@ -38,7 +38,7 @@ class RealDataLoader extends PureComponent {
         this.setState({loading: true});
         this.props.onDataWillLoad();
 
-        // This may be inefficient when only month changes
+        // TODO: Don't reload baseline data when month doesn't change
         const baselineP = getBaselineData(variable, this.props.errorTest && month === 12 ? 13: month);
         const monthlyP = getMonthlyData(variable, year, month);
         Promise.all([baselineP, monthlyP]).then(this.dataDidLoad).catch(this.dataLoadError);
