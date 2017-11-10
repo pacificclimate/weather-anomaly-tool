@@ -22,3 +22,5 @@ To run the Docker image locally (at port 3001):
 ```bash
 docker run -d -p 3001:3000 --name weather-anomaly-tool weather-anomaly-tool
 ```
+
+Insignificant change to trigger a DockerHub build
