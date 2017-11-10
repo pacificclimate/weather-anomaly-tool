@@ -1,12 +1,23 @@
 FROM node:latest
+# Should probably base on a specific version, not :latest
 
 MAINTAINER Rod Glover <rglover@uvic.ca>
 
-ADD . /app
-WORKDIR /app
+COPY . .
+# Consider alternative:
+# COPY . /app
+# WORKDIR /app
 
+# Install the app dependencies
 RUN npm install --quiet
 
-EXPOSE 3000
+# Build production version of app
+RUN npm run build --production
 
-CMD npm start
+# Install `serve` to run the application.
+RUN npm install -g serve
+
+# Start the node server
+CMD serve -s build
+
+EXPOSE 5000
