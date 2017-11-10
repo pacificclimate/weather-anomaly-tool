@@ -7,7 +7,6 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormControl, ControlLabel } from 'react-bootstrap';
 
 import { LayerGroup, LayersControl, GridLayer, CircleMarker } from 'react-leaflet';
 
@@ -18,7 +17,6 @@ import BCMap from '../BCMap';
 import StaticControl from '../StaticControl';
 import MapFaderControl from '../MapFaderControl';
 import StationPopup from '../StationPopup';
-import RadioButtonSelector from '../RadioButtonSelector';
 import './DataMap.css';
 
 const datasetToDataValueName = {'anomaly': 'anomaly', 'monthly': 'statistic', 'baseline': 'datum'};
@@ -122,19 +120,22 @@ class DataMap extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            showFaderControls: false,
             faderColor: '#777777',
-            faderOpacity: 0.5,
+            faderOpacity: 0.6,
         };
 
         this.baselineMarkers = [];  // Necessary?
 
         // Bind event handlers
-        bindFunctions(this, 'handleMapFaderControlChange handleRefFaderLayer');
+        bindFunctions(this, 'handleMapFaderChangeColor handleMapFaderChangeOpacity handleRefFaderLayer');
     }
 
-    handleMapFaderControlChange(showFaderControls) {
-        this.setState({showFaderControls});
+    handleMapFaderChangeColor(faderColor) {
+        this.setState({faderColor}, () => this.faderLayer.redraw());
+    }
+
+    handleMapFaderChangeOpacity(faderOpacity) {
+        this.setState({faderOpacity});
     }
 
     handleRefFaderLayer(component) {
@@ -176,41 +177,6 @@ class DataMap extends PureComponent {
     render() {
         return (
             <div>
-                {this.state.showFaderControls &&
-                <div>
-                    <ControlLabel>Base map fader:</ControlLabel>{' '}
-                    <ControlLabel>Opacity </ControlLabel>{' '}
-                    <FormControl
-                        style={{width: '20%', display: 'inline'}}
-                        type={'range'}
-                        min={0} max={1} step={0.05}
-                        value={this.state.faderOpacity}
-                        onChange={e => {
-                            this.setState({faderOpacity: e.target.value});
-                        }}
-                    />
-                    <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
-                        ({this.state.faderOpacity})
-                    </span>
-                    <ControlLabel>Color </ControlLabel>{' '}
-                    <RadioButtonSelector
-                        name={'fader-color'}
-                        options={[
-                            { label: 'Black', value: 'black' },
-                            { label: 'Grey', value: '#777777' },
-                            { label: 'White', value: 'white' },
-                        ]}
-                        value={this.state.faderColor}
-                        onChange={faderColor => {
-                            this.setState(
-                                {faderColor},
-                                () => { this.faderLayer.redraw(); }
-                            );
-
-                        }}
-                    />
-                </div>}
-
                 <BCMap mapRef={this.handleRefMap}>
                     <LayersControl position='topright'>
                         <LayersControl.Overlay name='Fader' checked>
@@ -238,11 +204,12 @@ class DataMap extends PureComponent {
                     </LayersControl>
                     {this.props.message && <StaticControl position='topright'>{this.props.message}</StaticControl>}
                     <MapFaderControl
-                        value={this.state.showFaderControls}
-                        onChange={this.handleMapFaderControlChange}
+                        faderColor={this.state.faderColor}
+                        faderOpacity={this.state.faderOpacity}
+                        onChangeFaderColor={this.handleMapFaderChangeColor}
+                        onChangeFaderOpacity={this.handleMapFaderChangeOpacity}
                     />
                 </BCMap>
-
             </div>
         );
     }
