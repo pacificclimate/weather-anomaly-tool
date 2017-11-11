@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { FormControl, ControlLabel } from 'react-bootstrap';
 
 import { bindFunctions } from '../utils';
@@ -26,7 +27,7 @@ class MapFaderControl extends PureComponent {
     }
 
     handleChangeOpacity(event) {
-        this.props.onChangeFaderOpacity(event.target.value);
+        this.props.onChangeFaderOpacity(+event.target.value);
     }
 
     render() {
@@ -36,32 +37,46 @@ class MapFaderControl extends PureComponent {
                         onMouseEnter={this.handleMouseEnter}
                         onMouseLeave={this.handleMouseLeave}
                     >
-                        Basemap Fader
+                        <Row>
+                            <Col lg={12}>Basemap Fader</Col>
+                        </Row>
+
                         {this.state.showControls &&
-                        <div>
-                            <ControlLabel>Opacity </ControlLabel>{' '}
-                            <FormControl
-                                style={{width: '10em', display: 'inline'}}
-                                type={'range'}
-                                min={0} max={1} step={0.05}
-                                value={this.props.faderOpacity}
-                                onChange={this.handleChangeOpacity}
-                            />
-                            <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
-                                ({this.props.faderOpacity})
-                            </span>
-                            <ControlLabel>Color </ControlLabel>{' '}
-                            <RadioButtonSelector
-                                name={'fader-color'}
-                                options={[
-                                    {label: 'Black', value: 'black'},
-                                    {label: 'Grey', value: '#777777'},
-                                    {label: 'White', value: 'white'},
-                                ]}
-                                value={this.props.faderColor}
-                                onChange={this.props.onChangeFaderColor}
-                            />
-                        </div>}
+                        <Row>
+                            <Col lg={2}>Color</Col>
+                            <Col lg={10}>
+                                <RadioButtonSelector
+                                    name={'fader-color'}
+                                    options={[
+                                        {label: 'Black', value: 'black'},
+                                        {label: 'Grey', value: '#777777'},
+                                        {label: 'White', value: 'white'},
+                                    ]}
+                                    value={this.props.faderColor}
+                                    bsSize={'xsmall'}
+                                    onChange={this.props.onChangeFaderColor}
+                                />
+                            </Col>
+                        </Row>
+                        }
+
+                        {this.state.showControls &&
+                        <Row>
+                            <Col lg={2}>Opacity</Col>
+                            <Col lg={10}>
+                                <FormControl
+                                    style={{width: '10em', display: 'inline'}}
+                                    type={'range'}
+                                    min={0} max={1} step={0.05}
+                                    value={this.props.faderOpacity}
+                                    onChange={this.handleChangeOpacity}
+                                />
+                                <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
+                                    ({this.props.faderOpacity})
+                                </span>
+                            </Col>
+                        </Row>
+                        }
                     </div>
                 </StaticControl>
         );
