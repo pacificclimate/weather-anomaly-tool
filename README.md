@@ -56,7 +56,9 @@ docker run -d --restart=unless-stopped -p 30010:5000 --name weather-anomaly-tool
 
 ### Problems enountered
 
-This documents for posterity the problems encountered by a relative Docker noob in getting this working.
+This documents for posterity the problems encountered by a relative React and Docker noob in getting this working.
+
+#### Resource limitations when running React dev server
 
 Initial attempt at Dockerizing this app cribbed directly from climate-explorer-frontend, which runs a React dev server
 in the Docker container:
@@ -137,5 +139,32 @@ Alternatives for fixing:
     * ADD vs COPY in Dockerfile: Use COPY.
         * [From the horse's mouth](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#env)
         * [Dockerfile: ADD vs COPY](https://www.ctl.io/developers/blog/post/dockerfile-add-vs-copy/)
+        
+**Solution**: Create and run a production build in the Dockerfile
 
+#### Problems with relative paths
+
+When our proxy server is used to give a nice public URL to this app running in a container on `docker-dev01/prod`, 
+the proxied app requests resources from the (proxy) server root, not from the proxied relative path.
+Specifically, requests that should go to `https://services.pacificclimate.org/demo/weather-anomaly-viewer/static/`
+are instead going to `https://services.pacificclimate.org/static/`.
+
+This may not be entirely -- or at all -- a problem with the HAProxy configuration. Instead, webpack may be building
+the app so that it requests resources from the server root.
+
+Looks like this may help towards a solution: 
+https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#building-for-relative-paths
+
+* In particular, it looks like `"homepage": "."` may do the trick.
+    * Added that to `package.json` as directed, and tried locally. Worked (in the trivial sense that it didn't break
+    locally).
+    * Deployed to `docker-dev01`. Resulted in the resource requests being redirected to 
+    `https://services.pacificclimate.org/demo/static/` instead of to the desired 
+    `https://services.pacificclimate.org/demo/weather-anomaly-viewer/static/`
+    * Question: Is there also an error in the rewrite rule(s)? Doesn't look like it. In fact I don't think the 
+    rewrite rule could produce this. Instead I think that the `homepage` value is insufficiently specific. Have to find
+    out what `'.'` really signifies.
+    * Using `"homepage": "https://services.pacificclimate.org/demo/weather-anomaly-viewer"` works. We're gold.
+    
+**Solution**: Add `"homepage": "https://services.pacificclimate.org/demo/weather-anomaly-viewer"` to `package.json`.
 
