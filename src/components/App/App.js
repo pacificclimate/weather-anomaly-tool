@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Grid } from 'react-bootstrap';
 
 import logger from '../../logger';
 import Header from '../Header';
@@ -11,10 +12,10 @@ logger.configure({active: true});
 class App extends Component {
     render() {
         return (
-            <div className="App">
+            <Grid fluid className="App">
                 <Header/>
                 <Tool/>
-            </div>
+            </Grid>
         );
     }
 }
