@@ -25,7 +25,7 @@
 }
 
 .Tool .selectors .input-range__track--active {
-    /*background: #777777;*/
+    background: hsl(198, 100%, 19%);
 }
 
 .Tool .selectors .input-range__track {
@@ -33,8 +33,8 @@
 }
 
 .Tool .selectors .input-range__slider {
-    /*background: #777777;*/
-    /*border-color: #777777;*/
+    background: hsl(198, 100%, 19%);
+    border-color: hsl(198, 100%, 19%);
     height: 1em;
     width: 1em;
     margin-left: -0.5em;
