@@ -1,9 +1,5 @@
-.Tool {
-    padding: 1em;
-}
-
 .Tool .selectors .row {
-    margin-bottom: 0.5em;
+    margin-top: 1em;
 }
 
 .Tool .selectors .input-range {
