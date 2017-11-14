@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Row, Col } from 'react-bootstrap';
-import { FormControl, ControlLabel } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+
+import InputRange from 'react-input-range';
 
 import { bindFunctions } from '../utils';
 import StaticControl from '../StaticControl';
@@ -26,14 +27,15 @@ class MapFaderControl extends PureComponent {
         this.setState({showControls: false});
     }
 
-    handleChangeOpacity(event) {
-        this.props.onChangeFaderOpacity(+event.target.value);
+    handleChangeOpacity(value) {
+        this.props.onChangeFaderOpacity(value);
     }
 
     render() {
         return (
                 <StaticControl>
                     <div
+                        className={'MapFaderControl'}
                         onMouseEnter={this.handleMouseEnter}
                         onMouseLeave={this.handleMouseLeave}
                     >
@@ -62,18 +64,14 @@ class MapFaderControl extends PureComponent {
 
                         {this.state.showControls &&
                         <Row>
-                            <Col lg={2}>Opacity</Col>
-                            <Col lg={10}>
-                                <FormControl
-                                    style={{width: '10em', display: 'inline'}}
-                                    type={'range'}
-                                    min={0} max={1} step={0.05}
+                            <Col lg={3}>Opacity</Col>
+                            <Col lg={8}>
+                                <InputRange
+                                    minValue={0} maxValue={1} step={0.05}
+                                    formatLabel={value => value.toFixed(2)}
                                     value={this.props.faderOpacity}
                                     onChange={this.handleChangeOpacity}
                                 />
-                                <span style={{width: '6em', display: 'inline-block', textAlign: 'left'}}>
-                                    ({this.props.faderOpacity})
-                                </span>
                             </Col>
                         </Row>
                         }
