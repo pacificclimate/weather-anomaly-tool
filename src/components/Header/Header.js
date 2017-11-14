@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
-import classNames from 'classnames';
+import { Row, Col } from 'react-bootstrap';
 
-import styles from './Header.css';
+import './Header.css';
 
 class Header extends Component {
 
