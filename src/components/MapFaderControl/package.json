@@ -1,0 +1,6 @@
+{
+  "name": "MapFaderControl",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./MapFaderControl.js"
+}

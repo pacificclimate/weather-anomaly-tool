@@ -16,6 +16,7 @@ class DatasetSelector extends PureComponent {
     render() {
         return (
             <RadioButtonSelector
+                vertical
                 className={this.props.className}
                 name="dataset"
                 options={datasets}

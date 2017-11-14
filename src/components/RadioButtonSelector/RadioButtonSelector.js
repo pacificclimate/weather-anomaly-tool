@@ -34,9 +34,8 @@ class RadioButtonSelector extends PureComponent {
         return (
             <ToggleButtonGroup
                 className={classNames('RadioButtonSelector', this.props.className)}
-                vertical
                 type="radio"
-                {...pick(this.props, 'style name value onChange')}
+                {...pick(this.props, 'style name vertical bsSize value onChange')}
                 ref={(component) => { this.toggleButtonGroup = component; }}
             >
                 {toggleButtons}

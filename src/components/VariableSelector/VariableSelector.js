@@ -17,6 +17,7 @@ class VariableSelector extends PureComponent {
     render() {
         return (
             <RadioButtonSelector
+                vertical
                 {...pick(this.props, 'className disabled value onChange')}
                 name="variable"
                 options={variables}

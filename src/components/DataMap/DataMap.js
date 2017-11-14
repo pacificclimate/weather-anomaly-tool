@@ -8,15 +8,18 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { LayerGroup, LayersControl, CircleMarker } from 'react-leaflet';
+import { LayerGroup, LayersControl, GridLayer, CircleMarker } from 'react-leaflet';
 
 import _ from 'lodash';
 
-import { pick } from '../utils';
+import { bindFunctions, pick } from '../utils';
 import BCMap from '../BCMap';
-import MessageControl from '../MessageControl';
+import StaticControl from '../StaticControl';
+import MapFaderControl from '../MapFaderControl';
 import StationPopup from '../StationPopup';
 import './DataMap.css';
+
+const datasetToDataValueName = {'anomaly': 'anomaly', 'monthly': 'statistic', 'baseline': 'datum'};
 
 const locationMarkerOptions = {
     color: '#000000',
@@ -28,14 +31,23 @@ const locationMarkerOptions = {
 const dataMarkerOptions = {
     radius: 8,
     weight: 1,
-    fillOpacity: 0.5,
+    fillOpacity: 0.75,
 };
 
-const colorForVariable = {
+const colorsForVariable = {
     'precip': '#36ff32',
     'tmin': '#3388ff',
     'tmax': '#ff6831',
 
+};
+
+const coloursForClassAndDatasetAndVariable = {
+    'anomaly': {
+        'precip': [ '#8c510a','#d8b365','#f6e8c3','#f5f5f5','#c7eae5','#5ab4ac','#01665e' ],
+        'tmin': [ '#4575b4', '#91bfdb', '#e0f3f8', '#ffffbf', '#fee090', '#fc8d59', '#d73027' ],
+        'tmax': [ '#4575b4', '#91bfdb', '#e0f3f8', '#ffffbf', '#fee090', '#fc8d59', '#d73027' ],
+    },
+    // Omit monthly and baseline for now. Defaults to simple one colour scheme above.
 };
 
 function uniqueKey(station) {
@@ -55,14 +67,49 @@ function StationLocationMarkers({stations}) {
     );
 }
 
-function StationDataMarkers({variable, stations}) {
+function StationDataMarkers({variable, dataset, stations}) {
     // Return a set of markers (<CircleMarker/>) for the data for each station in `props.station`.
+
+    const dataValueName = datasetToDataValueName[dataset];
+    const dataMin = stations.reduce((acc, stn) => Math.min(acc, stn[dataValueName]), Infinity);
+    const dataMax = stations.reduce((acc, stn) => Math.max(acc, stn[dataValueName]), -Infinity);
+    const dataAbsMax = Math.max(Math.abs(dataMin), Math.abs(dataMax));
+
+    const coloursForClass =
+        coloursForClassAndDatasetAndVariable[dataset] &&
+        coloursForClassAndDatasetAndVariable[dataset][variable];
+
+    const colorForVariable = colorsForVariable[variable];
+
+    function valueClass(value) {
+        // 7 classes
+        return (
+            value < -0.75 * dataAbsMax ?    0 :
+            value < -0.50 * dataAbsMax ?    1 :
+            value < -0.25 * dataAbsMax ?    2 :
+            value <  0.00 * dataAbsMax ?    3 :
+            value <  0.25 * dataAbsMax ?    4 :
+            value <  0.50 * dataAbsMax ?    5 :
+            value <  0.75 * dataAbsMax ?    6 :
+                                            7
+        );
+    }
+
+    function color(station) {
+        const value = station[dataValueName];
+        if (coloursForClass) {
+            return coloursForClass[valueClass(value)];
+        } else {
+            return colorForVariable;
+        }
+    }
+
     return stations.map(station =>
         <CircleMarker
             key={uniqueKey(station)}
             center={{lng: station.lon, lat: station.lat}}
             {...dataMarkerOptions}
-            color={colorForVariable[variable]}
+            color={color(station)}
         >
             <StationPopup variable={variable} {...station}/>
         </CircleMarker>
@@ -70,6 +117,39 @@ function StationDataMarkers({variable, stations}) {
 }
 
 class DataMap extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            faderColor: '#777777',
+            faderOpacity: 0.6,
+        };
+
+        this.baselineMarkers = [];  // Necessary?
+
+        // Bind event handlers
+        bindFunctions(this, 'handleMapFaderChangeColor handleMapFaderChangeOpacity handleRefFaderLayer');
+    }
+
+    handleMapFaderChangeColor(faderColor) {
+        this.setState({faderColor}, () => this.faderLayer.redraw());
+    }
+
+    handleMapFaderChangeOpacity(faderOpacity) {
+        this.setState({faderOpacity});
+    }
+
+    handleRefFaderLayer(component) {
+        this.faderLayer = component.leafletElement;
+        this.faderLayer.createTile = () => {
+            const tile = document.createElement('div');
+            tile.style.background = this.state.faderColor;
+            // tile.style.background = '#000000';
+            // tile.style.background = '#ffffff';
+            return tile;
+        };
+        this.faderLayer.redraw();
+    }
+
     stationsForDataset() {
         // Return a set of stations determined by `this.props.dataset`.
         // For `baseline` and `monthly`, return the respective station sets.
@@ -96,27 +176,42 @@ class DataMap extends PureComponent {
 
     render() {
         return (
-            <BCMap>
-                <LayersControl position='topright'>
-                    <LayersControl.Overlay name='Baseline stations'>
-                        <LayerGroup>
-                            <StationLocationMarkers stations={this.props.baseline}/>
-                        </LayerGroup>
-                    </LayersControl.Overlay>
-                    <LayersControl.Overlay name='Monthly stations' checked>
-                        <LayerGroup>
-                            <StationLocationMarkers stations={this.props.monthly}/>
-                        </LayerGroup>
-                    </LayersControl.Overlay>
-                    <LayersControl.Overlay name='Data values' checked>
-                        <LayerGroup>
-                            <StationDataMarkers variable={this.props.variable} stations={this.stationsForDataset()}/>
-                        </LayerGroup>
-                    </LayersControl.Overlay>
-                </LayersControl>
-                {this.props.message && <MessageControl position='topright'>{this.props.message}</MessageControl>}
-            </BCMap>
-        )
+            <div>
+                <BCMap mapRef={this.handleRefMap}>
+                    <LayersControl position='topright'>
+                        <LayersControl.Overlay name='Fader' checked>
+                            <GridLayer ref={this.handleRefFaderLayer} opacity={this.state.faderOpacity}/>
+                        </LayersControl.Overlay>
+                        <LayersControl.Overlay name='Baseline stations'>
+                            <LayerGroup>
+                                <StationLocationMarkers stations={this.props.baseline}/>
+                            </LayerGroup>
+                        </LayersControl.Overlay>
+                        <LayersControl.Overlay name='Monthly stations' checked>
+                            <LayerGroup>
+                                <StationLocationMarkers stations={this.props.monthly}/>
+                            </LayerGroup>
+                        </LayersControl.Overlay>
+                        <LayersControl.Overlay name='Data values' checked>
+                            <LayerGroup>
+                                <StationDataMarkers
+                                    variable={this.props.variable}
+                                    dataset={this.props.dataset}
+                                    stations={this.stationsForDataset()}
+                                />
+                            </LayerGroup>
+                        </LayersControl.Overlay>
+                    </LayersControl>
+                    {this.props.message && <StaticControl position='topright'>{this.props.message}</StaticControl>}
+                    <MapFaderControl
+                        faderColor={this.state.faderColor}
+                        faderOpacity={this.state.faderOpacity}
+                        onChangeFaderColor={this.handleMapFaderChangeColor}
+                        onChangeFaderOpacity={this.handleMapFaderChangeOpacity}
+                    />
+                </BCMap>
+            </div>
+        );
     }
 }
 

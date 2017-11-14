@@ -3,14 +3,14 @@ import ReactDom from 'react-dom';
 import { MapControl } from 'react-leaflet';
 import L from 'leaflet';
 
-import './MessageControl.css';
+import './StaticControl.css';
 
-class MessageControl extends MapControl {
+class StaticControl extends MapControl {
     createLeafletElement(props) {
         const leafletElement = L.control();
 
         leafletElement.onAdd = map => {
-            this.container = L.DomUtil.create('div', 'MessageControl leaflet-control');
+            this.container = L.DomUtil.create('div', 'StaticControl leaflet-control');
              ReactDom.render(props.children, this.container);
             return this.container;
         };
@@ -25,4 +25,4 @@ class MessageControl extends MapControl {
     }
 }
 
-export default MessageControl;
+export default StaticControl;
