@@ -27,7 +27,6 @@ const nameFromStackLine = /^\s*at (?:\w+\.)?(\w+) .*$/;
 
 // Add the fancy logging methods to Logger.prototype
 [
-    'assert',
     'error',
     'info',
     'log',
@@ -59,6 +58,7 @@ const nameFromStackLine = /^\s*at (?:\w+\.)?(\w+) .*$/;
 
 // Proxy other console methods through Logger
 [
+    'assert',
     'count',
     'group',
     'groupCollapsed',
