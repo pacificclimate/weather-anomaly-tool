@@ -17,9 +17,8 @@ import BCMap from '../BCMap';
 import StaticControl from '../StaticControl';
 import MapFaderControl from '../MapFaderControl';
 import StationPopup from '../StationPopup';
+import stationColor from './stationColor';
 import './DataMap.css';
-
-const datasetToDataValueName = {'anomaly': 'anomaly', 'monthly': 'statistic', 'baseline': 'datum'};
 
 const locationMarkerOptions = {
     color: '#000000',
@@ -32,22 +31,6 @@ const dataMarkerOptions = {
     radius: 8,
     weight: 1,
     fillOpacity: 0.75,
-};
-
-const colorsForVariable = {
-    'precip': '#36ff32',
-    'tmin': '#3388ff',
-    'tmax': '#ff6831',
-
-};
-
-const coloursForClassAndDatasetAndVariable = {
-    'anomaly': {
-        'precip': [ '#8c510a','#d8b365','#f6e8c3','#f5f5f5','#c7eae5','#5ab4ac','#01665e' ],
-        'tmin': [ '#4575b4', '#91bfdb', '#e0f3f8', '#ffffbf', '#fee090', '#fc8d59', '#d73027' ],
-        'tmax': [ '#4575b4', '#91bfdb', '#e0f3f8', '#ffffbf', '#fee090', '#fc8d59', '#d73027' ],
-    },
-    // Omit monthly and baseline for now. Defaults to simple one colour scheme above.
 };
 
 function uniqueKey(station) {
@@ -68,48 +51,14 @@ function StationLocationMarkers({stations}) {
 }
 
 function StationDataMarkers({variable, dataset, stations}) {
-    // Return a set of markers (<CircleMarker/>) for the data for each station in `props.station`.
-
-    const dataValueName = datasetToDataValueName[dataset];
-    const dataMin = stations.reduce((acc, stn) => Math.min(acc, stn[dataValueName]), Infinity);
-    const dataMax = stations.reduce((acc, stn) => Math.max(acc, stn[dataValueName]), -Infinity);
-    const dataAbsMax = Math.max(Math.abs(dataMin), Math.abs(dataMax));
-
-    const coloursForClass =
-        coloursForClassAndDatasetAndVariable[dataset] &&
-        coloursForClassAndDatasetAndVariable[dataset][variable];
-
-    const colorForVariable = colorsForVariable[variable];
-
-    function valueClass(value) {
-        // 7 classes
-        return (
-            value < -0.75 * dataAbsMax ?    0 :
-            value < -0.50 * dataAbsMax ?    1 :
-            value < -0.25 * dataAbsMax ?    2 :
-            value <  0.00 * dataAbsMax ?    3 :
-            value <  0.25 * dataAbsMax ?    4 :
-            value <  0.50 * dataAbsMax ?    5 :
-            value <  0.75 * dataAbsMax ?    6 :
-                                            7
-        );
-    }
-
-    function color(station) {
-        const value = station[dataValueName];
-        if (coloursForClass) {
-            return coloursForClass[valueClass(value)];
-        } else {
-            return colorForVariable;
-        }
-    }
+    // Return a set of markers (<CircleMarker/>) for the data for each station in `station`.
 
     return stations.map(station =>
         <CircleMarker
             key={uniqueKey(station)}
             center={{lng: station.lon, lat: station.lat}}
             {...dataMarkerOptions}
-            color={color(station)}
+            color={stationColor(variable, dataset, station)}
         >
             <StationPopup variable={variable} {...station}/>
         </CircleMarker>
@@ -162,9 +111,11 @@ class DataMap extends PureComponent {
                 const monthlyStation = monthlyByStationDbId[baselineStation.station_db_id];
                 if (monthlyStation) {
                     const anomaly = monthlyStation[0].statistic - baselineStation.datum;
+                    const departure = 100 * ((monthlyStation[0].statistic / baselineStation.datum) - 1);
                     stations.push({
                         ...pick(baselineStation, 'station_name lat lon elevation station_db_id network_variable_name'),
                         anomaly,
+                        departure,
                     });
                 }
             });
