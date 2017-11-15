@@ -31,6 +31,8 @@ class StationPopup extends PureComponent {
                     {this.props.statistic && <div>Monthly statistic: {this.props.statistic.toFixed(1)} {units}</div>}
                     {this.props.data_coverage && <div>Data coverage: {(this.props.data_coverage * 100).toFixed(0)}%</div>}
                     {this.props.anomaly && <div>Anomaly: {this.props.anomaly.toFixed(decimalPlaces)} {units}</div>}
+                    {this.props.variable == 'precip' && this.props.departure &&
+                    <div>Departure: {this.props.departure.toFixed(0)}%</div>}
                 </div>
             </Popup>
         );
@@ -46,6 +48,7 @@ StationPopup.propTypes = {
     statistic: PropTypes.number,        // Monthly
     data_coverage: PropTypes.number,    // Monthly
     anomaly: PropTypes.number,          // Anomaly
+    departure: PropTypes.number,          // Anomaly
     variable: PropTypes.string,
 };
 
