@@ -16,13 +16,21 @@ import './Tool.css';
 class Tool extends PureComponent {
     constructor(props) {
         super(props);
+
+        // Compute likely latest date of available data = current date - 15 d.
+        // This allows for cron jobs that run in first half of month.
+        // Subtract fewer/more days if cron jobs run earlier/later in month.
+        const msInDay = 24 * 60 * 60 * 1000;
+        const latestDataDate = new Date(Date.now() - 15 * msInDay);
+
         this.state = {
             dataset: 'anomaly',
             variable: 'precip',
-            year: 1990,
-            month: 6,
+            year: latestDataDate.getFullYear(),
+            month: latestDataDate.getMonth(),
             dataLoading: false,
         };
+
         bindFunctions(this, 'handleChangeVariable handleChangeDataset handleChangeMonth handleChangeYear handleIncrementYear handleIncrementMonth handleDataIsLoading handleDataIsNotLoading');
     }
 
