@@ -59,7 +59,11 @@ YearSelector.propTypes = {
 YearSelector.defaultProps = {
     disabled: false,
     start: 1970,
-    end: 2018,
+    end: 2019,
+    //The default property for the year selector needs to dynamically track 
+    //the current year so that the tool appears up-to-date. Current deployment 
+    //shows 2018 as the max year. Using the +- increment/decrement buttons allows
+    //one to select 2019, but this is HIGHLY unintuitive.
 };
 
 
