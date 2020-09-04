@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import logger from '../../logger';
 import { bindFunctions, incrementMonth, pick } from '../utils';
 import DatasetSelector from '../DatasetSelector'
 import VariableSelector from '../VariableSelector'
@@ -12,10 +11,8 @@ import DataViewer from '../DataViewer';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
-import {
-    getLastDateWithDataBefore,
-    getMonthlyData
-} from '../../data-services/weather-anomaly-data-service';
+import { getLastDateWithDataBefore }
+    from '../../data-services/weather-anomaly-data-service';
 
 
 // Compute likely latest possible date of available data = current date - 15 d.
