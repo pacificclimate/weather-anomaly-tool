@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 
-function bindFunctions(obj, functionNames) {
+export function bindFunctions(obj, functionNames) {
     if (typeof functionNames === 'string') {
         functionNames = functionNames.split(/\s+/);
     }
@@ -10,11 +10,18 @@ function bindFunctions(obj, functionNames) {
     });
 }
 
-function pick(obj, names) {
+
+export function pick(obj, names) {
     if (typeof names === 'string') {
         names = names.split(/\s+/);
     }
     return _.pick(obj, names);
 }
 
-export { bindFunctions, pick };
+
+export function incrementMonth([year, month], by) {
+    const monthsSinceEpoch = year * 12 + month - 1 + by;
+    const incrYear = Math.floor(monthsSinceEpoch / 12);
+    const incrMonth = monthsSinceEpoch % 12 + 1;
+    return [incrYear, incrMonth];
+}

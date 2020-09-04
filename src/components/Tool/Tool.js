@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import logger from '../../logger';
-import { bindFunctions, pick } from '../utils';
+import { bindFunctions, incrementMonth, pick } from '../utils';
 import DatasetSelector from '../DatasetSelector'
 import VariableSelector from '../VariableSelector'
 import YearSelector from '../YearSelector';
@@ -12,6 +12,19 @@ import DataViewer from '../DataViewer';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
+import {
+    getLastDateWithDataBefore,
+    getMonthlyData
+} from '../../data-services/weather-anomaly-data-service';
+
+
+// Compute likely latest date of available data = current date - 15 d.
+// This allows for cron jobs that run in first half of month.
+// Subtract fewer/more days if cron jobs run earlier/later in month.
+const msInDay = 24 * 60 * 60 * 1000;
+const latestDataDate = new Date(Date.now() - 15 * msInDay);
+console.log('### latestDataDate', latestDataDate)
+
 
 class Tool extends PureComponent {
     constructor(props) {
@@ -19,11 +32,22 @@ class Tool extends PureComponent {
         this.state = {
             dataset: 'anomaly',
             variable: 'precip',
-            year: 1990,
-            month: 6,
-            dataLoading: false,
+            year: latestDataDate.getFullYear(),
+            month: latestDataDate.getMonth() + 1,
+            dataLoading: true,
         };
         bindFunctions(this, 'handleChangeVariable handleChangeDataset handleChangeMonth handleChangeYear handleIncrementYear handleIncrementMonth handleDataIsLoading handleDataIsNotLoading');
+    }
+
+    componentDidMount() {
+        // Set the initial year and month to the last date before present
+        // with data.
+        const { variable, year, month } = this.state;
+        this.setState({ dataLoading: true })
+        getLastDateWithDataBefore(variable, [year, month])
+            .then(([year, month]) => {
+                this.setState({ year, month, dataLoading: false });
+            });
     }
 
     handleChangeVariable(variable) {
@@ -43,16 +67,14 @@ class Tool extends PureComponent {
     }
 
     handleIncrementYear(by) {
-        logger.log(this);
-        this.setState({'year': this.state.year + by});
+        this.setState({ year: this.state.year + by});
     }
 
     handleIncrementMonth(by) {
-        logger.log(this);
-        let monthsSinceEpoch = this.state.year * 12 + this.state.month - 1 + by;
-        const month = monthsSinceEpoch % 12 + 1;
-        const year = Math.floor(monthsSinceEpoch / 12);
-        this.setState({month, year});
+        this.setState(({ year, month }) => {
+            const [iYear, iMonth] = incrementMonth([year, month], by);
+            return { year: iYear, month: iMonth };
+        });
     }
 
     handleDataIsLoading() {
@@ -110,7 +132,7 @@ class Tool extends PureComponent {
                         <Col lg={8}>
                             <YearSelector
                                 disabled={this.state.dataLoading}
-                                start={1970} end={2018}
+                                start={1970} end={latestDataDate.getFullYear()}
                                 value={this.state.year}
                                 onChange={this.handleChangeYear}
                             />
