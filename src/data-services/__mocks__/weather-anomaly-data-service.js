@@ -1,11 +1,11 @@
-function getBaselineData() {
-    return new Promise((resolve, reject) => {
-       resolve({
-           data: [],
-       });
-    });
+export function getBaselineData() {
+  return Promise.resolve({
+    data: [],
+  });
 }
 
-const getMonthlyData = getBaselineData;
+export const getMonthlyData = getBaselineData;
 
-export { getBaselineData, getMonthlyData };
+export function getLastDateWithDataBefore() {
+  return Promise.resolve([2020, 1]);
+}
