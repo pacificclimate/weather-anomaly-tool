@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Row } from 'react-bootstrap';
 
-import _ from 'lodash';
-
 import logger from '../../logger';
 import { bindFunctions } from '../utils';
 import { getBaselineData, getMonthlyData } from '../../data-services/weather-anomaly-data-service';
@@ -74,7 +72,7 @@ export default class RealDataLoader extends PureComponent {
                     }
                     <span>
                         {this.props.variable};
-                        {this.props.date.year()}-{this.props.date().month()+1}
+                        {this.props.date.year()}-{this.props.date.month()+1}
                     </span>
                 </Row>
             </div>
