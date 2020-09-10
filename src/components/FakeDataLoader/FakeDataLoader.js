@@ -119,7 +119,7 @@ export default class FakeDataLoader extends Component {
                     }
                     <span>
                         {this.props.variable};
-                        {this.props.date.year()}-{this.props.date().month()+1}
+                        {this.props.date.year()}-{this.props.date.month()+1}
                     </span>
                 </Row>
             </div>
