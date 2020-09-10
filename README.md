@@ -2,64 +2,98 @@
 
 Visualization tool for weather anomaly data
 
+## Configuration
+
+Wx Files is configured using  
+environment variables (for basic configuration such as backend URLs).
+
+### Environment variables
+
+In a Create React App app, [environment variables are managed carefully](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables).
+Therefore, most of the environment variables below begin with `REACT_APP_`, as required by CRA.
+
+CRA also provides a convenient system for setting default values of environment variables
+in various contexts (development, production, etc.).
+
+Brief summary:
+
+* `.env`: Global default settings
+* `.env.development`: Development-specific settings (`npm start`)
+* `.env.production`: Production-specific settings (`npm run build`)
+
+For more details, see the
+[CRA documentation](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables)).
+
+Environment variables for configuring the app are:
+
+`PUBLIC_URL`
+* Base URL for for Weather Anomaly Tool frontend app.
+* For production, set this to the URL for Weather Anomaly Tool configured in 
+our proxy server.
+
+`REACT_APP_VERSION`
+* Version of the app.
+* This value should be set using `generate-commitish.sh` when the Docker image 
+is built (see below).
+* It is _not_ recommended to manually override the automatically generated 
+value when the image is run.
+* No default value for this variable is provided in any `.env` file.
+
+`REACT_APP_TILECACHE_URL`
+* Tilecache URL for basemap layers.
+
+`NODE_ENV`
+* [**Automatically set; cannot be overridden manually.**](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables)
+
+## Docker
+
+We use Docker for dev/staging/test and production deployments.
+
+### Manual processes
+
+In general, PCIC DevOps automates Docker image building in our repositories,
+and PCIC IT manages production deployment (using `docker-compose`).  
+However, it can be useful to manually build and run a production Docker image.
+
+### Build docker image
+
+```bash
+docker build -t weather-anomaly-tool \
+    --build-arg REACT_APP_VERSION="$(./generate-commitish.sh)" .
+```
+
+**IMPORTANT**: Setting the build arg `REACT_APP_VERSION` as above is the most reliable
+way to inject an accurate version id into the final app. This value can be overridden
+when the image is run (by specifying the environment variable of the same name),
+but it is not recommended, as it invites error.
+
+### Run docker image
+
+As described above, environment variables configure the app.
+All are given default development and production values in the files
+`.env`, `.env.development`, and `.env.production`.
+
+These can be overridden at run time by providing them in the `docker run` 
+command (`-e` option), or, equivalently, in the appropriate 
+`docker-compose.yaml` element.
+
+Typical run:
+
+```bash
+docker run --restart=unless-stopped -d \
+  -p <external port>:8080 \
+  --name weather-anomaly-tool \
+  weather-anomaly-tool:<tag>
+```
+
 ## [Project initialization](docs/Project-initialization.md)
 
-## Deployment via Docker
-
-### For experimentation on a local dev machine
-
-Check out the branch or commit you want to build from.
-
-To build a Docker image:
-
-```
-docker build -t weather-anomaly-tool .
-```
-
-To run the image (at `localhost:5001`):
-
-```
-docker run -d -p 5001:5000 --name weather-anomaly-tool weather-anomaly-tool
-```
-
-### For deployment to `docker-prod` or `docker-dev`
-
-Check out the branch or commit you want to build from.
-
-To build a Docker image for pushing to the repo (with a PCIC standard name):
-
-```
-docker build -t docker-registry01.pcic.uvic.ca:5000/pcic/weather-anomaly-tool:<tag> .
-```
-
-where `:<tag>` is an optional extra tag to distinguish versions of the image.
-
-Alternatively, to tag an already-built image following the PCIC standard: 
-
-```
-docker tag <image id> docker-registry01.pcic.uvic.ca:5000/pcic/weather-anomaly-tool:<tag>
-```
-
-To push the image to the PCIC docker repository:
-
-```
-docker push docker-registry01.pcic.uvic.ca:5000/pcic/weather-anomaly-tool:<tag>
-```
-
-To run on `docker-dev01` or `docker-prod`:
-
-```
-ssh docker-dev01.pcic.uvic.ca
-docker pull docker-registry01.pcic.uvic.ca:5000/pcic/weather-anomaly-tool:<tag>
-docker run -d --restart=unless-stopped -p 30010:5000 --name weather-anomaly-tool docker-registry01.pcic.uvic.ca:5000/pcic/weather-anomaly-tool:<tag>
-```
-
-### Problems enountered
+## Problems enountered
 
 This documents for posterity the problems encountered by a relative 
 React and Docker noob in getting this working.
 
-#### Resource limitations when running React dev server
+### Resource limitations when running React dev server
 
 Initial attempt at Dockerizing this app cribbed directly from climate-explorer-frontend, which runs a React dev server
 in the Docker container:
