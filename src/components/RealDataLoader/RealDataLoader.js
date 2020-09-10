@@ -10,7 +10,7 @@ import { getBaselineData, getMonthlyData } from '../../data-services/weather-ano
 
 import './RealDataLoader.css';
 
-class RealDataLoader extends PureComponent {
+export default class RealDataLoader extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,16 +31,18 @@ class RealDataLoader extends PureComponent {
         this.setState({loading: false});
     }
 
-    loadData({variable, year, month}) {
+    loadData({variable, date}) {
         logger.log(this, this.state, this.props);
 
         this.setState({loading: true});
         this.props.onDataWillLoad();
 
         // TODO: Don't reload baseline data when month doesn't change
-        const baselineP = getBaselineData(variable, this.props.errorTest && month === 12 ? 13: month);
-        const monthlyP = getMonthlyData(variable, year, month);
-        Promise.all([baselineP, monthlyP]).then(this.dataDidLoad).catch(this.dataLoadError);
+        const baselineP = getBaselineData(variable, date);
+        const monthlyP = getMonthlyData(variable, date);
+        Promise.all([baselineP, monthlyP])
+            .then(this.dataDidLoad)
+            .catch(this.dataLoadError);
     }
 
     componentDidMount() {
@@ -50,8 +52,10 @@ class RealDataLoader extends PureComponent {
 
     componentWillReceiveProps(nextProps) {
         logger.log(this, nextProps);
-        const checkKeys = 'variable year month'.split(' ');
-        if (!_.isEqual(_.pick(nextProps, checkKeys), _.pick(this.props, checkKeys))) {
+        if (
+          nextProps.variable !== this.props.variable ||
+          !nextProps.date.isSame(this.props.date)
+        ) {
             this.loadData(nextProps);
         }
     }
@@ -64,8 +68,14 @@ class RealDataLoader extends PureComponent {
                     Real Data Loader: Goes out to the WADS!
                 </Row>
                 <Row>
-                    {this.state.loading ? <span>Loading... </span> : <span>Data: </span>}
-                    <span>{this.props.variable};{this.props.year}-{this.props.month}</span>
+                    {this.state.loading ?
+                      <span>Loading... </span> :
+                      <span>Data: </span>
+                    }
+                    <span>
+                        {this.props.variable};
+                        {this.props.date.year()}-{this.props.date().month()+1}
+                    </span>
                 </Row>
             </div>
         );
@@ -74,8 +84,7 @@ class RealDataLoader extends PureComponent {
 
 RealDataLoader.propTypes = {
     variable: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
+    date: PropTypes.object.isRequired,
     render: PropTypes.bool,
     errorTest: PropTypes.bool,
     onDataWillLoad: PropTypes.func.isRequired,
@@ -88,5 +97,3 @@ RealDataLoader.defaultProps = {
     render: false,
     errorTest: false,
 };
-
-export default RealDataLoader;

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
 
-import _ from 'lodash';
-
 import logger from '../../logger';
 import './FakeDataLoader.css';
 
@@ -43,7 +41,7 @@ function getFakeData(delay, failProb) {
 
 // TODO: Add error controls
 
-class FakeDataLoader extends Component {
+export default class FakeDataLoader extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -75,8 +73,10 @@ class FakeDataLoader extends Component {
 
     componentWillReceiveProps(nextProps) {
         logger.log(this, nextProps);
-        const checkKeys = 'variable year month'.split(' ');
-        if (!_.isEqual(_.pick(nextProps, checkKeys), _.pick(this.props, checkKeys))) {
+        if (
+          nextProps.variable !== this.props.variable ||
+          !nextProps.date.isSame(this.props.date)
+        ) {
             this.loadData();
         }
     }
@@ -113,8 +113,14 @@ class FakeDataLoader extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    {this.state.loading ? <span>Loading... </span> : <span>Data: </span>}
-                    <span>{this.props.variable};{this.props.year}-{this.props.month}</span>
+                    {this.state.loading ?
+                      <span>Loading... </span> :
+                      <span>Data: </span>
+                    }
+                    <span>
+                        {this.props.variable};
+                        {this.props.date.year()}-{this.props.date().month()+1}
+                    </span>
                 </Row>
             </div>
         );
@@ -123,11 +129,8 @@ class FakeDataLoader extends Component {
 
 FakeDataLoader.propTypes = {
     variable: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
+    date: PropTypes.object.isRequired,
     onDataWillLoad: PropTypes.func.isRequired,
     onDataDidLoad: PropTypes.func.isRequired,
     onDidCatch: PropTypes.func.isRequired,
 };
-
-export default FakeDataLoader;

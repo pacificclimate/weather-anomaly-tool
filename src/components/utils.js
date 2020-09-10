@@ -17,11 +17,3 @@ export function pick(obj, names) {
     }
     return _.pick(obj, names);
 }
-
-
-export function incrementMonth([year, month], by) {
-    const monthsSinceEpoch = year * 12 + month - 1 + by;
-    const incrYear = Math.floor(monthsSinceEpoch / 12);
-    const incrMonth = monthsSinceEpoch % 12 + 1;
-    return [incrYear, incrMonth];
-}

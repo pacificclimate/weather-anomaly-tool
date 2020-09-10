@@ -52,7 +52,7 @@ class DataViewer extends PureComponent {
         return (
             <div>
                 <DataLoader
-                    {...pick(this.props, 'variable year month')}
+                    {...pick(this.props, 'variable date')}
                     onDataWillLoad={this.handleDataWillLoad}
                     onDataDidLoad={this.handleDataDidLoad}
                     onDidCatch={this.handleDidCatch}
@@ -70,8 +70,7 @@ class DataViewer extends PureComponent {
 DataViewer.propTypes = {
     dataset: PropTypes.string.isRequired,
     variable: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
+    date: PropTypes.object.isRequired,
     onDataWillLoad: PropTypes.func,
     onDataDidLoad: PropTypes.func,
     onDataDidCatch: PropTypes.func,
