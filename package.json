@@ -1,7 +1,12 @@
 {
   "name": "weather-anomaly-tool",
   "version": "0.1.0",
+  "description": "Weather Anomaly Viewer frontend application",
   "private": true,
+  "license": "GPL-3.0",
+  "contributors": [
+    "Rod Glover <rglover@uvic.ca>"
+  ],
   "dependencies": {
     "axios": "^0.17.0",
     "bootstrap": "^3.3.7",
@@ -24,6 +29,5 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "homepage": "https://services.pacificclimate.org/demo/weather-anomaly-viewer"
+  }
 }
