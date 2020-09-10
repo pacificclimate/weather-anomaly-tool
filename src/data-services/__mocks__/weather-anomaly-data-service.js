@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+
 export function getBaselineData() {
   return Promise.resolve({
     data: [],
@@ -7,5 +10,5 @@ export function getBaselineData() {
 export const getMonthlyData = getBaselineData;
 
 export function getLastDateWithDataBefore() {
-  return Promise.resolve([2020, 1]);
+  return Promise.resolve(moment());
 }
