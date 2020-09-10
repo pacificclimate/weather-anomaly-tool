@@ -1,7 +1,12 @@
 {
   "name": "weather-anomaly-tool",
   "version": "0.1.0",
+  "description": "Weather Anomaly Viewer frontend application",
   "private": true,
+  "license": "GPL-3.0",
+  "contributors": [
+    "Rod Glover <rglover@uvic.ca>"
+  ],
   "dependencies": {
     "axios": "^0.17.0",
     "bootstrap": "^3.3.7",
