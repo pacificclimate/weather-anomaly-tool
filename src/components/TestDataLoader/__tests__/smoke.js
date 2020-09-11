@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestDataLoader from '../TestDataLoader';
+import moment from 'moment';
 
 jest.mock('../../../data-services/weather-anomaly-data-service');
 
@@ -9,8 +10,7 @@ it('renders without crashing', () => {
     ReactDOM.render(
         <TestDataLoader
             variable={'precip'}
-            year={1990}
-            month={6}
+            date={moment([1990, 6])}
             onDataWillLoad={() => {}}
             onDataDidLoad={() => {}}
             onDidCatch={() => {}}

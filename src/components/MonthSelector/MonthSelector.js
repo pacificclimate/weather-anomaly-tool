@@ -10,7 +10,6 @@ import { bindFunctions, pick } from '../utils';
 import './MonthSelector.css';
 
 const monthNames = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
-const formatLabel = value => monthNames[value-1];
 
 class MonthSelector extends PureComponent {
     constructor(props) {
@@ -31,13 +30,15 @@ class MonthSelector extends PureComponent {
         }
     }
 
+    formatLabel = value => monthNames[value - this.props.start];
+
     render() {
         return (
             <InputRange
                 {...pick(this.props, 'className disabled')}
                 minValue={this.props.start}
                 maxValue={this.props.end}
-                formatLabel={formatLabel}
+                formatLabel={this.formatLabel}
                 value={this.state.value}
                 onChange={this.handleChange}
                 onChangeComplete={this.props.onChange}
@@ -61,8 +62,8 @@ MonthSelector.propTypes = {
 
 MonthSelector.defaultProps = {
     disabled: false,
-    start: 1,
-    end: 12,
+    start: 0,
+    end: 11,
 };
 
 

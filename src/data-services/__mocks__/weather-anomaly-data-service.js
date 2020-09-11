@@ -1,11 +1,14 @@
-function getBaselineData() {
-    return new Promise((resolve, reject) => {
-       resolve({
-           data: [],
-       });
-    });
+import moment from 'moment';
+
+
+export function getBaselineData() {
+  return Promise.resolve({
+    data: [],
+  });
 }
 
-const getMonthlyData = getBaselineData;
+export const getMonthlyData = getBaselineData;
 
-export { getBaselineData, getMonthlyData };
+export function getLastDateWithDataBefore() {
+  return Promise.resolve(moment());
+}

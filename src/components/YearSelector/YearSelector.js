@@ -46,11 +46,11 @@ class YearSelector extends PureComponent {
 YearSelector.propTypes = {
     disabled: PropTypes.bool,
     // Is control disabled
-    start: PropTypes.number,
+    start: PropTypes.number.isRequired,
     // Start year
-    end: PropTypes.number,
+    end: PropTypes.number.isRequired,
     // End year
-    value: PropTypes.number,
+    value: PropTypes.number.isRequired,
     // Current value (year)
     onChange: PropTypes.func.isRequired,
     // Called with value when dragging complete (no intermediate values)
@@ -58,8 +58,6 @@ YearSelector.propTypes = {
 
 YearSelector.defaultProps = {
     disabled: false,
-    start: 1970,
-    end: 2018,
 };
 
 
