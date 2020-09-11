@@ -86,6 +86,22 @@ docker run --restart=unless-stopped -d \
   weather-anomaly-tool:<tag>
 ```
 
+## Releasing
+
+To create a release version:
+
+1. Increment `version` in `package.json`
+2. Summarize the changes from the last version in `NEWS.md`
+3. Commit these changes, then tag the release:
+
+  ```bash
+git add package.json NEWS.md
+git commit -m"Bump to version x.x.x"
+git tag -a -m"x.x.x" x.x.x
+git push --follow-tags
+  ```
+
+
 ## [Project initialization](docs/Project-initialization.md)
 
 ## Problems enountered

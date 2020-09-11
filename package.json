@@ -1,6 +1,6 @@
 {
   "name": "weather-anomaly-tool",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Weather Anomaly Viewer frontend application",
   "private": true,
   "license": "GPL-3.0",
