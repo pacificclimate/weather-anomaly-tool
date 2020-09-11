@@ -41,7 +41,12 @@ export default class Tool extends PureComponent {
             date: latestPossibleDataDate,
             dataLoading: true,
         };
-        bindFunctions(this, 'handleChangeVariable handleChangeDataset handleChangeMonth handleChangeYear handleIncrementYear handleIncrementMonth handleDataIsLoading handleDataIsNotLoading');
+        bindFunctions(
+          this,
+          'handleChangeVariable handleChangeDataset handleChangeMonth ' +
+          'handleChangeYear handleIncrementYear handleIncrementMonth ' +
+          'handleDataIsLoading handleDataIsNotLoading'
+        );
     }
 
     componentDidMount() {
@@ -63,8 +68,7 @@ export default class Tool extends PureComponent {
     }
 
     handleChangeMonth(month) {
-        // TODO: Refactor so that months are everywhere 0-based
-        this.setState(({ date }) => ({ date: date.clone().month(month-1) }));
+        this.setState(({ date }) => ({ date: date.clone().month(month) }));
     }
 
     handleChangeYear(year) {
@@ -116,7 +120,7 @@ export default class Tool extends PureComponent {
                         <Col lg={8}>
                             <MonthSelector
                                 disabled={this.state.dataLoading}
-                                value={this.state.date.month() + 1}
+                                value={this.state.date.month()}
                                 onChange={this.handleChangeMonth}
                             />
                         </Col>
