@@ -31,6 +31,10 @@ import { getLastDateWithDataBefore } from '../../data-services/weather-anomaly-d
 // determined by consulting the backend. That's done in `componentDidMount()`.
 const latestPossibleDataDate = moment().subtract(15, 'days');
 
+// TODO: Make these props?
+const monthIncrDecrBy = [1, 3, 6];
+const yearIncrDecrBy = [1, 2, 3, 4, 5, 10];
+
 
 export default class Tool extends PureComponent {
     constructor(props) {
@@ -129,7 +133,7 @@ export default class Tool extends PureComponent {
                                 disabled={this.state.dataLoading}
                                 id="month-increment"
                                 bsSize="xsmall"
-                                by={[1, 3, 6]}
+                                by={monthIncrDecrBy}
                                 onIncrement={this.handleIncrementMonth}
                             />
                         </Col>
@@ -150,7 +154,7 @@ export default class Tool extends PureComponent {
                                 disabled={this.state.dataLoading}
                                 id="year-increment"
                                 bsSize="xsmall"
-                                by={[1, 2, 3, 4, 5, 10]}
+                                by={yearIncrDecrBy}
                                 onIncrement={this.handleIncrementYear}
                             />
                         </Col>
