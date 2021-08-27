@@ -8,7 +8,7 @@
     "Rod Glover <rglover@uvic.ca>"
   ],
   "dependencies": {
-    "axios": "^0.17.0",
+    "axios": "^0.21.1",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "leaflet": "^1.2.0",
