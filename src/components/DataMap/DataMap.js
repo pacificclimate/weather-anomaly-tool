@@ -8,14 +8,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { LayerGroup, LayersControl, GridLayer, CircleMarker } from 'react-leaflet';
+import { LayerGroup, LayersControl, CircleMarker } from 'react-leaflet';
 
 import _ from 'lodash';
 
+import { BCBaseMap } from 'pcic-react-leaflet-components';
 import { bindFunctions, pick } from '../utils';
-import BCMap from '../BCMap';
 import StaticControl from '../StaticControl';
-import MapFaderControl from '../MapFaderControl';
 import StationPopup from '../StationPopup';
 import stationColor from './stationColor';
 import './DataMap.css';
@@ -127,41 +126,42 @@ class DataMap extends PureComponent {
 
     render() {
         return (
-            <div>
-                <BCMap mapRef={this.handleRefMap}>
-                    <LayersControl position='topright'>
-                        <LayersControl.Overlay name='Fader' checked>
-                            <GridLayer ref={this.handleRefFaderLayer} opacity={this.state.faderOpacity}/>
-                        </LayersControl.Overlay>
-                        <LayersControl.Overlay name='Baseline stations'>
-                            <LayerGroup>
-                                <StationLocationMarkers stations={this.props.baseline}/>
-                            </LayerGroup>
-                        </LayersControl.Overlay>
-                        <LayersControl.Overlay name='Monthly stations' checked>
-                            <LayerGroup>
-                                <StationLocationMarkers stations={this.props.monthly}/>
-                            </LayerGroup>
-                        </LayersControl.Overlay>
-                        <LayersControl.Overlay name='Data values' checked>
-                            <LayerGroup>
-                                <StationDataMarkers
-                                    variable={this.props.variable}
-                                    dataset={this.props.dataset}
-                                    stations={this.stationsForDataset()}
-                                />
-                            </LayerGroup>
-                        </LayersControl.Overlay>
-                    </LayersControl>
-                    {this.props.message && <StaticControl position='topright'>{this.props.message}</StaticControl>}
-                    <MapFaderControl
-                        faderColor={this.state.faderColor}
-                        faderOpacity={this.state.faderOpacity}
-                        onChangeFaderColor={this.handleMapFaderChangeColor}
-                        onChangeFaderOpacity={this.handleMapFaderChangeOpacity}
-                    />
-                </BCMap>
-            </div>
+            <BCBaseMap
+              id={'data-map'}
+              viewport={BCBaseMap.initialViewport}
+            >
+                <LayersControl position='topright'>
+                    <LayersControl.Overlay name='Baseline stations'>
+                        <LayerGroup>
+                            <StationLocationMarkers
+                              stations={this.props.baseline}
+                            />
+                        </LayerGroup>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay name='Monthly stations' checked>
+                        <LayerGroup>
+                            <StationLocationMarkers
+                              stations={this.props.monthly}
+                            />
+                        </LayerGroup>
+                    </LayersControl.Overlay>
+                    <LayersControl.Overlay name='Data values' checked>
+                        <LayerGroup>
+                            <StationDataMarkers
+                              variable={this.props.variable}
+                              dataset={this.props.dataset}
+                              stations={this.stationsForDataset()}
+                            />
+                        </LayerGroup>
+                    </LayersControl.Overlay>
+                </LayersControl>
+                {
+                    this.props.message &&
+                    <StaticControl position='topright'>
+                        {this.props.message}
+                    </StaticControl>
+                }
+            </BCBaseMap>
         );
     }
 }
