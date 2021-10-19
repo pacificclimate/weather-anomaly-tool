@@ -28,7 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --transformIgnorePatterns \"node_modules/(?!pcic-react-leaflet-components)/\"",
     "eject": "react-scripts eject",
     "reinstall": "rm -rf ./node_modules; npm install"
   },
