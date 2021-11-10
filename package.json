@@ -8,6 +8,7 @@
     "Rod Glover <rglover@uvic.ca>"
   ],
   "dependencies": {
+    "@react-leaflet/core": "1.0.2",
     "axios": "^0.21.3",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
@@ -20,7 +21,7 @@
     "react-bootstrap": "^0.33.1",
     "react-dom": "^17.0.2",
     "react-input-range": "^1.2.1",
-    "react-leaflet": "^2.1.4",
+    "react-leaflet": "3.1.0",
     "react-scripts": "^4.0.3",
     "react-test-renderer": "^16.0.0",
     "url-join": "^2.0.2"
