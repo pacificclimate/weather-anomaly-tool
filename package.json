@@ -22,7 +22,7 @@
     "react-dom": "^16.0.0",
     "react-input-range": "^1.2.1",
     "react-leaflet": "^2.1.4",
-    "react-scripts": "4.0.0",
+    "react-scripts": "^4.0.3",
     "react-test-renderer": "^16.0.0",
     "url-join": "^2.0.2"
   },
