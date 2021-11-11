@@ -1,47 +1,38 @@
-// RadioButtonSelector - a component that provides a selector as a vertical scrollable list of (radio) buttons.
-//
-// For prop definitions, see RadioButtonSelector.propTypes
-//
-// CAUTION: This is a PureComponent, and therefore props.options must be an immutable value, or
-// else PureComponent's shallow comparison will not pick up changes to it and not update correctly.
-// In present use, this is the case.
+// RadioButtonSelector - a component that provides a selector as group of
+// (radio) buttons.
 
-// TODO: Add props.style and pass thru to ToggleButtonGroup
 // TODO: Add prop for option item height?
-// TODO: (as called for) Make vertical a prop
-// TODO: Use inline styles only
+// TODO: Use inline styles only?
 
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import classNames from 'classnames';
-
-import { pick } from '../utils';
 import './RadioButtonSelector.css';
 
-class RadioButtonSelector extends PureComponent {
-    render() {
-        const toggleButtons = this.props.options.map((option) => (
-            <ToggleButton
-                className={classNames('RadioButtonSelector-button', this.props.className)}
-                disabled={this.props.disabled}
+function RadioButtonSelector({ options, name, disabled, className, ...rest}) {
+    return (
+        <ToggleButtonGroup
+            className={classNames('RadioButtonSelector', className)}
+            type="radio"
+            name={name}
+            disabled={disabled}
+            {...rest}
+        >
+            {options.map((option, i) => (
+              // Note: prop `id` is essential; omit => onChange callback fails.
+              <ToggleButton
+                className={classNames('RadioButtonSelector-button', className)}
+                disabled={disabled}
+                id={`${name}-btn-${i}`}
                 key={option.value}
                 value={option.value}
-            >
-                {option.label}
-            </ToggleButton>
-        ));
-        return (
-            <ToggleButtonGroup
-                className={classNames('RadioButtonSelector', this.props.className)}
-                type="radio"
-                {...pick(this.props, 'style name vertical bsSize value onChange')}
-                ref={(component) => { this.toggleButtonGroup = component; }}
-            >
-                {toggleButtons}
-            </ToggleButtonGroup>
-        );
-    }
+              >
+                  {option.label}
+              </ToggleButton>
+            ))}
+        </ToggleButtonGroup>
+    );
 }
 
 RadioButtonSelector.propTypes = {
