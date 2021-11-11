@@ -7,9 +7,8 @@ import { LayerGroup, LayersControl, CircleMarker } from 'react-leaflet';
 
 import _ from 'lodash';
 
-import { BCBaseMap } from 'pcic-react-leaflet-components';
+import { BCBaseMap, StaticControl } from 'pcic-react-leaflet-components';
 import { pick } from '../utils';
-import StaticControl from '../StaticControl';
 import StationPopup from '../StationPopup';
 import stationColor from './stationColor';
 import './DataMap.css';
@@ -111,7 +110,8 @@ class DataMap extends PureComponent {
         return (
             <BCBaseMap
               id={'data-map'}
-              viewport={BCBaseMap.initialViewport}
+              center={BCBaseMap.initialViewport.center}
+              zoom={BCBaseMap.initialViewport.zoom}
             >
                 <LayersControl position='topright'>
                     <LayersControl.Overlay name='Baseline stations'>

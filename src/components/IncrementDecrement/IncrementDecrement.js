@@ -8,7 +8,7 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ButtonGroup, Button, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap';
+import { ButtonGroup, Button, Form } from 'react-bootstrap';
 
 import classNames from 'classnames';
 
@@ -33,19 +33,25 @@ class IncrementDecrement extends PureComponent {
         this.props.onIncrement(this.state.by)
     }
 
+    handleChangeBy = e => {
+        this.setState({ by: +e.target.value })
+    }
+
     render() {
         let selector = null;
         if (Array.isArray(this.props.by)) {
             selector = (
-                <DropdownButton
+                <Form.Select
                     {...pick(this.props, 'id bsSize')}
                     title={this.state.by}
-                    onSelect={by => this.setState({by: +by})}
+                    onChange={this.handleChangeBy}
                 >
                     {this.props.by.map(by =>
-                        <MenuItem key={by} eventKey={by} className={'btn-xs'}>{by}</MenuItem>
+                        <option key={by} className={'btn-xs'}>
+                            {by}
+                        </option>
                     )}
-                </DropdownButton>
+                </Form.Select>
             );
         }
 
@@ -58,7 +64,7 @@ class IncrementDecrement extends PureComponent {
                     disabled={this.props.disabled}
                     onClick={this.onDecrement}
                 >
-                    <Glyphicon glyph={'minus'}/>
+                    -
                 </Button>
                 {selector}
                 <Button
@@ -66,7 +72,7 @@ class IncrementDecrement extends PureComponent {
                     disabled={this.props.disabled}
                     onClick={this.onIncrement}
                 >
-                    <Glyphicon glyph={'plus'}/>
+                    +
                 </Button>
             </ButtonGroup>
         );
