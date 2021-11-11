@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { pick } from '../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './DatasetSelector.css';
 
@@ -12,18 +11,10 @@ const datasets = [
     { value: 'baseline', label: 'Baseline', },
 ];
 
-class DatasetSelector extends PureComponent {
-    render() {
-        return (
-            <RadioButtonSelector
-                vertical
-                className={this.props.className}
-                name="dataset"
-                options={datasets}
-                {...pick(this.props, 'value onChange')}
-            />
-        );
-    }
+function DatasetSelector(props) {
+    return (
+        <RadioButtonSelector name="dataset" options={datasets} {...props}/>
+    );
 }
 
 DatasetSelector.propTypes = {
