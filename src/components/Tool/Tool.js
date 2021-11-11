@@ -106,6 +106,7 @@ export default class Tool extends PureComponent {
                         <Col lg={2}/>
                         <Col lg={4}>
                             <VariableSelector
+                                vertical
                                 disabled={this.state.dataLoading}
                                 value={this.state.variable}
                                 onChange={this.handleChangeVariable}
@@ -113,6 +114,7 @@ export default class Tool extends PureComponent {
                         </Col>
                         <Col lg={4}>
                             <DatasetSelector
+                                vertical
                                 value={this.state.dataset}
                                 onChange={this.handleChangeDataset}
                             />
