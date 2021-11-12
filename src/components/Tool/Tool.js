@@ -113,8 +113,7 @@ export default function Tool({
                         <IncrementDecrement
                             disabled={dataLoading}
                             id="month-increment"
-                            bsSize="xsmall"
-                            by={monthIncrDecrBy}
+                            bys={monthIncrDecrBy}
                             onIncrement={handleIncrementMonth}
                         />
                     </Col>
@@ -134,8 +133,7 @@ export default function Tool({
                         <IncrementDecrement
                             disabled={dataLoading}
                             id="year-increment"
-                            bsSize="xsmall"
-                            by={yearIncrDecrBy}
+                            bys={yearIncrDecrBy}
                             onIncrement={handleIncrementYear}
                         />
                     </Col>
