@@ -79,37 +79,39 @@ export default function Tool({
     return (
       <React.Fragment>
         <Row className="Tool">
-            <Col lg={3} className="selectors">
-                <Row>Display</Row>
+            <Col xs={3} className="selectors">
+                <Row><Col>Display</Col></Row>
                 <Row>
-                    <Col lg={2}/>
-                    <Col lg={4}>
+                    <Col xs={2}/>
+                    <Col xs={4}>
                         <VariableSelector
                             vertical
+                            size="sm"
                             disabled={dataLoading}
                             value={variable}
                             onChange={setVariable}
                         />
                     </Col>
-                    <Col lg={4}>
+                    <Col xs={4}>
                         <DatasetSelector
                             vertical
+                            size="sm"
                             value={dataset}
                             onChange={setDataset}
                         />
                     </Col>
-                    <Col lg={2}/>
+                    <Col xs={2}/>
                 </Row>
-                <Row>for</Row>
+                <Row><Col>for</Col></Row>
                 <Row>
-                    <Col lg={8}>
+                    <Col xs={9}>
                         <MonthSelector
                             disabled={dataLoading}
                             value={date.month()}
                             onChange={handleChangeMonth}
                         />
                     </Col>
-                    <Col lg={4}>
+                    <Col xs={3}>
                         <IncrementDecrement
                             disabled={dataLoading}
                             id="month-increment"
@@ -120,16 +122,16 @@ export default function Tool({
                 </Row>
                 {!isBaselineDataset &&
                 <Row>
-                    <Col lg={8}>
+                    <Col xs={9}>
                         <YearSelector
                             disabled={dataLoading}
-                            start={1970}
-                            end={latestPossibleDataDate.year()}
+                            minValue={1970}
+                            maxValue={latestPossibleDataDate.year()}
                             value={date.year()}
                             onChange={handleChangeYear}
                         />
                     </Col>
-                    <Col lg={4}>
+                    <Col xs={3}>
                         <IncrementDecrement
                             disabled={dataLoading}
                             id="year-increment"
@@ -139,7 +141,7 @@ export default function Tool({
                     </Col>
                 </Row>}
             </Col>
-            <Col  lg={9}>
+            <Col  xs={9}>
                 <DataViewer
                     dataset={dataset}
                     variable={variable}
