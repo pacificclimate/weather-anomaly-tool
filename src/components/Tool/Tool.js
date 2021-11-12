@@ -12,7 +12,7 @@ import DataViewer from '../DataViewer';
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 import { getLastDateWithDataBefore }
-    from '../../data-services/weather-anomaly-data-service';
+  from '../../data-services/weather-anomaly-data-service';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -32,126 +32,126 @@ import { getLastDateWithDataBefore }
 const latestPossibleDataDate = moment().subtract(15, 'days');
 
 export default function Tool({
-    monthIncrDecrBy = [1, 3, 6],
-    yearIncrDecrBy = [1, 2, 3, 4, 5, 10],
+  monthIncrDecrBy = [1, 3, 6],
+  yearIncrDecrBy = [1, 2, 3, 4, 5, 10],
 }) {
-    const [dataset, setDataset] = useState('anomaly');
-    const [variable, setVariable] = useState('precip');
-    const [date, setDate] = useState(latestPossibleDataDate);
-    const [dataLoading, setDataLoading] = useState(true);
+  const [dataset, setDataset] = useState('anomaly');
+  const [variable, setVariable] = useState('precip');
+  const [date, setDate] = useState(latestPossibleDataDate);
+  const [dataLoading, setDataLoading] = useState(true);
 
-    // Determine latest date with data, and set date to it.
-    useEffect(() => {
-        setDataLoading(true);
-        getLastDateWithDataBefore(variable, date)
-        .then(date => {
-            setDate(date);
-            setDataLoading(false);
-        });
-    }, [])
+  // Determine latest date with data, and set date to it.
+  useEffect(() => {
+    setDataLoading(true);
+    getLastDateWithDataBefore(variable, date)
+    .then(date => {
+      setDate(date);
+      setDataLoading(false);
+    });
+  }, [])
 
-    const handleChangeMonth = (month) => {
-        setDate((date) => date.clone().month(month));
-    };
+  const handleChangeMonth = (month) => {
+    setDate((date) => date.clone().month(month));
+  };
 
-    const handleChangeYear = (year) => {
-        setDate((date) => date.clone().year(year));
-    };
+  const handleChangeYear = (year) => {
+    setDate((date) => date.clone().year(year));
+  };
 
-    const handleIncrementYear = (by) => {
-        setDate((date) => date.clone().add(by, 'year'));
-    };
+  const handleIncrementYear = (by) => {
+    setDate((date) => date.clone().add(by, 'year'));
+  };
 
-    const handleIncrementMonth = (by) =>  {
-        setDate((date) => date.clone().add(by, 'month'));
-    };
+  const handleIncrementMonth = (by) => {
+    setDate((date) => date.clone().add(by, 'month'));
+  };
 
-    const handleDataIsLoading = () => {
-        setDataLoading(true);
-    }
+  const handleDataIsLoading = () => {
+    setDataLoading(true);
+  }
 
-    const handleDataIsNotLoading = () => {
-        setDataLoading(false);
-    };
+  const handleDataIsNotLoading = () => {
+    setDataLoading(false);
+  };
 
-    const isBaselineDataset = dataset === 'baseline';
+  const isBaselineDataset = dataset === 'baseline';
 
-    return (
-      <React.Fragment>
-        <Row className="Tool">
-            <Col xs={3} className="selectors">
-                <Row><Col>Display</Col></Row>
-                <Row>
-                    <Col xs={2}/>
-                    <Col xs={4}>
-                        <VariableSelector
-                            vertical
-                            size="sm"
-                            disabled={dataLoading}
-                            value={variable}
-                            onChange={setVariable}
-                        />
-                    </Col>
-                    <Col xs={4}>
-                        <DatasetSelector
-                            vertical
-                            size="sm"
-                            value={dataset}
-                            onChange={setDataset}
-                        />
-                    </Col>
-                    <Col xs={2}/>
-                </Row>
-                <Row><Col>for</Col></Row>
-                <Row>
-                    <Col xs={9}>
-                        <MonthSelector
-                            disabled={dataLoading}
-                            value={date.month()}
-                            onChange={handleChangeMonth}
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <IncrementDecrement
-                            disabled={dataLoading}
-                            id="month-increment"
-                            bys={monthIncrDecrBy}
-                            onIncrement={handleIncrementMonth}
-                        />
-                    </Col>
-                </Row>
-                {!isBaselineDataset &&
-                <Row>
-                    <Col xs={9}>
-                        <YearSelector
-                            disabled={dataLoading}
-                            minValue={1970}
-                            maxValue={latestPossibleDataDate.year()}
-                            value={date.year()}
-                            onChange={handleChangeYear}
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <IncrementDecrement
-                            disabled={dataLoading}
-                            id="year-increment"
-                            bys={yearIncrDecrBy}
-                            onIncrement={handleIncrementYear}
-                        />
-                    </Col>
-                </Row>}
+  return (
+    <React.Fragment>
+      <Row className="Tool">
+        <Col xs={3} className="selectors">
+          <Row><Col>Display</Col></Row>
+          <Row>
+            <Col xs={2}/>
+            <Col xs={4}>
+              <VariableSelector
+                vertical
+                size="sm"
+                disabled={dataLoading}
+                value={variable}
+                onChange={setVariable}
+              />
             </Col>
-            <Col  xs={9}>
-                <DataViewer
-                    dataset={dataset}
-                    variable={variable}
-                    date={date}
-                    onDataWillLoad={handleDataIsLoading}
-                    onDataDidLoad={handleDataIsNotLoading}
-                    onDataDidCatch={handleDataIsNotLoading}
-                />
+            <Col xs={4}>
+              <DatasetSelector
+                vertical
+                size="sm"
+                value={dataset}
+                onChange={setDataset}
+              />
             </Col>
-        </Row>
-      </React.Fragment>
-    );
+            <Col xs={2}/>
+          </Row>
+          <Row><Col>for</Col></Row>
+          <Row>
+            <Col xs={9}>
+              <MonthSelector
+                disabled={dataLoading}
+                value={date.month()}
+                onChange={handleChangeMonth}
+              />
+            </Col>
+            <Col xs={3}>
+              <IncrementDecrement
+                disabled={dataLoading}
+                id="month-increment"
+                bys={monthIncrDecrBy}
+                onIncrement={handleIncrementMonth}
+              />
+            </Col>
+          </Row>
+          {!isBaselineDataset &&
+          <Row>
+            <Col xs={9}>
+              <YearSelector
+                disabled={dataLoading}
+                minValue={1970}
+                maxValue={latestPossibleDataDate.year()}
+                value={date.year()}
+                onChange={handleChangeYear}
+              />
+            </Col>
+            <Col xs={3}>
+              <IncrementDecrement
+                disabled={dataLoading}
+                id="year-increment"
+                bys={yearIncrDecrBy}
+                onIncrement={handleIncrementYear}
+              />
+            </Col>
+          </Row>}
+        </Col>
+        <Col xs={9}>
+          <DataViewer
+            dataset={dataset}
+            variable={variable}
+            date={date}
+            onDataWillLoad={handleDataIsLoading}
+            onDataDidLoad={handleDataIsNotLoading}
+            onDataDidCatch={handleDataIsNotLoading}
+          />
+        </Col>
+      </Row>
+    </React.Fragment>
+  );
 }

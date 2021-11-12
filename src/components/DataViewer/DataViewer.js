@@ -10,81 +10,81 @@ import DataMap from '../DataMap';
 import './DataViewer.css';
 
 const DataLoader = {
-    'test': TestDataLoader,
-    'fake': FakeDataLoader,
-    'real': RealDataLoader,
+  'test': TestDataLoader,
+  'fake': FakeDataLoader,
+  'real': RealDataLoader,
 }[process.env.DATA_LOADER || 'real'];
 
 class DataViewer extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = DataViewer.noDataState;
-        bindFunctions(this, 'handleDataWillLoad handleDataDidLoad handleDidCatch');
-    }
+  constructor(props) {
+    super(props);
+    this.state = DataViewer.noDataState;
+    bindFunctions(this, 'handleDataWillLoad handleDataDidLoad handleDidCatch');
+  }
 
-    handleDataWillLoad(data) {
-        logger.log(this, data);
-        this.setState({
-            ...DataViewer.noDataState,
-            message: 'Data loading ...',
-        });
-        this.props.onDataWillLoad();
-    }
+  handleDataWillLoad(data) {
+    logger.log(this, data);
+    this.setState({
+      ...DataViewer.noDataState,
+      message: 'Data loading ...',
+    });
+    this.props.onDataWillLoad();
+  }
 
-    handleDataDidLoad(data) {
-        logger.log(this, data);
-        this.setState({
-            ...data,
-            message: null,
-        });
-        this.props.onDataDidLoad(data);
-    }
+  handleDataDidLoad(data) {
+    logger.log(this, data);
+    this.setState({
+      ...data,
+      message: null,
+    });
+    this.props.onDataDidLoad(data);
+  }
 
-    handleDidCatch(error) {
-        logger.log(this, error);
-        this.setState({
-            message: 'Error loading data: ' + error.message,
-        });
-        this.props.onDataDidCatch(error);
-    }
+  handleDidCatch(error) {
+    logger.log(this, error);
+    this.setState({
+      message: 'Error loading data: ' + error.message,
+    });
+    this.props.onDataDidCatch(error);
+  }
 
-    render() {
-        return (
-            <div>
-                <DataLoader
-                    {...pick(this.props, 'variable date')}
-                    onDataWillLoad={this.handleDataWillLoad}
-                    onDataDidLoad={this.handleDataDidLoad}
-                    onDidCatch={this.handleDidCatch}
-                    // errorTest
-                />
-                <DataMap
-                    {...pick(this.props, 'dataset variable')}
-                    {...pick(this.state, 'baseline monthly message')}
-                />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <DataLoader
+          {...pick(this.props, 'variable date')}
+          onDataWillLoad={this.handleDataWillLoad}
+          onDataDidLoad={this.handleDataDidLoad}
+          onDidCatch={this.handleDidCatch}
+          // errorTest
+        />
+        <DataMap
+          {...pick(this.props, 'dataset variable')}
+          {...pick(this.state, 'baseline monthly message')}
+        />
+      </div>
+    );
+  }
 }
 
 DataViewer.propTypes = {
-    dataset: PropTypes.string.isRequired,
-    variable: PropTypes.string.isRequired,
-    date: PropTypes.object.isRequired,
-    onDataWillLoad: PropTypes.func,
-    onDataDidLoad: PropTypes.func,
-    onDataDidCatch: PropTypes.func,
+  dataset: PropTypes.string.isRequired,
+  variable: PropTypes.string.isRequired,
+  date: PropTypes.object.isRequired,
+  onDataWillLoad: PropTypes.func,
+  onDataDidLoad: PropTypes.func,
+  onDataDidCatch: PropTypes.func,
 };
 
-DataViewer.defaultProps ={
-    onDataWillLoad: () => {},
-    onDataDidLoad: () => {},
-    onDataDidCatch: () => {},
+DataViewer.defaultProps = {
+  onDataWillLoad: () => {},
+  onDataDidLoad: () => {},
+  onDataDidCatch: () => {},
 };
 
 DataViewer.noDataState = {
-    baseline: [],
-    monthly: [],
+  baseline: [],
+  monthly: [],
 };
 
 export default DataViewer;

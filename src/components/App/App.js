@@ -7,7 +7,7 @@ import Tool from '../Tool'
 
 import './App.css';
 
-logger.configure({active: true});
+logger.configure({ active: true });
 
 function App() {
   return (
