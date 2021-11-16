@@ -2,12 +2,17 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
-import { LayerGroup, LayersControl, CircleMarker } from 'react-leaflet';
-
+import {
+  LayerGroup,
+  LayersControl,
+  CircleMarker,
+  SVGOverlay,
+  useMap,
+} from 'react-leaflet';
+import * as SVGLoaders from 'svg-loaders-react';
 import _ from 'lodash';
 
-import { BCBaseMap, StaticControl } from 'pcic-react-leaflet-components';
+import { BCBaseMap } from 'pcic-react-leaflet-components';
 import { pick } from '../utils';
 import StationPopup from '../StationPopup';
 import stationColor from './stationColor';
@@ -60,13 +65,23 @@ function StationDataMarkers({ variable, dataset, stations }) {
   );
 }
 
+
+function MapSpinner() {
+  const map = useMap();
+  return (
+    <SVGOverlay bounds={map.getBounds()}>
+      <SVGLoaders.Bars x="40%" y="40%" stroke="#98ff98"/>
+    </SVGOverlay>
+  );
+}
+
+
 class DataMap extends PureComponent {
   static propTypes = {
     variable: PropTypes.oneOf(["precip", "tmin", "tmax"]).isRequired,
     dataset: PropTypes.oneOf(["anomaly", "monthly", "baseline"]).isRequired,
     monthly: PropTypes.array.isRequired,
     baseline: PropTypes.array.isRequired,
-    message: PropTypes.string,
   };
 
   stationsForDataset() {
@@ -108,12 +123,9 @@ class DataMap extends PureComponent {
   }
 
   render() {
-    return (
-      <BCBaseMap
-        id={'data-map'}
-        center={BCBaseMap.initialViewport.center}
-        zoom={BCBaseMap.initialViewport.zoom}
-      >
+    const content =
+      (this.props.baseline?.length > 0 && this.props.monthly?.length > 0) ?
+      (
         <LayersControl position='topright'>
           <LayersControl.Overlay name='Baseline stations'>
             <LayerGroup>
@@ -139,12 +151,17 @@ class DataMap extends PureComponent {
             </LayerGroup>
           </LayersControl.Overlay>
         </LayersControl>
-        {
-          this.props.message &&
-          <StaticControl position='topright'>
-            {this.props.message}
-          </StaticControl>
-        }
+      ) : (
+        <MapSpinner/>
+      );
+
+    return (
+      <BCBaseMap
+        id={'data-map'}
+        center={BCBaseMap.initialViewport.center}
+        zoom={BCBaseMap.initialViewport.zoom}
+      >
+        {content}
       </BCBaseMap>
     );
   }
@@ -159,8 +176,6 @@ DataMap.propTypes = {
   // Array of baseline data from monthly Anomaly Data Service.
   monthly: PropTypes.array.isRequired,
   // Array of monthly data from monthly Anomaly Data Service.
-  message: PropTypes.string,  // Component?
-  // Optional message to display on map (e.g., "Loading...")
 };
 
 DataMap.defaultProps = {

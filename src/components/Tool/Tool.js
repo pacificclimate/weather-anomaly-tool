@@ -7,12 +7,12 @@ import VariableSelector from '../VariableSelector'
 import YearSelector from '../YearSelector';
 import MonthSelector from '../MonthSelector';
 import IncrementDecrement from '../IncrementDecrement';
-import DataViewer from '../DataViewer';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
-import { getLastDateWithDataBefore }
+import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
   from '../../data-services/weather-anomaly-data-service';
+import DataMap from '../DataMap';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -38,17 +38,31 @@ export default function Tool({
   const [dataset, setDataset] = useState('anomaly');
   const [variable, setVariable] = useState('precip');
   const [date, setDate] = useState(latestPossibleDataDate);
-  const [dataLoading, setDataLoading] = useState(true);
 
-  // Determine latest date with data, and set date to it.
+  // Determine latest date with data, and set date to it. This happens once,
+  // on first render.
   useEffect(() => {
-    setDataLoading(true);
+    setBaseline(null);
+    setMonthly(null);
     getLastDateWithDataBefore(variable, date)
     .then(date => {
       setDate(date);
-      setDataLoading(false);
     });
-  }, [])
+  }, []);
+
+  const [baseline, setBaseline] = useState(null);  // Change to null
+  const [monthly, setMonthly] = useState(null);  // Change to null
+
+  useEffect(() => {
+    setBaseline(null);
+    setMonthly(null);
+    getBaselineData(variable, date).then(r => {
+      setBaseline(r.data);
+    });
+    getMonthlyData(variable, date).then(r => {
+      setMonthly(r.data);
+    });
+  }, [variable, date]);
 
   const handleChangeMonth = (month) => {
     setDate((date) => date.clone().month(month));
@@ -66,14 +80,7 @@ export default function Tool({
     setDate((date) => date.clone().add(by, 'month'));
   };
 
-  const handleDataIsLoading = () => {
-    setDataLoading(true);
-  }
-
-  const handleDataIsNotLoading = () => {
-    setDataLoading(false);
-  };
-
+  const isDataLoading = baseline === null || monthly === null;
   const isBaselineDataset = dataset === 'baseline';
 
   return (
@@ -87,7 +94,7 @@ export default function Tool({
               <VariableSelector
                 vertical
                 size="sm"
-                disabled={dataLoading}
+                disabled={isDataLoading}
                 value={variable}
                 onChange={setVariable}
               />
@@ -106,14 +113,14 @@ export default function Tool({
           <Row>
             <Col xs={9}>
               <MonthSelector
-                disabled={dataLoading}
+                disabled={isDataLoading}
                 value={date.month()}
                 onChange={handleChangeMonth}
               />
             </Col>
             <Col xs={3}>
               <IncrementDecrement
-                disabled={dataLoading}
+                disabled={isDataLoading}
                 id="month-increment"
                 bys={monthIncrDecrBy}
                 onIncrement={handleIncrementMonth}
@@ -124,7 +131,7 @@ export default function Tool({
           <Row>
             <Col xs={9}>
               <YearSelector
-                disabled={dataLoading}
+                disabled={isDataLoading}
                 minValue={1970}
                 maxValue={latestPossibleDataDate.year()}
                 value={date.year()}
@@ -133,22 +140,30 @@ export default function Tool({
             </Col>
             <Col xs={3}>
               <IncrementDecrement
-                disabled={dataLoading}
+                disabled={isDataLoading}
                 id="year-increment"
                 bys={yearIncrDecrBy}
                 onIncrement={handleIncrementYear}
               />
             </Col>
-          </Row>}
+          </Row>
+          }
+          <Row>
+            <Col className={""}>
+              <p>dataset: {dataset}</p>
+              <p>variable: {variable}</p>
+              <p>date: {date.toString()}</p>
+              <p>baseline : {baseline === null ? 'null' : baseline.length}</p>
+              <p>monthly : {monthly === null ? 'null' : monthly.length}</p>
+            </Col>
+          </Row>
         </Col>
         <Col xs={9}>
-          <DataViewer
+          <DataMap
             dataset={dataset}
             variable={variable}
-            date={date}
-            onDataWillLoad={handleDataIsLoading}
-            onDataDidLoad={handleDataIsNotLoading}
-            onDataDidCatch={handleDataIsNotLoading}
+            baseline={baseline}
+            monthly={monthly}
           />
         </Col>
       </Row>
