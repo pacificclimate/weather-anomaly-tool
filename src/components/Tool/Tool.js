@@ -148,15 +148,6 @@ export default function Tool({
             </Col>
           </Row>
           }
-          <Row>
-            <Col className={""}>
-              <p>dataset: {dataset}</p>
-              <p>variable: {variable}</p>
-              <p>date: {date.toString()}</p>
-              <p>baseline : {baseline === null ? 'null' : baseline.length}</p>
-              <p>monthly : {monthly === null ? 'null' : monthly.length}</p>
-            </Col>
-          </Row>
         </Col>
         <Col xs={9}>
           <DataMap
