@@ -10,7 +10,9 @@ import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import classNames from 'classnames';
 import './RadioButtonSelector.css';
 
-function RadioButtonSelector({ options, name, disabled, className, ...rest }) {
+function RadioButtonSelector({
+  options, name, disabled, className, variant, ...rest
+}) {
   return (
     <ToggleButtonGroup
       className={classNames('RadioButtonSelector', className)}
@@ -22,6 +24,7 @@ function RadioButtonSelector({ options, name, disabled, className, ...rest }) {
       {options.map((option, i) => (
         // Note: prop `id` is essential; omit => onChange callback fails.
         <ToggleButton
+          variant={variant}
           className={classNames('RadioButtonSelector-button', className)}
           disabled={disabled}
           id={`${name}-btn-${i}`}

@@ -32,6 +32,7 @@ import DataMap from '../DataMap';
 const latestPossibleDataDate = moment().subtract(15, 'days');
 
 export default function Tool({
+  controlVariant = "secondary",
   monthIncrDecrBy = [1, 3, 6],
   yearIncrDecrBy = [1, 2, 3, 4, 5, 10],
 }) {
@@ -94,6 +95,7 @@ export default function Tool({
               <VariableSelector
                 vertical
                 size="sm"
+                variant={controlVariant}
                 disabled={isDataLoading}
                 value={variable}
                 onChange={setVariable}
@@ -103,6 +105,7 @@ export default function Tool({
               <DatasetSelector
                 vertical
                 size="sm"
+                variant={controlVariant}
                 value={dataset}
                 onChange={setDataset}
               />
@@ -120,8 +123,9 @@ export default function Tool({
             </Col>
             <Col xs={3}>
               <IncrementDecrement
-                disabled={isDataLoading}
                 id="month-increment"
+                variant={controlVariant}
+                disabled={isDataLoading}
                 bys={monthIncrDecrBy}
                 onIncrement={handleIncrementMonth}
               />
@@ -140,8 +144,9 @@ export default function Tool({
             </Col>
             <Col xs={3}>
               <IncrementDecrement
-                disabled={isDataLoading}
                 id="year-increment"
+                variant={controlVariant}
+                disabled={isDataLoading}
                 bys={yearIncrDecrBy}
                 onIncrement={handleIncrementYear}
               />

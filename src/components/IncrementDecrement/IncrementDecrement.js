@@ -23,6 +23,7 @@ function IncrementDecrement({
   onIncrement,
   disabled = false,
   className,
+  variant,
 }) {
   const [by, setBy] = useState(defaultBy | bys?.[0]);
   const handleChangeBy = e => setBy(+e.target.value);
@@ -37,6 +38,7 @@ function IncrementDecrement({
         size="sm"
         style={{ width: "0.5em" }}
         title={"Select increment"}
+        disabled={disabled}
         onChange={handleChangeBy}
       >
         {bys.map(by => (<option key={by}>{by}</option>))}
@@ -51,6 +53,7 @@ function IncrementDecrement({
       size="sm"
     >
       <Button
+        variant={variant}
         disabled={disabled}
         onClick={handleDecrement}
       >
@@ -58,6 +61,7 @@ function IncrementDecrement({
       </Button>
       {selector}
       <Button
+        variant={variant}
         disabled={disabled}
         onClick={handleIncrement}
       >
