@@ -1,5 +1,4 @@
-.DataMap-message {
-    background: white;
-    padding: 0.5em;
-    border-radius: 0.5em;
+.leaflet-container {
+    height: 800px;
+    width: 100%;
 }

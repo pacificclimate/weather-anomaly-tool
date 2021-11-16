@@ -14,8 +14,7 @@
 
 
 .Tool .selectors .input-range__label--min,
-.Tool .selectors .input-range__label--max
-{
+.Tool .selectors .input-range__label--max {
     bottom: -1em;
 }
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import YearSelector from '../YearSelector';
+import ThrottledInputRange from '../ThrottledInputRange';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(
-    <YearSelector
-      start={1900} end={1920} value={1910}
+    <ThrottledInputRange
+      value={1}
       onChange={() => {
       }}
     />,

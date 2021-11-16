@@ -1,6 +1,0 @@
-{
-  "name": "FakeDataLoader",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./FakeDataLoader.js"
-}
