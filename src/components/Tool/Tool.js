@@ -39,6 +39,8 @@ export default function Tool({
   const [dataset, setDataset] = useState('anomaly');
   const [variable, setVariable] = useState('precip');
   const [date, setDate] = useState(latestPossibleDataDate);
+  const [baseline, setBaseline] = useState(null);
+  const [monthly, setMonthly] = useState(null);
 
   // Determine latest date with data, and set date to it. This happens once,
   // on first render.
@@ -51,9 +53,10 @@ export default function Tool({
     });
   }, []);
 
-  const [baseline, setBaseline] = useState(null);  // Change to null
-  const [monthly, setMonthly] = useState(null);  // Change to null
-
+  // When variable or date changes, get data.
+  // (Both datasets are is retrieved for all values of `dataset`. This could
+  // be refined to get only the dataset(s) required by the value of `dataset`.)
+  // Consider splitting this into two separate effects, with an if on `dataset`.
   useEffect(() => {
     setBaseline(null);
     setMonthly(null);

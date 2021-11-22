@@ -35,7 +35,7 @@ function uniqueKey(station) {
   return station.station_db_id.toString() + station.network_variable_name;
 }
 
-function StationLocationMarkers({ stations }) {
+function StationLocationMarkers({ type, stations }) {
   // Return a set of markers (<CircleMarker/>) for the locations of each
   // station in `props.station`. Icon markers `<Marker/>` don't work in this
   // environment. I think it is because Webpack isn't including the image
@@ -43,7 +43,7 @@ function StationLocationMarkers({ stations }) {
   // circle markers work.
   return stations.map(station =>
     <CircleMarker
-      key={uniqueKey(station)}
+      key={`loc-${type}-${uniqueKey(station)}`}
       center={{ lng: station.lon, lat: station.lat }}
       {...locationMarkerOptions}
     />
@@ -55,7 +55,7 @@ function StationDataMarkers({ variable, dataset, stations }) {
   // in `station`.
   return stations.map(station =>
     <CircleMarker
-      key={uniqueKey(station)}
+      key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
       center={{ lng: station.lon, lat: station.lat }}
       {...dataMarkerOptions}
       color={stationColor(variable, dataset, station)}
@@ -130,6 +130,7 @@ class DataMap extends PureComponent {
           <LayersControl.Overlay name='Baseline stations'>
             <LayerGroup>
               <StationLocationMarkers
+                type="baseline"
                 stations={this.props.baseline}
               />
             </LayerGroup>
@@ -137,6 +138,7 @@ class DataMap extends PureComponent {
           <LayersControl.Overlay name='Monthly stations' checked>
             <LayerGroup>
               <StationLocationMarkers
+                type="monthly"
                 stations={this.props.monthly}
               />
             </LayerGroup>
