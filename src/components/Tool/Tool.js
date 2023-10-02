@@ -87,14 +87,15 @@ export default function Tool({
   const isDataLoading = baseline === null || monthly === null;
   const isBaselineDataset = dataset === 'baseline';
 
+  const displayColWidths = { xs: 12, md: 6 };
+
   return (
     <React.Fragment>
       <Row className="Tool">
         <Col xs={3} className="selectors">
           <Row><Col>Display</Col></Row>
           <Row>
-            <Col xs={2}/>
-            <Col xs={4}>
+            <Col {...displayColWidths} className="mb-sm-2 mb-md-0">
               <VariableSelector
                 vertical
                 size="sm"
@@ -104,7 +105,7 @@ export default function Tool({
                 onChange={setVariable}
               />
             </Col>
-            <Col xs={4}>
+            <Col {...displayColWidths}>
               <DatasetSelector
                 vertical
                 size="sm"
@@ -113,18 +114,19 @@ export default function Tool({
                 onChange={setDataset}
               />
             </Col>
-            <Col xs={2}/>
           </Row>
           <Row><Col>for</Col></Row>
           <Row>
-            <Col xs={9}>
+            <Col className="px-4">
               <MonthSelector
                 disabled={isDataLoading}
                 value={date.month()}
                 onChange={handleChangeMonth}
               />
             </Col>
-            <Col xs={3}>
+          </Row>
+          <Row className="mt-0">
+            <Col>
               <IncrementDecrement
                 id="month-increment"
                 variant={controlVariant}
@@ -135,26 +137,30 @@ export default function Tool({
             </Col>
           </Row>
           {!isBaselineDataset &&
-          <Row>
-            <Col xs={9}>
-              <YearSelector
-                disabled={isDataLoading}
-                minValue={1970}
-                maxValue={latestPossibleDataDate.year()}
-                value={date.year()}
-                onChange={handleChangeYear}
-              />
-            </Col>
-            <Col xs={3}>
-              <IncrementDecrement
-                id="year-increment"
-                variant={controlVariant}
-                disabled={isDataLoading}
-                bys={yearIncrDecrBy}
-                onIncrement={handleIncrementYear}
-              />
-            </Col>
-          </Row>
+            <React.Fragment>
+              <Row>
+                <Col className="px-4">
+                    <YearSelector
+                      disabled={isDataLoading}
+                      minValue={1970}
+                      maxValue={latestPossibleDataDate.year()}
+                      value={date.year()}
+                      onChange={handleChangeYear}
+                    />
+                </Col>
+              </Row>
+              <Row className="mt-0">
+                <Col>
+                  <IncrementDecrement
+                    id="year-increment"
+                    variant={controlVariant}
+                    disabled={isDataLoading}
+                    bys={yearIncrDecrBy}
+                    onIncrement={handleIncrementYear}
+                  />
+                </Col>
+              </Row>
+            </React.Fragment>
           }
         </Col>
         <Col xs={9}>
