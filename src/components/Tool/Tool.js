@@ -87,15 +87,15 @@ export default function Tool({
   const isDataLoading = baseline === null || monthly === null;
   const isBaselineDataset = dataset === 'baseline';
 
-  const displayColWidths = { xs: 12, md: 6 };
+  const displayColWidths = { xs: 12, md: "auto" };
 
   return (
     <React.Fragment>
       <Row className="Tool">
         <Col xs={3} className="selectors">
           <Row><Col>Display</Col></Row>
-          <Row>
-            <Col {...displayColWidths} className="mb-sm-2 mb-md-0">
+          <Row className="justify-content-md-center">
+            <Col {...displayColWidths} className="mb-sm-2 mb-lg-0">
               <VariableSelector
                 vertical
                 size="sm"
