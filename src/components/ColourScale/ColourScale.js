@@ -2,10 +2,10 @@ import React from 'react';
 import zip from 'lodash/fp/zip';
 
 import { VariableLabel } from '../VariableSelector';
+import { unitsForVariable } from '../../utils/variables';
 import {
   colorsForVariable, variableToThresholds, variableToColors
 } from '../DataMap/stationColor';
-
 import './ColourScale.css';
 
 
@@ -21,9 +21,10 @@ export default function ColourScale({ variable, dataset }) {
   const colors = variableToColors[variable];
   const numItems = thresholds.length;
   const width= 100 / numItems;
+  const units = unitsForVariable[variable];
   return (
     <div className="mx-1 mt-1" >
-      <div><VariableLabel variable={variable}/> {dataset}</div>
+      <div><VariableLabel variable={variable}/> {dataset} ({units})</div>
       <div
         style={{
           width: '100%',
