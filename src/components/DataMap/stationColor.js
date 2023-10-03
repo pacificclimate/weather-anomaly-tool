@@ -30,11 +30,11 @@ const temperatureColors = [
 const precipThresholds = [
   // arithmetic progression up to interval around zero; geometric after that
   // with roughly 400 as the extreme
-  -87.5, -62.5, -37.5, -12.5, 12.5 * Math.pow(3, 0), 12.5 * Math.pow(3, 1), 12.5 * Math.pow(3, 2), 12.5 * Math.pow(3, 3), +Infinity
+  -87.5, -62.5, -37.5, -12.5, 12.5 * Math.pow(3, 0), 12.5 * Math.pow(3, 1), 12.5 * Math.pow(3, 2), 12.5 * Math.pow(3, 3), 1000, +Infinity
 ];
 
 const precipColors = [
-  '#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#f5f5f5', '#c7eae5', '#80cdc1', '#35978f', '#01665e'
+  '#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#f5f5f5', '#c7eae5', '#80cdc1', '#35978f', '#01665e', '#dd0000'
 ];
 
 export const variableToThresholds = {

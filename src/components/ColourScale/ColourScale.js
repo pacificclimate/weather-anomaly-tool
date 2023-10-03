@@ -83,7 +83,11 @@ export default function ColourScale({ variable, dataset }) {
                   left: "50%"
                 }}
               >
-                {t === Infinity ? '(err)' : t}
+                {
+                  t === Infinity
+                  ? (variable === 'precip' ? '(err)' : '∞')
+                  : t
+                }
               </span>
             </span>
           ))
