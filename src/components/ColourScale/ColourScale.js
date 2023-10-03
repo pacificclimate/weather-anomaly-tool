@@ -44,7 +44,7 @@ export default function ColourScale({ variable, dataset }) {
   const numItems = thresholds.length;
   const width= 100 / numItems;
   return (
-    <div className="mx-1 mt-1" >
+    <div className="w-100 px-5 mt-1" >
       <div className="mb-1">
         <VariableLabel variable={variable}/> {dataset} ({units})
       </div>
@@ -83,7 +83,7 @@ export default function ColourScale({ variable, dataset }) {
                   left: "50%"
                 }}
               >
-                {t === Infinity ? '∞' : t}
+                {t === Infinity ? '(err)' : t}
               </span>
             </span>
           ))
