@@ -22,7 +22,7 @@ export default function ColourScale({ variable, dataset }) {
   const numItems = thresholds.length;
   const width= 100 / numItems;
   return (
-    <div className="mx-1 my-1" >
+    <div className="mx-1 mt-1" >
       <div><VariableLabel variable={variable}/> {dataset}</div>
       <div
         style={{
