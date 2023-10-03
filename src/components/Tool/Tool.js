@@ -7,12 +7,13 @@ import VariableSelector from '../VariableSelector'
 import YearSelector from '../YearSelector';
 import MonthSelector from '../MonthSelector';
 import IncrementDecrement from '../IncrementDecrement';
+import ColourScale from '../ColourScale';
+import DataMap from '../DataMap';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
   from '../../data-services/weather-anomaly-data-service';
-import DataMap from '../DataMap';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -164,12 +165,17 @@ export default function Tool({
           }
         </Col>
         <Col xs={9}>
-          <DataMap
-            dataset={dataset}
-            variable={variable}
-            baseline={baseline}
-            monthly={monthly}
-          />
+          <Row>
+            <ColourScale variable={variable} dataset={dataset}/>
+          </Row>
+          <Row>
+            <DataMap
+              dataset={dataset}
+              variable={variable}
+              baseline={baseline}
+              monthly={monthly}
+            />
+          </Row>
         </Col>
       </Row>
     </React.Fragment>
