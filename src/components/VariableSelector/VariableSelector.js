@@ -1,18 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-bootstrap';
+
 import RadioButtonSelector from '../RadioButtonSelector';
-import keys from 'lodash/fp/keys';
+import { variableKeys, variableLabels } from '../../utils/variables';
 import './VariableSelector.css';
-
-
-const variableLabels = {
-  precip: 'Precipitation',
-  tmin: <span>T<sub>min</sub></span>,
-  tmax: <span>T<sub>max</sub></span>,
-};
-
-export const variableKeys = keys(variableLabels);
 
 
 export function VariableLabel({ variable }) {

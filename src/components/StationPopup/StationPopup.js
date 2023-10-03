@@ -1,18 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
-import './StationPopup.css';
 
-const unitsForVariable = {
-  'precip': 'mm/mon',
-  'tmin': 'C',
-  'tmax': 'C',
-};
-const decimalPlacesForVariable = {
-  'precip': 1,
-  'tmin': 2,
-  'tmax': 2,
-};
+import {
+  decimalPlacesForVariable,
+  unitsForVariable
+} from '../../utils/variables';
+import './StationPopup.css';
 
 class StationPopup extends PureComponent {
   render() {
