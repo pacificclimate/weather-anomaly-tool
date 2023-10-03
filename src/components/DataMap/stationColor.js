@@ -13,11 +13,10 @@ function dataValueName(variable, dataset) {
   }
 }
 
-const colorsForVariable = {
+export const colorsForVariable = {
   'precip': '#36ff32',
   'tmin': '#3388ff',
   'tmax': '#ff6831',
-
 };
 
 const temperatureThresholds = [
@@ -38,13 +37,13 @@ const precipColors = [
   '#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#f5f5f5', '#c7eae5', '#80cdc1', '#35978f', '#01665e'
 ];
 
-const variableToThresholds = {
+export const variableToThresholds = {
   'precip': precipThresholds,
   'tmax': temperatureThresholds,
   'tmin': temperatureThresholds,
 };
 
-const variableToColors = {
+export const variableToColors = {
   'precip': precipColors,
   'tmax': temperatureColors,
   'tmin': temperatureColors,
@@ -58,7 +57,7 @@ function value_to_color(value, thresholds, colors) {
 }
 
 
-function color(variable, dataset, station) {
+export function stationColor(variable, dataset, station) {
   // Return a color code for the marker for station.
   if (dataset === 'anomaly') {
     const value = station[dataValueName(variable, dataset)];
@@ -68,5 +67,3 @@ function color(variable, dataset, station) {
   }
 
 }
-
-export default color;

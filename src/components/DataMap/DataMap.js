@@ -15,7 +15,7 @@ import _ from 'lodash';
 import { BCBaseMap } from 'pcic-react-leaflet-components';
 import { pick } from '../utils';
 import StationPopup from '../StationPopup';
-import stationColor from './stationColor';
+import { stationColor } from './stationColor';
 import './DataMap.css';
 
 const locationMarkerOptions = {
