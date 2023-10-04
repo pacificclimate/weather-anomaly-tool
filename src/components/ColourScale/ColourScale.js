@@ -1,7 +1,7 @@
 import React from 'react';
 import zip from 'lodash/fp/zip';
 
-import { VariableLabel } from '../VariableSelector';
+import VariableLabel from '../VariableLabel';
 import { unitsForVariable } from '../../utils/variables';
 import {
   colorsForVariable, variableToThresholds, variableToColors

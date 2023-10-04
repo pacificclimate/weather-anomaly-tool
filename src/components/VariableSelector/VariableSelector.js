@@ -3,17 +3,13 @@ import PropTypes from 'prop-types';
 import { Tooltip } from 'react-bootstrap';
 
 import RadioButtonSelector from '../RadioButtonSelector';
-import { variableKeys, variableLabels } from '../../utils/variables';
+import VariableLabel from '../VariableLabel';
+import { variableKeys } from '../../utils/variables';
 import './VariableSelector.css';
 
 
-export function VariableLabel({ variable }) {
-  return variableLabels[variable] || `${variable}`;
-}
-
-
 const variableOptions = variableKeys.map(
-  value => ({value, label: <VariableLabel variable={value}/>})
+  value => ({ value, label: <VariableLabel variable={value}/> })
 );
 
 function VariableSelector(props) {
