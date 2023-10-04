@@ -62,7 +62,7 @@ function StationDataMarkers({ variable, dataset, stations }) {
       {...dataMarkerOptions}
       fillColor={stationColor(variable, dataset, station)}
     >
-      <StationPopup variable={variable} dataset={dataset} {...station}/>
+      <StationPopup variable={variable} dataset={dataset}  station={station}/>
     </CircleMarker>
   );
 }

@@ -10,17 +10,19 @@ import './StationPopup.css';
 
 
 export default function StationPopup({
-  station_name,
-  lat,
-  lon,
-  elevation,
-  datum,            // Baseline
-  statistic,        // Monthly
-  data_coverage,    // Monthly
-  anomaly,          // Anomaly
-  departure,          // Anomaly
   variable,
   dataset,
+  station: {
+    station_name,
+    lon,
+    lat,
+    elevation,
+    datum,
+    statistic,
+    data_coverage,
+    anomaly,
+    departure,
+  },
 }) {
     const units = unitsForVariable[variable];
     const decimalPlaces = decimalPlacesForVariable[variable];
