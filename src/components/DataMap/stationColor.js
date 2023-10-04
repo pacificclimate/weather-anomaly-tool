@@ -61,7 +61,9 @@ export function stationColor(variable, dataset, station) {
   // Return a color code for the marker for station.
   if (dataset === 'anomaly') {
     const value = station[dataValueName(variable, dataset)];
-    return value_to_color(value, variableToThresholds[variable], variableToColors[variable]);
+    return value_to_color(
+      value, variableToThresholds[variable], variableToColors[variable]
+    );
   } else {
     return colorsForVariable[variable];
   }
