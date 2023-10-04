@@ -91,32 +91,30 @@ class DataMap extends PureComponent {
     // For `baseline` and `monthly`, return the respective station sets.
     // For `anomaly`, compute the anomaly for stations for which there is both
     // baseline and monthly data.
+    // TODO: This code is horrible. Improve (early ret; functional prog.)
     let stations;
+
     if (this.props.dataset === 'anomaly') {
       const monthlyByStationDbId = _.groupBy(
         this.props.monthly, 'station_db_id'
       );
       stations = [];
       this.props.baseline.forEach(baselineStation => {
-        const monthlyStation = monthlyByStationDbId[
-          baselineStation.station_db_id
-          ];
+        const monthlyStation =
+          monthlyByStationDbId[baselineStation.station_db_id];
         if (monthlyStation) {
           const anomaly =
             monthlyStation[0].statistic - baselineStation.datum;
           const departure =
             monthlyStation[0].statistic / baselineStation.datum - 1;
           stations.push({
-            ...pick(
-              baselineStation,
-              'station_name lat lon elevation station_db_id ' +
-              'network_variable_name'
-            ),
+            ...baselineStation,
             anomaly,
             departure,
           });
         }
       });
+
     } else {
       stations = this.props[this.props.dataset];
     }
