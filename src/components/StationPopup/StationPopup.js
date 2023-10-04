@@ -9,7 +9,7 @@ import {
 import './StationPopup.css';
 
 
-function StationPopup({
+export default function StationPopup({
   station_name,
   lat,
   lon,
@@ -78,5 +78,3 @@ StationPopup.propTypes = {
   variable: PropTypes.string,
   dataset: PropTypes.string,
 };
-
-export default StationPopup;
