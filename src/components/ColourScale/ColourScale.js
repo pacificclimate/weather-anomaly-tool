@@ -1,9 +1,5 @@
 import React from 'react';
-import zip from 'lodash/fp/zip';
 
-import VariableLabel from '../VariableLabel';
-import VariableTitle from '../VariableTitle';
-import { unitsForVariable } from '../../utils/variables';
 import {
   colorsForVariable, variableToThresholds, variableToColors
 } from '../DataMap/stationColor';
@@ -11,29 +7,26 @@ import './ColourScale.css';
 
 
 export default function ColourScale({ variable, dataset }) {
-  const units = unitsForVariable[variable];
   const opacity = 0.75;
 
   if (dataset === 'monthly' || dataset === 'baseline') {
     const color = colorsForVariable[variable];
     return (
       <div>
-        <div>
-          All stations are represented by this colour:
-          <div
-            className="ms-2 d-inline-block"
-            style={{
-              height: "1em",
-              width: "1em",
-              borderRadius: "50%",
-              backgroundColor: color,
-              opacity,
-              position: "relative",
-              top: "0.2em",
-          }}
-          >
-            &nbsp;
-          </div>
+        All stations are represented by this colour:
+        <div
+          className="ms-2 d-inline-block"
+          style={{
+            height: "1em",
+            width: "1em",
+            borderRadius: "50%",
+            backgroundColor: color,
+            opacity,
+            position: "relative",
+            top: "0.2em",
+        }}
+        >
+          &nbsp;
         </div>
       </div>
     );
