@@ -113,14 +113,14 @@ const precipColourScale = [
   },
   {
     threshold: +Infinity,
-    color: '#ce1111',
+    color: '#fdbbd5',
     blockStyle: {
       borderLeft: "3px solid white",
       borderRight: "3px solid white",
       borderRadius: "1em",
     },
     annotation: "erroneous",
-    annotationStyle: { color: "white" },
+    // annotationStyle: { color: "white" },
   },
 ];
 
@@ -141,9 +141,7 @@ export function stationColor(variable, dataset, station){
   // Return a color code for the marker for station.
   if (dataset === 'anomaly'){
     const value = station[dataValueName(variable, dataset)];
-    return value_to_color(
-      value, variableToColourScale[variable]
-    );
+    return value_to_color(value, variableToColourScale[variable]);
   }
   return colorsForVariable[variable];
 }
