@@ -27,6 +27,8 @@ const temperatureColourScale = [
   { 
     threshold: -4.5,
     color: '#053061',
+    annotation: "frigid",
+    annotationStyle: { color: "white" },
   },
   { 
     threshold: -3.5,
@@ -67,6 +69,8 @@ const temperatureColourScale = [
   { 
     threshold: +Infinity,
     color: '#67001f',
+    annotation: "toasty",
+    annotationStyle: { color: "white" },
   },
 ];
 
