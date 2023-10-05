@@ -27,7 +27,7 @@ export default function ColourScale({
     return csItem.annotation;
   },
 }) {
-  const opacity = 0.75;
+  const opacity = 0.8;
 
   if (dataset === 'monthly' || dataset === 'baseline') {
     const color = colorsForVariable[variable];

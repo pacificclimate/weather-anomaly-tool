@@ -19,7 +19,7 @@ import { stationColor } from './stationColor';
 import './DataMap.css';
 
 const locationMarkerOptions = {
-  color: '#000000',
+  color: '#222222',
   radius: 1,
   weight: 1,
   fillOpacity: 1,
@@ -27,8 +27,10 @@ const locationMarkerOptions = {
 
 const dataMarkerOptions = {
   radius: 8,
+  color: "#999999",
   weight: 1,
-  fillOpacity: 0.75,
+  fillOpacity: 0.8,
+  fillColor: "#000000",  // Replaced according to station value
 };
 
 function uniqueKey(station) {
@@ -58,7 +60,7 @@ function StationDataMarkers({ variable, dataset, stations }) {
       key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
       center={{ lng: station.lon, lat: station.lat }}
       {...dataMarkerOptions}
-      color={stationColor(variable, dataset, station)}
+      fillColor={stationColor(variable, dataset, station)}
     >
       <StationPopup variable={variable} dataset={dataset} {...station}/>
     </CircleMarker>
@@ -126,6 +128,15 @@ class DataMap extends PureComponent {
       (this.props.baseline?.length > 0 && this.props.monthly?.length > 0) ?
       (
         <LayersControl position='topright'>
+          <LayersControl.Overlay name='Data values' checked>
+            <LayerGroup>
+              <StationDataMarkers
+                variable={this.props.variable}
+                dataset={this.props.dataset}
+                stations={this.stationsForDataset()}
+              />
+            </LayerGroup>
+          </LayersControl.Overlay>
           <LayersControl.Overlay name='Baseline stations'>
             <LayerGroup>
               <StationLocationMarkers
@@ -139,15 +150,6 @@ class DataMap extends PureComponent {
               <StationLocationMarkers
                 type="monthly"
                 stations={this.props.monthly}
-              />
-            </LayerGroup>
-          </LayersControl.Overlay>
-          <LayersControl.Overlay name='Data values' checked>
-            <LayerGroup>
-              <StationDataMarkers
-                variable={this.props.variable}
-                dataset={this.props.dataset}
-                stations={this.stationsForDataset()}
               />
             </LayerGroup>
           </LayersControl.Overlay>
