@@ -133,7 +133,7 @@ export const variableToColourScale = {
 
 function value_to_color(value, colourScale){
   const k = _.findIndex(colourScale, item => value < item.threshold);
-  return colourScale[k].color;
+  return colourScale[k]?.color;
 }
 
 
