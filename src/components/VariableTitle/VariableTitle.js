@@ -6,9 +6,10 @@ import { unitsForVariable } from '../../utils/variables';
 export default function VariableTitle({
   variable, dataset, withAnnotation = true, withUnits = true
 }) {
-  const isRelative = variable === 'precip' && dataset === 'anomaly';
+  const isAnomaly = dataset === 'anomaly';
+  const isRelative = variable === 'precip' && isAnomaly;
   const suffixes = compact([
-    withAnnotation && isRelative && 'relative',
+    withAnnotation && isAnomaly && 'relative to baseline',
     withUnits && (isRelative ? '%' : unitsForVariable[variable]),
   ]);
   const suffix = suffixes.length > 0 ? `(${suffixes.join('; ')})` : null;
