@@ -10,8 +10,18 @@ import './ColourScale.css';
 export default function ColourScale({
   variable,
   dataset,
-  boundaryLabel = (threshold, i, thresholds) =>
-    threshold === Infinity ? '∞' : threshold,
+  boundaryLabel = (variable, dataset, threshold, i, thresholds) => {
+    const isRelative = variable === 'precip' && dataset === 'anomaly';
+    return threshold.toLocaleString(
+      undefined,
+      {
+        signDisplay: dataset === 'anomaly' ? "always" : "negative",
+        style: isRelative ? "percent" : "decimal",
+        minimumSignificantDigits: 3,
+        maximumSignificantDigits: 3,
+      }
+    );
+  },
 }) {
   const opacity = 0.75;
 
@@ -45,7 +55,7 @@ export default function ColourScale({
   return (
     <div className="w-100 px-5 pt-1 pb-4" >
       {
-        zip(thresholds, colors).map(([t, c]) => (
+        zip(thresholds, colors).map(([t, c], i, [ts, cs]) => (
           // Colour block with label centred below right edge
           <span
             className="pe-1 d-inline-block"
@@ -62,7 +72,7 @@ export default function ColourScale({
               left: '55%',
               top: '90%'
             }}>
-              {boundaryLabel(t)}
+              {boundaryLabel(variable, dataset, t, i, ts)}
             </span>
             &nbsp;
           </span>
