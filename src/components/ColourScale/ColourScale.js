@@ -12,7 +12,7 @@ export default function ColourScale({ variable, dataset }) {
   if (dataset === 'monthly' || dataset === 'baseline') {
     const color = colorsForVariable[variable];
     return (
-      <div>
+      <div className="mb-2">
         All stations are represented by this colour:
         <div
           className="ms-2 d-inline-block"
@@ -37,7 +37,7 @@ export default function ColourScale({ variable, dataset }) {
   const numItems = thresholds.length;
   const width= 100 / numItems;
   return (
-    <div className="w-100" >
+    <div className="w-100 px-5" >
       <div className="w-100">
         {
           colors.map(c => (
