@@ -17,10 +17,7 @@ export default function ColourScale({ variable, dataset }) {
   if (dataset === 'monthly' || dataset === 'baseline') {
     const color = colorsForVariable[variable];
     return (
-      <div className="mx-1 my-1">
-        <div>
-          <VariableTitle variable={variable} dataset={dataset} withUnits={false}/>
-        </div>
+      <div>
         <div>
           All stations are represented by this colour:
           <div
@@ -47,10 +44,7 @@ export default function ColourScale({ variable, dataset }) {
   const numItems = thresholds.length;
   const width= 100 / numItems;
   return (
-    <div className="w-100 px-5 mt-1" >
-      <div className="mb-1">
-        <VariableTitle variable={variable} dataset={dataset} />
-      </div>
+    <div className="w-100" >
       <div className="w-100">
         {
           colors.map(c => (

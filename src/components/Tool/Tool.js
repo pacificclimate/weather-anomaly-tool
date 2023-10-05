@@ -14,6 +14,7 @@ import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
   from '../../data-services/weather-anomaly-data-service';
+import VariableTitle from '../VariableTitle';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -165,8 +166,15 @@ export default function Tool({
           }
         </Col>
         <Col xs={9}>
+          <Row className="my-1">
+            <Col>
+              <VariableTitle variable={variable} dataset={dataset}/>
+            </Col>
+          </Row>
           <Row>
-            <ColourScale variable={variable} dataset={dataset}/>
+            <Col>
+              <ColourScale variable={variable} dataset={dataset}/>
+            </Col>
           </Row>
           <Row>
             <DataMap
