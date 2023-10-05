@@ -11,11 +11,12 @@ export default function ColourScale({
   variable,
   dataset,
   boundaryLabel = (variable, dataset, threshold, i, thresholds) => {
-    const isRelative = variable === 'precip' && dataset === 'anomaly';
+    const isAnomaly = dataset === 'anomaly';
+    const isRelative = variable === 'precip' && isAnomaly;
     return threshold.toLocaleString(
       undefined,
       {
-        signDisplay: dataset === 'anomaly' ? "always" : "negative",
+        signDisplay: isAnomaly ? "always" : "negative",
         style: isRelative ? "percent" : "decimal",
         minimumSignificantDigits: 3,
         maximumSignificantDigits: 3,
@@ -58,20 +59,25 @@ export default function ColourScale({
         zip(thresholds, colors).map(([t, c], i, [ts, cs]) => (
           // Colour block with label centred below right edge
           <span
-            className="pe-1 d-inline-block"
+            className="pe-1 d-inline-block position-relative"
             style={{
               backgroundColor: c,
               opacity,
               height: "1em",
-              width: `${width}%`
+              width: `${width}%`,
+              // borderLeft: i === thresholds.length - 1 ? "3px solid white" : "none"
             }}
           >
-            <span style={{
-              fontSize: "80%",
-              position: 'relative',
-              left: '55%',
-              top: '90%'
-            }}>
+            <span
+              className="w-100 position-absolute top-50 start-50 translate-middle"
+              style={{ fontSize: "80%" }}
+            >
+              {i === thresholds.length - 1 && "(error)"}
+            </span>
+            <span
+              className="w-100 position-absolute top-100"
+              style={{ fontSize: "80%", left: '50%' }}
+            >
               {boundaryLabel(variable, dataset, t, i, ts)}
             </span>
             &nbsp;
