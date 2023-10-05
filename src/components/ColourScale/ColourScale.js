@@ -2,6 +2,7 @@ import React from 'react';
 import zip from 'lodash/fp/zip';
 
 import VariableLabel from '../VariableLabel';
+import VariableTitle from '../VariableTitle';
 import { unitsForVariable } from '../../utils/variables';
 import {
   colorsForVariable, variableToThresholds, variableToColors
@@ -17,7 +18,9 @@ export default function ColourScale({ variable, dataset }) {
     const color = colorsForVariable[variable];
     return (
       <div className="mx-1 my-1">
-        <div><VariableLabel variable={variable}/> {dataset} ({units})</div>
+        <div>
+          <VariableTitle variable={variable} dataset={dataset} withUnits={false}/>
+        </div>
         <div>
           All stations are represented by this colour:
           <div
@@ -46,7 +49,7 @@ export default function ColourScale({ variable, dataset }) {
   return (
     <div className="w-100 px-5 mt-1" >
       <div className="mb-1">
-        <VariableLabel variable={variable}/> {dataset} ({units})
+        <VariableTitle variable={variable} dataset={dataset} />
       </div>
       <div className="w-100">
         {
