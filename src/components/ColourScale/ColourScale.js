@@ -1,4 +1,5 @@
 import React from 'react';
+import { zip } from 'lodash/array';
 
 import {
   colorsForVariable, variableToThresholds, variableToColors
@@ -6,7 +7,12 @@ import {
 import './ColourScale.css';
 
 
-export default function ColourScale({ variable, dataset }) {
+export default function ColourScale({
+  variable,
+  dataset,
+  boundaryLabel = (threshold, i, thresholds) =>
+    threshold === Infinity ? '∞' : threshold,
+}) {
   const opacity = 0.75;
 
   if (dataset === 'monthly' || dataset === 'baseline') {
@@ -37,53 +43,31 @@ export default function ColourScale({ variable, dataset }) {
   const numItems = thresholds.length;
   const width= 100 / numItems;
   return (
-    <div className="w-100 px-5" >
-      <div className="w-100">
-        {
-          colors.map(c => (
-            <span
-              className="pe-1 d-inline-block"
-              style={{
-                backgroundColor: c,
-                opacity,
-                height: "1em",
-                width: `${width}%`
-              }}
-            >
-              &nbsp;
+    <div className="w-100 px-5 pt-1 pb-4" >
+      {
+        zip(thresholds, colors).map(([t, c]) => (
+          // Colour block with label centred below right edge
+          <span
+            className="pe-1 d-inline-block"
+            style={{
+              backgroundColor: c,
+              opacity,
+              height: "1em",
+              width: `${width}%`
+            }}
+          >
+            <span style={{
+              fontSize: "80%",
+              position: 'relative',
+              left: '55%',
+              top: '90%'
+            }}>
+              {boundaryLabel(t)}
             </span>
-          ))
-        }
-      </div>
-      <div className="w-100">
-        {
-          thresholds.map(t => (
-            <span
-              style={{
-                fontSize: "80%",
-                height: "1em",
-                width: `${width}%`,
-              }}
-              className="p-0 d-inline-block"
-            >
-              <span
-                style={{
-                  position: "relative",
-                  bottom: "60%",
-                  left: "50%"
-                }}
-              >
-                {
-                  t === Infinity
-                  ? (variable === 'precip' ? '(err)' : '∞')
-                  : t
-                }
-              </span>
-            </span>
-          ))
-        }
-      </div>
+            &nbsp;
+          </span>
+        ))
+      }
     </div>
-
   );
 }
