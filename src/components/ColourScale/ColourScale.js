@@ -1,8 +1,8 @@
 import React from 'react';
-import { zip } from 'lodash/array';
 
 import {
-  colorsForVariable, variableToThresholds, variableToColors
+  colorsForVariable,
+  variableToColourScale
 } from '../DataMap/stationColor';
 import './ColourScale.css';
 
@@ -10,10 +10,10 @@ import './ColourScale.css';
 export default function ColourScale({
   variable,
   dataset,
-  boundaryLabel = (variable, dataset, threshold, i, thresholds) => {
+  boundaryLabel = (variable, dataset, csItem, i, colourScale) => {
     const isAnomaly = dataset === 'anomaly';
     const isRelative = variable === 'precip' && isAnomaly;
-    return threshold.toLocaleString(
+    return csItem.threshold.toLocaleString(
       undefined,
       {
         signDisplay: isAnomaly ? "always" : "negative",
@@ -22,6 +22,9 @@ export default function ColourScale({
         maximumSignificantDigits: 3,
       }
     );
+  },
+  annotation = (variable, dataset, csItem, i, colourScale) => {
+    return csItem.annotation;
   },
 }) {
   const opacity = 0.75;
@@ -49,36 +52,37 @@ export default function ColourScale({
     );
   }
 
-  const thresholds = variableToThresholds[variable];
-  const colors = variableToColors[variable];
-  const numItems = thresholds.length;
+  const colourScale = variableToColourScale[variable];
+  const numItems = colourScale.length;
   const width= 100 / numItems;
   return (
     <div className="w-100 px-5 pt-1 pb-4" >
       {
-        zip(thresholds, colors).map(([t, c], i, [ts, cs]) => (
-          // Colour block with label centred below right edge
+        colourScale.map((item, i, cs) => (
+          // Colour block with
+          // - annotation centred within it
+          // - label below and centred on its right edge
           <span
             className="pe-1 d-inline-block position-relative"
             style={{
-              backgroundColor: c,
+              backgroundColor: item.color,
               opacity,
               height: "1em",
               width: `${width}%`,
-              // borderLeft: i === thresholds.length - 1 ? "3px solid white" : "none"
+              ...item.blockStyle,
             }}
           >
             <span
               className="w-100 position-absolute top-50 start-50 translate-middle"
-              style={{ fontSize: "80%" }}
+              style={{ fontSize: "80%", ...item.annotationStyle }}
             >
-              {i === thresholds.length - 1 && "(error)"}
+              {annotation(variable, dataset, item, i, cs)}
             </span>
             <span
               className="w-100 position-absolute top-100"
-              style={{ fontSize: "80%", left: '50%' }}
+              style={{ fontSize: "80%", left: '50%', ...item.labelStyle }}
             >
-              {boundaryLabel(variable, dataset, t, i, ts)}
+              {boundaryLabel(variable, dataset, item, i, cs)}
             </span>
             &nbsp;
           </span>
