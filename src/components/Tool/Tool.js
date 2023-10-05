@@ -118,8 +118,8 @@ export default function Tool({
             </Col>
           </Row>
           <Row><Col>for</Col></Row>
-          <Row>
-            <Col className="px-4">
+          <Row className="ps-2 pe-5">
+            <Col>
               <MonthSelector
                 disabled={isDataLoading}
                 value={date.month()}
@@ -140,8 +140,8 @@ export default function Tool({
           </Row>
           {!isBaselineDataset &&
             <React.Fragment>
-              <Row>
-                <Col className="px-4">
+              <Row className="ps-2 pe-5">
+                <Col>
                     <YearSelector
                       disabled={isDataLoading}
                       minValue={1970}
