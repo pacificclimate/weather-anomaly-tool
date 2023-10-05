@@ -31,7 +31,7 @@ const temperatureColors = [
 const precipThresholds = [
   // arithmetic progression up to interval around zero; geometric after that
   // with roughly 400 as the extreme
-  -87.5, -62.5, -37.5, -12.5, 12.5 * Math.pow(3, 0), 12.5 * Math.pow(3, 1), 12.5 * Math.pow(3, 2), 12.5 * Math.pow(3, 3), 1000, +Infinity
+  -0.875, -0.625, -0.375, -0.125, 0.125 * Math.pow(3, 0), 0.125 * Math.pow(3, 1), 0.125 * Math.pow(3, 2), 0.125 * Math.pow(3, 3), 10, +Infinity
 ];
 
 const precipColors = [
