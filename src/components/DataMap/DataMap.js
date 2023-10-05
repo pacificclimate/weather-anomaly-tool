@@ -60,7 +60,7 @@ function StationDataMarkers({ variable, dataset, stations }) {
       {...dataMarkerOptions}
       color={stationColor(variable, dataset, station)}
     >
-      <StationPopup variable={variable} {...station}/>
+      <StationPopup variable={variable} dataset={dataset} {...station}/>
     </CircleMarker>
   );
 }
@@ -102,9 +102,8 @@ class DataMap extends PureComponent {
         if (monthlyStation) {
           const anomaly =
             monthlyStation[0].statistic - baselineStation.datum;
-          const departure = 100 * (
-            (monthlyStation[0].statistic / baselineStation.datum) - 1
-          );
+          const departure =
+            monthlyStation[0].statistic / baselineStation.datum - 1;
           stations.push({
             ...pick(
               baselineStation,
