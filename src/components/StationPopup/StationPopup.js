@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 
+import VariableLabel from '../VariableLabel';
 import {
   decimalPlacesForVariable,
   unitsForVariable
@@ -57,6 +58,7 @@ export default function StationPopup({
       </div>
 
       <div className="border-bottom py-1">
+        <div className="fst-italic"><VariableLabel variable={variable}/></div>
         {anomaly &&
           <div>Anomaly: {fmt(anomaly, { fixedFractionDigits: decimalPlaces })} {units}</div>}
         {datum &&
