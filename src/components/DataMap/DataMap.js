@@ -1,6 +1,6 @@
 // DataMap: Component that displays a map with data.
 
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   LayerGroup,
@@ -11,9 +11,11 @@ import {
 } from 'react-leaflet';
 import * as SVGLoaders from 'svg-loaders-react';
 import _ from 'lodash';
+import flow from 'lodash/fp/flow';
+import map from 'lodash/fp/map';
+import compact from 'lodash/fp/compact';
 
 import { BCBaseMap } from 'pcic-react-leaflet-components';
-import { pick } from '../utils';
 import StationPopup from '../StationPopup';
 import { stationColor } from './stationColor';
 import './DataMap.css';
@@ -62,7 +64,7 @@ function StationDataMarkers({ variable, dataset, stations }) {
       {...dataMarkerOptions}
       fillColor={stationColor(variable, dataset, station)}
     >
-      <StationPopup variable={variable} dataset={dataset} {...station}/>
+      <StationPopup variable={variable} dataset={dataset}  station={station}/>
     </CircleMarker>
   );
 }
@@ -78,85 +80,75 @@ function MapSpinner() {
 }
 
 
-class DataMap extends PureComponent {
-  static propTypes = {
-    variable: PropTypes.oneOf(["precip", "tmin", "tmax"]).isRequired,
-    dataset: PropTypes.oneOf(["anomaly", "monthly", "baseline"]).isRequired,
-    monthly: PropTypes.array.isRequired,
-    baseline: PropTypes.array.isRequired,
-  };
-
-  stationsForDataset() {
-    // Return a set of stations determined by `this.props.dataset`.
+export default function DataMap({ dataset, variable, monthly, baseline }) {
+  function stationsForDataset() {
+    // Return a set of stations determined by `dataset`.
     // For `baseline` and `monthly`, return the respective station sets.
     // For `anomaly`, compute the anomaly for stations for which there is both
     // baseline and monthly data.
-    let stations;
-    if (this.props.dataset === 'anomaly') {
-      const monthlyByStationDbId = _.groupBy(
-        this.props.monthly, 'station_db_id'
-      );
-      stations = [];
-      this.props.baseline.forEach(baselineStation => {
-        const monthlyStation = monthlyByStationDbId[
-          baselineStation.station_db_id
-          ];
-        if (monthlyStation) {
-          const anomaly =
-            monthlyStation[0].statistic - baselineStation.datum;
-          const departure =
-            monthlyStation[0].statistic / baselineStation.datum - 1;
-          stations.push({
-            ...pick(
-              baselineStation,
-              'station_name lat lon elevation station_db_id ' +
-              'network_variable_name'
-            ),
-            anomaly,
-            departure,
-          });
-        }
-      });
-    } else {
-      stations = this.props[this.props.dataset];
+    if (dataset === 'baseline') {
+      return baseline;
     }
+
+    if (dataset === 'monthly') {
+      return monthly;
+    }
+
+    // dataset === 'anomaly'
+    // This effectively performs an inner join of `baseline` and `monthly` on
+    // `station_db_id`, and adds the `anomaly` and `departure` attributes to
+    // each resulting item.
+    const monthlyByStationDbId = _.groupBy(monthly, 'station_db_id');
+    const stations = flow(
+      map(baselineStation => {
+        const monthlyStation =
+          monthlyByStationDbId[baselineStation.station_db_id];
+        return monthlyStation && (
+          {
+            ...baselineStation,
+            anomaly: monthlyStation[0].statistic - baselineStation.datum,
+            departure: monthlyStation[0].statistic / baselineStation.datum - 1,
+          }
+        )
+      }),
+      compact,
+    )(baseline);
     return stations;
   }
 
-  render() {
-    const content =
-      (this.props.baseline?.length > 0 && this.props.monthly?.length > 0) ?
-      (
-        <LayersControl position='topright'>
-          <LayersControl.Overlay name='Data values' checked>
-            <LayerGroup>
-              <StationDataMarkers
-                variable={this.props.variable}
-                dataset={this.props.dataset}
-                stations={this.stationsForDataset()}
-              />
-            </LayerGroup>
-          </LayersControl.Overlay>
-          <LayersControl.Overlay name='Baseline stations'>
-            <LayerGroup>
-              <StationLocationMarkers
-                type="baseline"
-                stations={this.props.baseline}
-              />
-            </LayerGroup>
-          </LayersControl.Overlay>
-          <LayersControl.Overlay name='Monthly stations' checked>
-            <LayerGroup>
-              <StationLocationMarkers
-                type="monthly"
-                stations={this.props.monthly}
-              />
-            </LayerGroup>
-          </LayersControl.Overlay>
-        </LayersControl>
-      ) : (
-        <MapSpinner/>
-      );
+  const content =
+    (baseline?.length > 0 && monthly?.length > 0) ?
+    (
+      <LayersControl position='topright'>
+        <LayersControl.Overlay name='Data values' checked>
+          <LayerGroup>
+            <StationDataMarkers
+              variable={variable}
+              dataset={dataset}
+              stations={stationsForDataset()}
+            />
+          </LayerGroup>
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name='Baseline stations'>
+          <LayerGroup>
+            <StationLocationMarkers
+              type="baseline"
+              stations={baseline}
+            />
+          </LayerGroup>
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name='Monthly stations' checked>
+          <LayerGroup>
+            <StationLocationMarkers
+              type="monthly"
+              stations={monthly}
+            />
+          </LayerGroup>
+        </LayersControl.Overlay>
+      </LayersControl>
+    ) : (
+      <MapSpinner/>
+    );
 
     return (
       <BCBaseMap
@@ -167,22 +159,15 @@ class DataMap extends PureComponent {
         {content}
       </BCBaseMap>
     );
-  }
 }
 
 DataMap.propTypes = {
   dataset: PropTypes.oneOf(['baseline', 'monthly', 'anomaly']).isRequired,
   // Name of dataset to display on data layer
-  variable: PropTypes.string,  // TODO: .oneOf ?
+  variable: PropTypes.oneOf(["precip", "tmin", "tmax"]).isRequired,
   // Variable we are displaying ... may affect how/what we show
   baseline: PropTypes.array.isRequired,
   // Array of baseline data from monthly Anomaly Data Service.
   monthly: PropTypes.array.isRequired,
   // Array of monthly data from monthly Anomaly Data Service.
 };
-
-DataMap.defaultProps = {
-  message: null,
-};
-
-export default DataMap;

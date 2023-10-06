@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 
+import VariableLabel from '../VariableLabel';
 import {
   decimalPlacesForVariable,
   unitsForVariable
@@ -9,18 +10,22 @@ import {
 import './StationPopup.css';
 
 
-function StationPopup({
-  station_name,
-  lat,
-  lon,
-  elevation,
-  datum,            // Baseline
-  statistic,        // Monthly
-  data_coverage,    // Monthly
-  anomaly,          // Anomaly
-  departure,          // Anomaly
+export default function StationPopup({
   variable,
   dataset,
+  station: {
+    network_name,
+    station_name,
+    station_native_id,
+    lon,
+    lat,
+    elevation,
+    datum,
+    statistic,
+    data_coverage,
+    anomaly,
+    departure,
+  },
 }) {
     const units = unitsForVariable[variable];
     const decimalPlaces = decimalPlacesForVariable[variable];
@@ -40,29 +45,33 @@ function StationPopup({
     }
 
   return (
-      <Popup className="StationPopup">
+    <Popup className="StationPopup">
+      <div className="fw-bold border-bottom py-1">{station_name}</div>
+
+      <div className="border-bottom py-1">
+        <div>Network: {network_name}</div>
+        <div>Native ID: {station_native_id}</div>
         <div>
-          <div className="name">{station_name}</div>
-          <div className="lon-lat">
-            <span className="lon">{lon}</span>
-            <span className="lat">{lat}</span>
-          </div>
-          <div className="elevation">{elevation}</div>
-          {datum &&
-          <div>Baseline datum: {fmt(datum, { fixedFractionDigits: 0 })} {units}</div>}
-          {statistic && <div>Monthly
-            statistic: {fmt(statistic, { fixedFractionDigits: 1 })} {units}</div>}
-          {data_coverage && <div>Data
-            coverage: {fmt(data_coverage, { style: "percent", fixedFractionDigits: 0 })}</div>}
-          {anomaly &&
-          <div>Anomaly: {fmt(anomaly, { fixedFractionDigits: decimalPlaces })} {units}</div>}
-          {variable === 'precip' && departure &&
-          <div>
-            Departure: {fmt(departure, { style: "percent", fixedFractionDigits: 0 })}
-          </div>}
+          Location: <span>{lon.toFixed(3)} °E</span>, <span>{lat.toFixed(3)} °N</span>
         </div>
-      </Popup>
-    );
+        <div>Elevation: {elevation} m</div>
+      </div>
+
+      <div className="border-bottom py-1">
+        <div className="fst-italic"><VariableLabel variable={variable}/></div>
+        {anomaly &&
+          <div>Anomaly: {fmt(anomaly, { fixedFractionDigits: decimalPlaces })} {units}</div>}
+        {datum &&
+          <div>Baseline: {fmt(datum, { fixedFractionDigits: 0 })} {units}</div>}
+        {statistic &&
+          <div>Monthly statistic: {fmt(statistic, { fixedFractionDigits: 1 })} {units}</div>}
+        {data_coverage &&
+          <div>Data coverage: {fmt(data_coverage, { style: "percent", fixedFractionDigits: 0 })}</div>}
+        {variable === 'precip' && departure &&
+          <div>Departure: {fmt(departure, { style: "percent", fixedFractionDigits: 0 })}</div>}
+      </div>
+    </Popup>
+  );
 }
 
 StationPopup.propTypes = {
@@ -78,5 +87,3 @@ StationPopup.propTypes = {
   variable: PropTypes.string,
   dataset: PropTypes.string,
 };
-
-export default StationPopup;
