@@ -45,22 +45,26 @@ export default function StationPopup({
 
   return (
     <Popup className="StationPopup">
-      <div>
-        <div className="fw-bold border-bottom mb-1">{station_name}</div>
+      <div className="fw-bold border-bottom py-1">{station_name}</div>
+
+      <div className="border-bottom py-1">
         <div>Network: {network_name}</div>
         <div>Native ID: {station_native_id}</div>
         <div>
           Location: <span>{lon.toFixed(3)} °E</span>, <span>{lat.toFixed(3)} °N</span>
         </div>
-        <div className="border-bottom mb-1">Elevation: {elevation} m</div>
+        <div>Elevation: {elevation} m</div>
+      </div>
+
+      <div className="border-bottom py-1">
         {anomaly &&
           <div>Anomaly: {fmt(anomaly, { fixedFractionDigits: decimalPlaces })} {units}</div>}
         {datum &&
           <div>Baseline: {fmt(datum, { fixedFractionDigits: 0 })} {units}</div>}
-        {statistic && <div>Monthly
-          statistic: {fmt(statistic, { fixedFractionDigits: 1 })} {units}</div>}
-        {data_coverage && <div>Data
-          coverage: {fmt(data_coverage, { style: "percent", fixedFractionDigits: 0 })}</div>}
+        {statistic &&
+          <div>Monthly statistic: {fmt(statistic, { fixedFractionDigits: 1 })} {units}</div>}
+        {data_coverage &&
+          <div>Data coverage: {fmt(data_coverage, { style: "percent", fixedFractionDigits: 0 })}</div>}
         {variable === 'precip' && departure &&
           <div>Departure: {fmt(departure, { style: "percent", fixedFractionDigits: 0 })}</div>}
       </div>
