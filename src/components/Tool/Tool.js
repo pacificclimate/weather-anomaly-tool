@@ -7,12 +7,14 @@ import VariableSelector from '../VariableSelector'
 import YearSelector from '../YearSelector';
 import MonthSelector from '../MonthSelector';
 import IncrementDecrement from '../IncrementDecrement';
+import ColourScale from '../ColourScale';
+import DataMap from '../DataMap';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
   from '../../data-services/weather-anomaly-data-service';
-import DataMap from '../DataMap';
+import VariableTitle from '../VariableTitle';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -116,8 +118,8 @@ export default function Tool({
             </Col>
           </Row>
           <Row><Col>for</Col></Row>
-          <Row>
-            <Col className="px-4">
+          <Row className="ps-2 pe-5">
+            <Col>
               <MonthSelector
                 disabled={isDataLoading}
                 value={date.month()}
@@ -138,8 +140,8 @@ export default function Tool({
           </Row>
           {!isBaselineDataset &&
             <React.Fragment>
-              <Row>
-                <Col className="px-4">
+              <Row className="ps-2 pe-5">
+                <Col>
                     <YearSelector
                       disabled={isDataLoading}
                       minValue={1970}
@@ -164,12 +166,24 @@ export default function Tool({
           }
         </Col>
         <Col xs={9}>
-          <DataMap
-            dataset={dataset}
-            variable={variable}
-            baseline={baseline}
-            monthly={monthly}
-          />
+          <Row className="my-1">
+            <Col>
+              <VariableTitle variable={variable} dataset={dataset}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ColourScale variable={variable} dataset={dataset}/>
+            </Col>
+          </Row>
+          <Row>
+            <DataMap
+              dataset={dataset}
+              variable={variable}
+              baseline={baseline}
+              monthly={monthly}
+            />
+          </Row>
         </Col>
       </Row>
     </React.Fragment>

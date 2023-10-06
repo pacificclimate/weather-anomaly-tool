@@ -1,46 +1,68 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
+
+import {
+  decimalPlacesForVariable,
+  unitsForVariable
+} from '../../utils/variables';
 import './StationPopup.css';
 
-const unitsForVariable = {
-  'precip': 'mm/mon',
-  'tmin': 'C',
-  'tmax': 'C',
-};
-const decimalPlacesForVariable = {
-  'precip': 1,
-  'tmin': 2,
-  'tmax': 2,
-};
 
-class StationPopup extends PureComponent {
-  render() {
-    const units = unitsForVariable[this.props.variable];
-    const decimalPlaces = decimalPlacesForVariable[this.props.variable];
-    return (
+function StationPopup({
+  station_name,
+  lat,
+  lon,
+  elevation,
+  datum,            // Baseline
+  statistic,        // Monthly
+  data_coverage,    // Monthly
+  anomaly,          // Anomaly
+  departure,          // Anomaly
+  variable,
+  dataset,
+}) {
+    const units = unitsForVariable[variable];
+    const decimalPlaces = decimalPlacesForVariable[variable];
+
+    // Convenience function for number formatting. Uses Number.toLocaleString;
+    // supplies common options; provides fixed-precision option.
+    function fmt(num, { fixedFractionDigits, ...restOptions }) {
+      return num.toLocaleString(
+        undefined,
+        {
+          signDisplay: dataset === 'anomaly' ? "always" : "negative",
+          minimumFractionDigits: fixedFractionDigits,
+          maximumFractionDigits: fixedFractionDigits,
+          ...restOptions,
+        }
+      );
+    }
+
+  return (
       <Popup className="StationPopup">
         <div>
-          <div className="name">{this.props.station_name}</div>
+          <div className="name">{station_name}</div>
           <div className="lon-lat">
-            <span className="lon">{this.props.lon}</span>
-            <span className="lat">{this.props.lat}</span>
+            <span className="lon">{lon}</span>
+            <span className="lat">{lat}</span>
           </div>
-          <div className="elevation">{this.props.elevation}</div>
-          {this.props.datum &&
-          <div>Baseline datum: {this.props.datum.toFixed(0)} {units}</div>}
-          {this.props.statistic && <div>Monthly
-            statistic: {this.props.statistic.toFixed(1)} {units}</div>}
-          {this.props.data_coverage && <div>Data
-            coverage: {(this.props.data_coverage * 100).toFixed(0)}%</div>}
-          {this.props.anomaly &&
-          <div>Anomaly: {this.props.anomaly.toFixed(decimalPlaces)} {units}</div>}
-          {this.props.variable === 'precip' && this.props.departure &&
-          <div>Departure: {this.props.departure.toFixed(0)}%</div>}
+          <div className="elevation">{elevation}</div>
+          {datum &&
+          <div>Baseline datum: {fmt(datum, { fixedFractionDigits: 0 })} {units}</div>}
+          {statistic && <div>Monthly
+            statistic: {fmt(statistic, { fixedFractionDigits: 1 })} {units}</div>}
+          {data_coverage && <div>Data
+            coverage: {fmt(data_coverage, { style: "percent", fixedFractionDigits: 0 })}</div>}
+          {anomaly &&
+          <div>Anomaly: {fmt(anomaly, { fixedFractionDigits: decimalPlaces })} {units}</div>}
+          {variable === 'precip' && departure &&
+          <div>
+            Departure: {fmt(departure, { style: "percent", fixedFractionDigits: 0 })}
+          </div>}
         </div>
       </Popup>
     );
-  }
 }
 
 StationPopup.propTypes = {
@@ -52,8 +74,9 @@ StationPopup.propTypes = {
   statistic: PropTypes.number,        // Monthly
   data_coverage: PropTypes.number,    // Monthly
   anomaly: PropTypes.number,          // Anomaly
-  departure: PropTypes.number,          // Anomaly
+  departure: PropTypes.number,         // Anomaly
   variable: PropTypes.string,
+  dataset: PropTypes.string,
 };
 
 export default StationPopup;
