@@ -14,7 +14,7 @@ import ReactDOM from 'react-dom';
 import { findIndex } from 'lodash';
 import classNames from 'classnames';
 
-import { pick } from '../utils';
+import { pick } from '../../utils';
 import RadioButtonSelector from '../RadioButtonSelector';
 import './ScrollingSelector.css';
 
