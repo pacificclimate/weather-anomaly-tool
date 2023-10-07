@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-import logger from '../../logger';
-
 
 // TODO: Move into utils
 function dataValueName(variable, dataset){
