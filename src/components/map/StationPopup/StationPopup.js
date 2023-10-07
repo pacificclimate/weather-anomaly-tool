@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 
-import VariableLabel from '../VariableLabel';
+import VariableLabel from '../../misc/VariableLabel';
 import {
   decimalPlacesForVariable,
   unitsForVariable
-} from '../../utils/variables';
+} from '../../../utils/variables';
 import './StationPopup.css';
 
 

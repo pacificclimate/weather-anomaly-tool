@@ -1,7 +1,7 @@
 import React from 'react';
 import compact from 'lodash/fp/compact';
 import VariableLabel from '../VariableLabel';
-import { unitsForVariable } from '../../utils/variables';
+import { unitsForVariable } from '../../../utils/variables';
 
 export default function VariableTitle({
   variable, dataset, withAnnotation = true, withUnits = true

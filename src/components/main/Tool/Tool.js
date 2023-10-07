@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import moment from 'moment';
 
-import DatasetSelector from '../DatasetSelector'
-import VariableSelector from '../VariableSelector'
-import YearSelector from '../YearSelector';
-import MonthSelector from '../MonthSelector';
-import IncrementDecrement from '../IncrementDecrement';
-import ColourScale from '../ColourScale';
-import DataMap from '../DataMap';
+import DatasetSelector from '../../controls/DatasetSelector'
+import VariableSelector from '../../controls/VariableSelector'
+import YearSelector from '../../controls/YearSelector';
+import MonthSelector from '../../controls/MonthSelector';
+import IncrementDecrement from '../../controls/IncrementDecrement';
+import ColourScale from '../../map/ColourScale';
+import DataMap from '../../map/DataMap';
+import VariableTitle from '../../misc/VariableTitle';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
-  from '../../data-services/weather-anomaly-data-service';
-import VariableTitle from '../VariableTitle';
+  from '../../../data-services/weather-anomaly-data-service';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
