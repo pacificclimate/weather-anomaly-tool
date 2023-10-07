@@ -19,27 +19,14 @@ import { BCBaseMap } from 'pcic-react-leaflet-components';
 import StationPopup from '../StationPopup';
 import { stationColor } from './stationColor';
 import './DataMap.css';
+import { useConfigContext } from '../../main/ConfigContext';
 
-const locationMarkerOptions = {
-  color: '#222222',
-  radius: 1,
-  weight: 1,
-  fillOpacity: 1,
-};
-
-const dataMarkerOptions = {
-  radius: 8,
-  color: "#999999",
-  weight: 1,
-  fillOpacity: 0.8,
-  fillColor: "#000000",  // Replaced according to station value
-};
 
 function uniqueKey(station) {
   return station.station_db_id.toString() + station.network_variable_name;
 }
 
-function StationLocationMarkers({ type, stations }) {
+function StationLocationMarkers({ type, stations, options }) {
   // Return a set of markers (<CircleMarker/>) for the locations of each
   // station in `props.station`. Icon markers `<Marker/>` don't work in this
   // environment. I think it is because Webpack isn't including the image
@@ -49,19 +36,19 @@ function StationLocationMarkers({ type, stations }) {
     <CircleMarker
       key={`loc-${type}-${uniqueKey(station)}`}
       center={{ lng: station.lon, lat: station.lat }}
-      {...locationMarkerOptions}
+      {...options}
     />
   );
 }
 
-function StationDataMarkers({ variable, dataset, stations }) {
+function StationDataMarkers({ variable, dataset, stations, options }) {
   // Return a list of markers (<CircleMarker/>) for the data for each station
   // in `station`.
   return stations.map(station =>
     <CircleMarker
       key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
       center={{ lng: station.lon, lat: station.lat }}
-      {...dataMarkerOptions}
+      {...options}
       fillColor={stationColor(variable, dataset, station)}
     >
       <StationPopup variable={variable} dataset={dataset}  station={station}/>
@@ -81,6 +68,8 @@ function MapSpinner() {
 
 
 export default function DataMap({ dataset, variable, monthly, baseline }) {
+  const config = useConfigContext();
+
   function stationsForDataset() {
     // Return a set of stations determined by `dataset`.
     // For `baseline` and `monthly`, return the respective station sets.
@@ -126,6 +115,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
               variable={variable}
               dataset={dataset}
               stations={stationsForDataset()}
+              options={config.frontend.map.markers.data}
             />
           </LayerGroup>
         </LayersControl.Overlay>
@@ -134,6 +124,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
             <StationLocationMarkers
               type="baseline"
               stations={baseline}
+              options={config.frontend.map.markers.location}
             />
           </LayerGroup>
         </LayersControl.Overlay>
@@ -142,6 +133,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
             <StationLocationMarkers
               type="monthly"
               stations={monthly}
+              options={config.frontend.map.markers.location}
             />
           </LayerGroup>
         </LayersControl.Overlay>

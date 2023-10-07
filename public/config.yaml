@@ -1,6 +1,20 @@
 frontend:
   title: Weather Anomaly Viewer
 
+  map:
+    markers:
+      location:
+        color: '#222222'
+        radius: 1
+        weight: 1
+        fillOpacity: 1
+      data:
+        radius: 8
+        color: "#999999"
+        weight: 1
+        fillOpacity: 0.8
+        fillColor: "#000000"  # Replaced according to station value
+
   colourScales:
     precip:
       anomaly:
