@@ -12,7 +12,7 @@ frontend:
         radius: 8
         color: "#999999"
         weight: 1
-        fillOpacity: 0.8
+        fillOpacity: 0.75
         fillColor: "#000000"  # Replaced according to station value
 
   colourScales:
@@ -38,13 +38,25 @@ frontend:
           color: '#01665e'
         - threshold: +Infinity
           color: '#fdbbd5'
+          labelStyle:
+            display: none
           blockStyle:
             borderLeft: "3px solid white"
             borderRight: "3px solid white"
             borderRadius: "1em"
           annotation: "erroneous"
-      monthly: '#36ff32'
-      baseline: '#36ff32'
+      monthly:
+        - threshold: +Infinity
+          color: '#36ff32'
+          labelStyle:
+              display: none
+          annotation: all data values
+      baseline:
+        - threshold: +Infinity
+          color: '#36ff32'
+          labelStyle:
+            display: none
+          annotation: all data values
     tmin:
       anomaly:
         - threshold: -4.5
@@ -69,8 +81,20 @@ frontend:
           color: '#b2182b'
         - threshold: +Infinity
           color: '#67001f'
-      monthly: '#3388ff'
-      baseline: '#3388ff'
+          labelStyle:
+            display: none
+      monthly:
+        - threshold: +Infinity
+          color: '#3388ff'
+          labelStyle:
+            display: none
+          annotation: all data values
+      baseline:
+        - threshold: +Infinity
+          color: '#3388ff'
+          labelStyle:
+            display: none
+          annotation: all data values
     tmax:
       anomaly:
         - threshold: -4.5
@@ -95,8 +119,20 @@ frontend:
           color: '#b2182b'
         - threshold: +Infinity
           color: '#67001f'
-      monthly: '#ff6831'
-      baseline: '#ff6831'
+          labelStyle:
+            display: none
+      monthly:
+        - threshold: +Infinity
+          color: '#ff6831'
+          labelStyle:
+            display: none
+          annotation: all data values
+      baseline:
+        - threshold: +Infinity
+          color: '#ff6831'
+          labelStyle:
+            display: none
+          annotation: all data values
 
 backends:
   weatherAnomalyDataService: |

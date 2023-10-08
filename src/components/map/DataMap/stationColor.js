@@ -13,129 +13,23 @@ function dataValueName(variable, dataset){
 }
 
 
-// Colours for non-colour-scaled displays
-export const colorsForVariable ={
-  'precip': '#36ff32',
-  'tmin': '#3388ff',
-  'tmax': '#ff6831',
-};
-
-
-const temperatureColourScale = [
-  { 
-    threshold: -4.5,
-    color: '#053061',
-  },
-  { 
-    threshold: -3.5,
-    color: '#2166ac',
-  },
-  { 
-    threshold: -2.5,
-    color: '#4393c3',
-  },
-  { 
-    threshold: -1.5,
-    color: '#92c5de',
-  },
-  { 
-    threshold: -0.5,
-    color: '#d1e5f0',
-  },
-  { 
-    threshold: 0.5,
-    color: '#f7f7f7',
-  },
-  { 
-    threshold: 1.5,
-    color: '#fddbc7',
-  },
-  { 
-    threshold: 2.5,
-    color: '#f4a582',
-  },
-  { 
-    threshold: 3.5,
-    color: '#d6604d',
-  },
-  { 
-    threshold: 4.5,
-    color: '#b2182b',
-  },
-  { 
-    threshold: +Infinity,
-    color: '#67001f',
-  },
-];
-
-const precipColourScale = [
-  {
-    threshold: -0.875,
-    color: '#8c510a',
-  },
-  {
-    threshold: -0.625,
-    color: '#bf812d',
-  },
-  {
-    threshold: -0.375,
-    color: '#dfc27d',
-  },
-  {
-    threshold: -0.125,
-    color: '#f6e8c3',
-  },
-  {
-    threshold: 0.125 * Math.pow(3, 0),
-    color: '#f5f5f5',
-  },
-  {
-    threshold: 0.125 * Math.pow(3, 1),
-    color: '#c7eae5',
-  },
-  {
-    threshold: 0.125 * Math.pow(3, 2),
-    color: '#80cdc1',
-  },
-  {
-    threshold: 0.125 * Math.pow(3, 3),
-    color: '#35978f',
-  },
-  {
-    threshold: 10,
-    color: '#01665e',
-  },
-  {
-    threshold: +Infinity,
-    color: '#fdbbd5',
-    blockStyle: {
-      borderLeft: "3px solid white",
-      borderRight: "3px solid white",
-      borderRadius: "1em",
-    },
-    annotation: "erroneous",
-    // annotationStyle: { color: "white" },
-  },
-];
-
-export const variableToColourScale = {
-  'precip': precipColourScale,
-  'tmax': temperatureColourScale,
-  'tmin': temperatureColourScale,
-};
-
-
-function value_to_color(value, colourScale){
+function valueToColourScaleItem(value, colourScale){
   const k = _.findIndex(colourScale, item => value < item.threshold);
-  return colourScale[k]?.color;
+  return colourScale[k];
 }
 
 
-export function stationColor(variable, dataset, station){
+export function stationColor(variable, dataset, station, colourScales){
   // Return a color code for the marker for station.
-  if (dataset === 'anomaly'){
-    const value = station[dataValueName(variable, dataset)];
-    return value_to_color(value, variableToColourScale[variable]);
-  }
-  return colorsForVariable[variable];
+  // TODO: fold this up into fn getDataValue
+  const value = station[dataValueName(variable, dataset)];
+  // TODO: This uses too much knowledge about config structure.
+  //  Pass in just the relevant colourScale
+  const colourScale = colourScales[variable][dataset];
+  // TODO: Super ugly; refactor
+  const colourScaleItem = valueToColourScaleItem(value, colourScale);
+  return {
+    fillColor: colourScaleItem.color,
+    opacity: colourScaleItem.opacity,
+  };
 }

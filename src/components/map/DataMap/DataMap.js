@@ -41,7 +41,9 @@ function StationLocationMarkers({ type, stations, options }) {
   );
 }
 
-function StationDataMarkers({ variable, dataset, stations, options }) {
+function StationDataMarkers({
+  variable, dataset, stations, options, colourScales
+}) {
   // Return a list of markers (<CircleMarker/>) for the data for each station
   // in `station`.
   return stations.map(station =>
@@ -49,7 +51,7 @@ function StationDataMarkers({ variable, dataset, stations, options }) {
       key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
       center={{ lng: station.lon, lat: station.lat }}
       {...options}
-      fillColor={stationColor(variable, dataset, station)}
+      {...stationColor(variable, dataset, station, colourScales)}
     >
       <StationPopup variable={variable} dataset={dataset}  station={station}/>
     </CircleMarker>
@@ -116,6 +118,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
               dataset={dataset}
               stations={stationsForDataset()}
               options={config.frontend.map.markers.data}
+              colourScales={config.frontend.colourScales}
             />
           </LayerGroup>
         </LayersControl.Overlay>
