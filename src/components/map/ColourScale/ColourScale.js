@@ -40,7 +40,6 @@ export default function ColourScale({
             className="pe-1 d-inline-block position-relative"
             style={{
               backgroundColor: item.color,
-              opacity: config.frontend.map.markers.data.fillOpacity,
               height: "1em",
               width: `${width}%`,
               ...item.blockStyle,

@@ -12,32 +12,32 @@ frontend:
         radius: 8
         color: "#999999"
         weight: 1
-        fillOpacity: 0.75
         fillColor: "#000000"  # Replaced according to station value
+        fillOpacity: 1
 
   colourScales:
     precip:
       anomaly:
         - threshold: -0.875
-          color: '#8c510a'
+          color: 'rgba(140,81,10,0.75)'
         - threshold: -0.625
-          color: '#bf812d'
+          color: 'rgba(191,129,45,0.75)'
         - threshold: -0.375
-          color: '#dfc27d'
+          color: 'rgba(223,194,125,0.75)'
         - threshold: -0.125
-          color: '#f6e8c3'
+          color: 'rgba(246,232,195,0.75)'
         - threshold: 0.125
-          color: '#f5f5f5'
+          color: 'rgba(245,245,245,0.75)'
         - threshold: 0.375
-          color: '#c7eae5'
+          color: 'rgba(199,234,229,0.75)'
         - threshold: 1.125
-          color: '#80cdc1'
+          color: 'rgba(128,205,193,0.75)'
         - threshold: 3.375
-          color: '#35978f'
+          color: 'rgba(53,151,143,0.75)'
         - threshold: 10
-          color: '#01665e'
+          color: 'rgba(1,102,94,0.75)'
         - threshold: +Infinity
-          color: '#fdbbd5'
+          color: 'rgba(253,187,213,0.75)'
           labelStyle:
             display: none
           blockStyle:
@@ -47,89 +47,89 @@ frontend:
           annotation: "erroneous"
       monthly:
         - threshold: +Infinity
-          color: '#36ff32'
+          color: 'rgba(54,255,50,0.8)'
           labelStyle:
               display: none
           annotation: all data values
       baseline:
         - threshold: +Infinity
-          color: '#36ff32'
+          color: 'rgba(54,255,50,0.8)'
           labelStyle:
             display: none
           annotation: all data values
     tmin:
       anomaly:
         - threshold: -4.5
-          color: '#053061'
+          color: 'rgba(5,48,97,0.75)'
         - threshold: -3.5
-          color: '#2166ac'
+          color: 'rgba(33,102,172,0.75)'
         - threshold: -2.5
-          color: '#4393c3'
+          color: 'rgba(67,147,195,0.75)'
         - threshold: -1.5
-          color: '#92c5de'
+          color: 'rgba(146,197,222,0.75)'
         - threshold: -0.5
-          color: '#d1e5f0'
+          color: 'rgba(209,229,240,0.75)'
         - threshold: 0.5
-          color: '#f7f7f7'
+          color: 'rgba(247,247,247,0.75)'
         - threshold: 1.5
-          color: '#fddbc7'
+          color: 'rgba(253,219,199,0.75)'
         - threshold: 2.5
-          color: '#f4a582'
+          color: 'rgba(244,165,130,0.75)'
         - threshold: 3.5
-          color: '#d6604d'
+          color: 'rgba(214,96,77,0.75)'
         - threshold: 4.5
-          color: '#b2182b'
+          color: 'rgba(178,24,43,0.75)'
         - threshold: +Infinity
-          color: '#67001f'
+          color: 'rgba(103,0,31,0.75)'
           labelStyle:
             display: none
       monthly:
         - threshold: +Infinity
-          color: '#3388ff'
+          color: 'rgba(51,136,255,0.8)'
           labelStyle:
             display: none
           annotation: all data values
       baseline:
         - threshold: +Infinity
-          color: '#3388ff'
+          color: 'rgba(51,136,255,0.8)'
           labelStyle:
             display: none
           annotation: all data values
     tmax:
       anomaly:
         - threshold: -4.5
-          color: '#053061'
+          color: 'rgba(5,48,97,0.75)'
         - threshold: -3.5
-          color: '#2166ac'
+          color: 'rgba(33,102,172,0.75)'
         - threshold: -2.5
-          color: '#4393c3'
+          color: 'rgba(67,147,195,0.75)'
         - threshold: -1.5
-          color: '#92c5de'
+          color: 'rgba(146,197,222,0.75)'
         - threshold: -0.5
-          color: '#d1e5f0'
+          color: 'rgba(209,229,240,0.75)'
         - threshold: 0.5
-          color: '#f7f7f7'
+          color: 'rgba(247,247,247,0.75)'
         - threshold: 1.5
-          color: '#fddbc7'
+          color: 'rgba(253,219,199,0.75)'
         - threshold: 2.5
-          color: '#f4a582'
+          color: 'rgba(244,165,130,0.75)'
         - threshold: 3.5
-          color: '#d6604d'
+          color: 'rgba(214,96,77,0.75)'
         - threshold: 4.5
-          color: '#b2182b'
+          color: 'rgba(178,24,43,0.75)'
         - threshold: +Infinity
-          color: '#67001f'
+          color: 'rgba(103,0,31,0.75)'
           labelStyle:
             display: none
       monthly:
         - threshold: +Infinity
-          color: '#ff6831'
+          color: 'rgba(255,104,49,1)'
           labelStyle:
             display: none
           annotation: all data values
       baseline:
         - threshold: +Infinity
-          color: '#ff6831'
+          color: 'rgba(255,104,49,0.8)'
           labelStyle:
             display: none
           annotation: all data values
