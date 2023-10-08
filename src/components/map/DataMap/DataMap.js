@@ -117,8 +117,8 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
               variable={variable}
               dataset={dataset}
               stations={stationsForDataset()}
-              options={config.frontend.map.markers.data}
-              colourScales={config.frontend.colourScales}
+              options={config.map.markers.data}
+              colourScales={config.colourScales}
             />
           </LayerGroup>
         </LayersControl.Overlay>
@@ -127,7 +127,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
             <StationLocationMarkers
               type="baseline"
               stations={baseline}
-              options={config.frontend.map.markers.location}
+              options={config.map.markers.location}
             />
           </LayerGroup>
         </LayersControl.Overlay>
@@ -136,7 +136,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
             <StationLocationMarkers
               type="monthly"
               stations={monthly}
-              options={config.frontend.map.markers.location}
+              options={config.map.markers.location}
             />
           </LayerGroup>
         </LayersControl.Overlay>

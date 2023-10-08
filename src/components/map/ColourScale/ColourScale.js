@@ -26,7 +26,7 @@ export default function ColourScale({
 }) {
   const config = useConfigContext();
 
-  const colourScale = config.frontend.colourScales[variable][dataset];
+  const colourScale = config.colourScales[variable][dataset];
   const numItems = colourScale.length;
   const width= 100 / numItems;
   return (

@@ -20,7 +20,7 @@ export default function Header() {
         </a>
       </Col>
       <Col>
-        <h1>{config.frontend.title}</h1>
+        <h1>{config.title}</h1>
       </Col>
     </Row>
   );
