@@ -136,7 +136,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
       <Pane name="monthlyMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.monthly}
-          checked={true}
+          checked={dataset === "monthly"}
         >
           <LayerGroup>
             <StationLocationMarkers
@@ -153,7 +153,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
       <Pane name="baselineMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.baseline}
-          checked={false}
+          checked={dataset === "baseline"}
         >
           <LayerGroup>
             <StationLocationMarkers
