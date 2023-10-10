@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 
-import VariableLabel from '../../misc/VariableLabel';
-import VariableUnits from '../../misc/VariableUnits';
+import VariableLabel from '../../variables/VariableLabel';
+import VariableUnits from '../../variables/VariableUnits';
 import './StationPopup.css';
 import { useConfigContext } from '../../main/ConfigContext';
 

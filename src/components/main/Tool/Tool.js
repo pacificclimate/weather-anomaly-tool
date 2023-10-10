@@ -9,7 +9,7 @@ import MonthSelector from '../../controls/MonthSelector';
 import IncrementDecrement from '../../controls/IncrementDecrement';
 import ColourScale from '../../map/ColourScale';
 import DataMap from '../../map/DataMap';
-import VariableTitle from '../../misc/VariableTitle';
+import VariableTitle from '../../variables/VariableTitle';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';

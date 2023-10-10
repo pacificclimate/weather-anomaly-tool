@@ -5,7 +5,7 @@ import keys from 'lodash/fp/keys';
 
 import { useConfigContext } from '../../main/ConfigContext';
 import RadioButtonSelector from '../RadioButtonSelector';
-import VariableLabel from '../../misc/VariableLabel';
+import VariableLabel from '../../variables/VariableLabel';
 import './VariableSelector.css';
 
 
