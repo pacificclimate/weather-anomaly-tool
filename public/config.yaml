@@ -1,5 +1,19 @@
 title: Weather Anomaly Viewer
 
+variables:
+  precip:
+    label: Precipitation
+    units: mm/mon
+    decimalPlaces: 1
+  tmin:
+    label: T<sub>min</sub>
+    units: C
+    decimalPlaces: 2
+  tmax:
+    label: T<sub>max</sub>
+    units: C
+    decimalPlaces: 2
+
 map:
   markers:
     location:
