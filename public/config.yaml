@@ -35,6 +35,16 @@ map:
       weight: 1
       fillColor: "#000000"  # Replaced according to station value
       fillOpacity: 1
+  markerLayers:
+    order:
+      - data
+      - monthly
+      - baseline
+    definitions:
+      data: Data values
+      monthly: Monthly station locations
+      baseline: Baseline station locations
+
 
 colourScales:
   precip:
