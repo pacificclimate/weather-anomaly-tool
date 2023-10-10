@@ -5,6 +5,7 @@ import { alternate } from '../../utils';
 
 import VariableLabel from '../VariableLabel';
 import VariableUnits from '../VariableUnits';
+import DatasetLabel from '../../datasets/DatasetLabel';
 import { useConfigContext } from '../../main/ConfigContext';
 
 
@@ -23,9 +24,9 @@ export default function VariableTitle({
     withUnits && (isRelative ? '%' : <VariableUnits variable={variable}/>),
   ]);
   return (
-    <><
-      VariableLabel variable={variable}/> {' '}
-      {dataset} {' '}
+    <>
+      <VariableLabel variable={variable}/> {' '}
+      <DatasetLabel dataset={dataset}/> {' '}
       {suffixes.length > 0 && (<>({suffixes})</>)}
     </>
   )

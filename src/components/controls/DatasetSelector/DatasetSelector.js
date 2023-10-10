@@ -1,18 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import flow from 'lodash/fp/flow';
+import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
+
+import DatasetLabel from '../../datasets/DatasetLabel';
 import RadioButtonSelector from '../RadioButtonSelector';
+import { useConfigContext } from '../../main/ConfigContext';
 import './DatasetSelector.css';
 
 
-const datasets = [
-  { value: 'anomaly', label: 'Anomaly', },
-  { value: 'monthly', label: 'Monthly', },
-  { value: 'baseline', label: 'Baseline', },
-];
-
 function DatasetSelector(props) {
+  const config = useConfigContext();
+  const options = flow(
+    keys,
+    map(dataset =>
+        ({ value: dataset, label: <DatasetLabel dataset={dataset}/> })
+    ),
+  )(config.datasets);
   return (
-    <RadioButtonSelector name="dataset" options={datasets} {...props}/>
+    <RadioButtonSelector name="dataset" options={options} {...props}/>
   );
 }
 
