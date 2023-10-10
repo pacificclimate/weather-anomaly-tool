@@ -7,7 +7,7 @@ import {
   LayersControl,
   CircleMarker,
   SVGOverlay,
-  useMap,
+  useMap, Pane,
 } from 'react-leaflet';
 import * as SVGLoaders from 'svg-loaders-react';
 import _ from 'lodash';
@@ -107,11 +107,18 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
     return stations;
   }
 
-  const content =
-    (baseline?.length > 0 && monthly?.length > 0) ?
-    (
-      <LayersControl position='topright'>
-        <LayersControl.Overlay name='Data values' checked>
+  // TODO: Consider useMemo for each item
+  // Unordered marker layers
+  // Each overlay group is enclosed in a Pane, which controls the ordering
+  // of the layers on the map. Rendering them in a particular order (see below)
+  // within the map controls which layer overlays which.
+  const markerLayersById = {
+    data: (
+      <Pane name="dataMarkerPane">
+        <LayersControl.Overlay
+          name={config.map.markerLayers.definitions.data}
+          checked={true}
+        >
           <LayerGroup>
             <StationDataMarkers
               variable={variable}
@@ -122,16 +129,15 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
             />
           </LayerGroup>
         </LayersControl.Overlay>
-        <LayersControl.Overlay name='Baseline stations'>
-          <LayerGroup>
-            <StationLocationMarkers
-              type="baseline"
-              stations={baseline}
-              options={config.map.markers.location}
-            />
-          </LayerGroup>
-        </LayersControl.Overlay>
-        <LayersControl.Overlay name='Monthly stations' checked>
+      </Pane>
+    ),
+
+    monthly: (
+      <Pane name="monthlyMarkerPane">
+        <LayersControl.Overlay
+          name={config.map.markerLayers.definitions.monthly}
+          checked={true}
+        >
           <LayerGroup>
             <StationLocationMarkers
               type="monthly"
@@ -140,6 +146,39 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
             />
           </LayerGroup>
         </LayersControl.Overlay>
+      </Pane>
+    ),
+
+    baseline: (
+      <Pane name="baselineMarkerPane">
+        <LayersControl.Overlay
+          name={config.map.markerLayers.definitions.baseline}
+          checked={false}
+        >
+          <LayerGroup>
+            <StationLocationMarkers
+              type="baseline"
+              stations={baseline}
+              options={config.map.markers.location}
+            />
+          </LayerGroup>
+        </LayersControl.Overlay>
+      </Pane>
+    ),
+  };
+
+  const content =
+    (baseline?.length > 0 && monthly?.length > 0) ?
+    (
+      <LayersControl position='topright'>
+        {
+          // Render marker layers in order defined by config. Because each
+          // layer group is enclosed in a Pane, the ordering controls which
+          // layer overlays which. Later-rendered Panes overlay earlier ones.
+          // The ordering also controls the order the layer is listed
+          // in the LayersControl.
+          config.map.markerLayers.order.map(id => markerLayersById[id])
+        }
       </LayersControl>
     ) : (
       <MapSpinner/>
