@@ -1,6 +1,6 @@
 // DataMap: Component that displays a map with data.
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   LayerGroup,
@@ -72,40 +72,42 @@ function MapSpinner() {
 export default function DataMap({ dataset, variable, monthly, baseline }) {
   const config = useConfigContext();
 
-  function stationsForDataset() {
-    // Return a set of stations determined by `dataset`.
-    // For `baseline` and `monthly`, return the respective station sets.
-    // For `anomaly`, compute the anomaly for stations for which there is both
-    // baseline and monthly data.
-    if (dataset === 'baseline') {
-      return baseline;
-    }
+  const stationsForDataset = useMemo(
+    () => {
+      // Return a set of stations determined by `dataset`.
+      // For `baseline` and `monthly`, return the respective station sets.
+      // For `anomaly`, compute the anomaly for stations for which there is both
+      // baseline and monthly data.
+      if (dataset === 'baseline') {
+        return baseline;
+      }
 
-    if (dataset === 'monthly') {
-      return monthly;
-    }
+      if (dataset === 'monthly') {
+        return monthly;
+      }
 
-    // dataset === 'anomaly'
-    // This effectively performs an inner join of `baseline` and `monthly` on
-    // `station_db_id`, and adds the `anomaly` and `departure` attributes to
-    // each resulting item.
-    const monthlyByStationDbId = _.groupBy(monthly, 'station_db_id');
-    const stations = flow(
-      map(baselineStation => {
-        const monthlyStation =
-          monthlyByStationDbId[baselineStation.station_db_id];
-        return monthlyStation && (
-          {
-            ...baselineStation,
-            anomaly: monthlyStation[0].statistic - baselineStation.datum,
-            departure: monthlyStation[0].statistic / baselineStation.datum - 1,
-          }
-        )
-      }),
-      compact,
-    )(baseline);
-    return stations;
-  }
+      // dataset === 'anomaly'
+      // This effectively performs an inner join of `baseline` and `monthly` on
+      // `station_db_id`, and adds the `anomaly` and `departure` attributes to
+      // each resulting item.
+      const monthlyByStationDbId = _.groupBy(monthly, 'station_db_id');
+      return flow(
+        map(baselineStation => {
+          const monthlyStation =
+            monthlyByStationDbId[baselineStation.station_db_id];
+          return monthlyStation && (
+            {
+              ...baselineStation,
+              anomaly: monthlyStation[0].statistic - baselineStation.datum,
+              departure: monthlyStation[0].statistic / baselineStation.datum - 1,
+            }
+          )
+        }),
+        compact,
+      )(baseline);
+    },
+    [dataset, monthly, baseline]
+  );
 
   // TODO: Consider useMemo for each item
   // Unordered marker layers
@@ -123,7 +125,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
             <StationDataMarkers
               variable={variable}
               dataset={dataset}
-              stations={stationsForDataset()}
+              stations={stationsForDataset}
               options={config.map.markers.data}
               colourScales={config.colourScales}
             />
