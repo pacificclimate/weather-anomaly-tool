@@ -11,11 +11,12 @@ import ColourScale from '../../map/ColourScale';
 import DataMap from '../../map/DataMap';
 import VariableTitle from '../../variables/VariableTitle';
 
-import 'react-input-range/lib/css/index.css';
-import './Tool.css';
 import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
   from '../../../data-services/weather-anomaly-data-service';
 import { useConfigContext } from '../ConfigContext';
+
+import 'react-input-range/lib/css/index.css';
+import './Tool.css';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -34,16 +35,12 @@ import { useConfigContext } from '../ConfigContext';
 // determined by consulting the backend.
 const latestPossibleDataDate = moment().subtract(15, 'days');
 
-export default function Tool({
-  controlVariant = "secondary",
-  monthIncrDecrBy = [1, 3, 6],
-  yearIncrDecrBy = [1, 2, 3, 4, 5, 10],
-}) {
+export default function Tool() {
   const config = useConfigContext();
   const wadsUrl = config.backends.weatherAnomalyDataService;
 
-  const [dataset, setDataset] = useState('anomaly');
-  const [variable, setVariable] = useState('precip');
+  const [variable, setVariable] = useState(config.ui.variableSelector.initial);
+  const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
   const [date, setDate] = useState(latestPossibleDataDate);
   const [baseline, setBaseline] = useState(null);
   const [monthly, setMonthly] = useState(null);
@@ -106,20 +103,18 @@ export default function Tool({
             <Col {...displayColWidths} className="mb-sm-2 mb-lg-0">
               <VariableSelector
                 vertical
-                size="sm"
-                variant={controlVariant}
                 disabled={isDataLoading}
                 value={variable}
                 onChange={setVariable}
+                styling={config.ui.variableSelector.styling}
               />
             </Col>
             <Col {...displayColWidths}>
               <DatasetSelector
                 vertical
-                size="sm"
-                variant={controlVariant}
                 value={dataset}
                 onChange={setDataset}
+                styling={config.ui.datasetSelector.styling}
               />
             </Col>
           </Row>
@@ -137,10 +132,11 @@ export default function Tool({
             <Col>
               <IncrementDecrement
                 id="month-increment"
-                variant={controlVariant}
                 disabled={isDataLoading}
-                bys={monthIncrDecrBy}
+                defaultBy={config.ui.monthIncrementDecrement.defaultBy}
+                bys={config.ui.monthIncrementDecrement.by}
                 onIncrement={handleIncrementMonth}
+                styling={config.ui.monthIncrementDecrement.styling}
               />
             </Col>
           </Row>
@@ -161,10 +157,11 @@ export default function Tool({
                 <Col>
                   <IncrementDecrement
                     id="year-increment"
-                    variant={controlVariant}
                     disabled={isDataLoading}
-                    bys={yearIncrDecrBy}
+                    defaultBy={config.ui.yearIncrementDecrement.defaultBy}
+                    bys={config.ui.yearIncrementDecrement.by}
                     onIncrement={handleIncrementYear}
+                    styling={config.ui.yearIncrementDecrement.styling}
                   />
                 </Col>
               </Row>

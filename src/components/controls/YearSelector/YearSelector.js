@@ -3,7 +3,7 @@ import ThrottledInputRange from '../ThrottledInputRange';
 
 function YearSelector(props) {
   return (
-    <ThrottledInputRange{...props} />
+    <ThrottledInputRange {...props} />
   );
 }
 

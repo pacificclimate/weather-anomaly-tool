@@ -23,7 +23,7 @@ function IncrementDecrement({
   onIncrement,
   disabled = false,
   className,
-  variant,
+  styling: { buttons: { variant, ...rest } },
 }) {
   const [by, setBy] = useState(defaultBy | bys?.[0]);
   const handleChangeBy = e => setBy(+e.target.value);
@@ -50,7 +50,7 @@ function IncrementDecrement({
     <ButtonGroup
       id={id}
       className={classNames('IncrementDecrement', className)}
-      size="sm"
+      {...rest}
     >
       <Button
         variant={variant}

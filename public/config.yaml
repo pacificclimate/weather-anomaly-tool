@@ -165,6 +165,36 @@ colourScales:
           display: none
         annotation: all data values
 
+ui:
+  variableSelector:
+    initial: precip  # precip | tmin | tmax
+    styling:
+      buttons:
+        vertical: true
+        size: sm
+        variant: outline-dark
+  datasetSelector:
+    initial: anomaly  # anomaly | monthly | baseline
+    styling:
+      buttons:
+        vertical: true
+        size: sm
+        variant: outline-dark
+  monthIncrementDecrement:
+    defaultBy: 1
+    by: [1, 3, 6]
+    styling:
+      buttons:
+        size: sm
+        variant: outline-dark
+  yearIncrementDecrement:
+    defaultBy: 1
+    by: [1, 2, 3, 4, 5, 10]
+    styling:
+      buttons:
+        size: sm
+        variant: outline-dark
+
 backends:
   weatherAnomalyDataService: |
     https://services.pacificclimate.org/dev/weather-anomaly
