@@ -42,19 +42,26 @@ function StationLocationMarkers({ type, stations, options }) {
 }
 
 function StationDataMarkers({
-  variable, dataset, stations, options, colourScales
+  variable, dataset, stations, dataMarkerOptions, dataLocationOptions, colourScales
 }) {
   // Return a list of markers (<CircleMarker/>) for the data for each station
   // in `station`.
   return stations.map(station =>
-    <CircleMarker
-      key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
-      center={{ lng: station.lon, lat: station.lat }}
-      {...options}
-      {...stationColor(variable, dataset, station, colourScales)}
-    >
-      <StationPopup variable={variable} dataset={dataset}  station={station}/>
-    </CircleMarker>
+    <>
+      <CircleMarker
+        key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
+        center={{ lng: station.lon, lat: station.lat }}
+        {...dataMarkerOptions}
+        {...stationColor(variable, dataset, station, colourScales)}
+      >
+        <StationPopup variable={variable} dataset={dataset}  station={station}/>
+      </CircleMarker>
+      <CircleMarker
+        key={`dataloc-${variable}-${uniqueKey(station)}`}
+        center={{ lng: station.lon, lat: station.lat }}
+        {...dataLocationOptions}
+      />
+    </>
   );
 }
 
@@ -116,7 +123,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
   // within the map controls which layer overlays which.
   const markerLayersById = {
     data: (
-      <Pane name="dataMarkerPane">
+      <Pane name="dataValueMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.data}
           checked={true}
@@ -126,7 +133,8 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
               variable={variable}
               dataset={dataset}
               stations={stationsForDataset}
-              options={config.map.markers.data}
+              dataMarkerOptions={config.map.markers.data}
+              dataLocationOptions={config.map.markers.location}
               colourScales={config.colourScales}
             />
           </LayerGroup>
@@ -135,10 +143,10 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
     ),
 
     monthly: (
-      <Pane name="monthlyMarkerPane">
+      <Pane name="monthlyStationLocationMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.monthly}
-          checked={dataset === "monthly"}
+          checked={false}
         >
           <LayerGroup>
             <StationLocationMarkers
@@ -152,10 +160,10 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
     ),
 
     baseline: (
-      <Pane name="baselineMarkerPane">
+      <Pane name="baselineStationLocationMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.baseline}
-          checked={dataset === "baseline"}
+          checked={false}
         >
           <LayerGroup>
             <StationLocationMarkers
