@@ -15,6 +15,7 @@ import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
   from '../../../data-services/weather-anomaly-data-service';
+import { useConfigContext } from '../ConfigContext';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -38,6 +39,9 @@ export default function Tool({
   monthIncrDecrBy = [1, 3, 6],
   yearIncrDecrBy = [1, 2, 3, 4, 5, 10],
 }) {
+  const config = useConfigContext();
+  const wadsUrl = config.backends.weatherAnomalyDataService;
+
   const [dataset, setDataset] = useState('anomaly');
   const [variable, setVariable] = useState('precip');
   const [date, setDate] = useState(latestPossibleDataDate);
@@ -49,7 +53,7 @@ export default function Tool({
   useEffect(() => {
     setBaseline(null);
     setMonthly(null);
-    getLastDateWithDataBefore(variable, date)
+    getLastDateWithDataBefore(variable, date, wadsUrl)
     .then(date => {
       setDate(date);
     });
@@ -62,10 +66,12 @@ export default function Tool({
   useEffect(() => {
     setBaseline(null);
     setMonthly(null);
-    getBaselineData(variable, date).then(r => {
+    getBaselineData(variable, date, wadsUrl)
+    .then(r => {
       setBaseline(r.data);
     });
-    getMonthlyData(variable, date).then(r => {
+    getMonthlyData(variable, date, wadsUrl)
+    .then(r => {
       setMonthly(r.data);
     });
   }, [variable, date]);
