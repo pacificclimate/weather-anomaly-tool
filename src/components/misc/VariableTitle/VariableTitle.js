@@ -1,19 +1,32 @@
 import React from 'react';
 import compact from 'lodash/fp/compact';
+import flow from 'lodash/fp/flow';
+import { alternate } from '../../utils';
+
 import VariableLabel from '../VariableLabel';
-import { unitsForVariable } from '../../../utils/variables';
+import VariableUnits from '../VariableUnits';
+import { useConfigContext } from '../../main/ConfigContext';
+
 
 export default function VariableTitle({
   variable, dataset, withAnnotation = true, withUnits = true
 }) {
+  const config = useConfigContext();
+
   const isAnomaly = dataset === 'anomaly';
   const isRelative = variable === 'precip' && isAnomaly;
-  const suffixes = compact([
+  const suffixes = flow(
+    compact,
+    alternate("; ")
+  )([
     withAnnotation && isAnomaly && 'relative to baseline',
-    withUnits && (isRelative ? '%' : unitsForVariable[variable]),
+    withUnits && (isRelative ? '%' : <VariableUnits variable={variable}/>),
   ]);
-  const suffix = suffixes.length > 0 ? `(${suffixes.join('; ')})` : null;
   return (
-    <><VariableLabel variable={variable}/> {dataset} {suffix}</>
+    <><
+      VariableLabel variable={variable}/> {' '}
+      {dataset} {' '}
+      {suffixes.length > 0 && (<>({suffixes})</>)}
+    </>
   )
 }
