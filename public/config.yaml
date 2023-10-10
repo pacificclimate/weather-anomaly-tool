@@ -14,6 +14,14 @@ variables:
     units: C
     decimalPlaces: 2
 
+datasets:
+  anomaly:
+    label: Anomaly
+  monthly:
+    label: Monthly
+  baseline:
+    label: Baseline
+
 map:
   markers:
     location:
