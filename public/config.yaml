@@ -92,13 +92,22 @@ colourScales:
           borderRadius: "1em"
         annotation: "erroneous"
     monthly:
-      - threshold: +Infinity
+      - threshold: 1000
         color: 'rgba(54,255,50,0.8)'
         blockStyle:
           width: "20%"
+        annotation: all other data values
+      - threshold: +Infinity
+        color: 'rgba(253,187,213,0.75)'
+        blockStyle:
+          width: "10%"
+          borderLeft: "3px solid white"
+          borderRight: "3px solid white"
+          borderRadius: "1em"
         labelStyle:
-            display: none
-        annotation: all data values
+          display: none
+        annotation: "erroneous"
+
     baseline:
       - threshold: +Infinity
         color: 'rgba(54,255,50,0.8)'
