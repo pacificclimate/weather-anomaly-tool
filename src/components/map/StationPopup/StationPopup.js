@@ -4,7 +4,6 @@ import { Popup } from 'react-leaflet'
 
 import VariableLabel from '../../variables/VariableLabel';
 import VariableUnits from '../../variables/VariableUnits';
-import './StationPopup.css';
 import { useConfigContext } from '../../main/ConfigContext';
 
 

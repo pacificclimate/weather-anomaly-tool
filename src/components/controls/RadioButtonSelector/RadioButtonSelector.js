@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import classNames from 'classnames';
-import './RadioButtonSelector.css';
 
 function RadioButtonSelector({
   options,

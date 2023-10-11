@@ -13,7 +13,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonGroup, Button, Form } from 'react-bootstrap';
 import classNames from 'classnames';
-import './IncrementDecrement.css';
 
 
 function IncrementDecrement({

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './ColourScale.css';
 import { useConfigContext } from '../../main/ConfigContext';
 
 

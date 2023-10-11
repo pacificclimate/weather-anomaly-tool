@@ -7,7 +7,6 @@ import map from 'lodash/fp/map';
 import DatasetLabel from '../../datasets/DatasetLabel';
 import RadioButtonSelector from '../RadioButtonSelector';
 import { useConfigContext } from '../../main/ConfigContext';
-import './DatasetSelector.css';
 
 
 function DatasetSelector(props) {
