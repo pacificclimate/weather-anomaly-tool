@@ -1,150 +1,134 @@
 // DataMap: Component that displays a map with data.
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  LayerGroup,
-  LayersControl,
-  CircleMarker,
-  SVGOverlay,
-  useMap,
-} from 'react-leaflet';
-import * as SVGLoaders from 'svg-loaders-react';
+import { LayerGroup, LayersControl, Pane, } from 'react-leaflet';
 import _ from 'lodash';
 import flow from 'lodash/fp/flow';
 import map from 'lodash/fp/map';
 import compact from 'lodash/fp/compact';
 
 import { BCBaseMap } from 'pcic-react-leaflet-components';
-import StationPopup from '../StationPopup';
-import { stationColor } from './stationColor';
 import './DataMap.css';
-
-const locationMarkerOptions = {
-  color: '#222222',
-  radius: 1,
-  weight: 1,
-  fillOpacity: 1,
-};
-
-const dataMarkerOptions = {
-  radius: 8,
-  color: "#999999",
-  weight: 1,
-  fillOpacity: 0.8,
-  fillColor: "#000000",  // Replaced according to station value
-};
-
-function uniqueKey(station) {
-  return station.station_db_id.toString() + station.network_variable_name;
-}
-
-function StationLocationMarkers({ type, stations }) {
-  // Return a set of markers (<CircleMarker/>) for the locations of each
-  // station in `props.station`. Icon markers `<Marker/>` don't work in this
-  // environment. I think it is because Webpack isn't including the image
-  // files that are needed. Certainly the GETs for those images fail. But
-  // circle markers work.
-  return stations.map(station =>
-    <CircleMarker
-      key={`loc-${type}-${uniqueKey(station)}`}
-      center={{ lng: station.lon, lat: station.lat }}
-      {...locationMarkerOptions}
-    />
-  );
-}
-
-function StationDataMarkers({ variable, dataset, stations }) {
-  // Return a list of markers (<CircleMarker/>) for the data for each station
-  // in `station`.
-  return stations.map(station =>
-    <CircleMarker
-      key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
-      center={{ lng: station.lon, lat: station.lat }}
-      {...dataMarkerOptions}
-      fillColor={stationColor(variable, dataset, station)}
-    >
-      <StationPopup variable={variable} dataset={dataset}  station={station}/>
-    </CircleMarker>
-  );
-}
-
-
-function MapSpinner() {
-  const map = useMap();
-  return (
-    <SVGOverlay bounds={map.getBounds()}>
-      <SVGLoaders.Bars x="40%" y="40%" stroke="#98ff98"/>
-    </SVGOverlay>
-  );
-}
+import { useConfigContext } from '../../main/ConfigContext';
+import MapSpinner from '../MapSpinner';
+import StationDataMarkers from '../StationDataMarkers';
+import StationLocationMarkers from '../StationLocationMarkers';
 
 
 export default function DataMap({ dataset, variable, monthly, baseline }) {
-  function stationsForDataset() {
-    // Return a set of stations determined by `dataset`.
-    // For `baseline` and `monthly`, return the respective station sets.
-    // For `anomaly`, compute the anomaly for stations for which there is both
-    // baseline and monthly data.
-    if (dataset === 'baseline') {
-      return baseline;
-    }
+  const config = useConfigContext();
 
-    if (dataset === 'monthly') {
-      return monthly;
-    }
+  const stationsForDataset = useMemo(
+    () => {
+      // Return a set of stations determined by `dataset`.
+      // For `baseline` and `monthly`, return the respective station sets.
+      // For `anomaly`, compute the anomaly for stations for which there is both
+      // baseline and monthly data.
+      if (dataset === 'baseline') {
+        return baseline;
+      }
 
-    // dataset === 'anomaly'
-    // This effectively performs an inner join of `baseline` and `monthly` on
-    // `station_db_id`, and adds the `anomaly` and `departure` attributes to
-    // each resulting item.
-    const monthlyByStationDbId = _.groupBy(monthly, 'station_db_id');
-    const stations = flow(
-      map(baselineStation => {
-        const monthlyStation =
-          monthlyByStationDbId[baselineStation.station_db_id];
-        return monthlyStation && (
-          {
-            ...baselineStation,
-            anomaly: monthlyStation[0].statistic - baselineStation.datum,
-            departure: monthlyStation[0].statistic / baselineStation.datum - 1,
-          }
-        )
-      }),
-      compact,
-    )(baseline);
-    return stations;
-  }
+      if (dataset === 'monthly') {
+        return monthly;
+      }
+
+      // dataset === 'anomaly'
+      // This effectively performs an inner join of `baseline` and `monthly` on
+      // `station_db_id`, and adds the `anomaly` and `departure` attributes to
+      // each resulting item.
+      const monthlyByStationDbId = _.groupBy(monthly, 'station_db_id');
+      return flow(
+        map(baselineStation => {
+          const monthlyStation =
+            monthlyByStationDbId[baselineStation.station_db_id];
+          return monthlyStation && (
+            {
+              ...baselineStation,
+              anomaly: monthlyStation[0].statistic - baselineStation.datum,
+              departure: monthlyStation[0].statistic / baselineStation.datum - 1,
+            }
+          )
+        }),
+        compact,
+      )(baseline);
+    },
+    [dataset, monthly, baseline]
+  );
+
+  // TODO: Consider useMemo for each item
+  // Unordered marker layers
+  // Each overlay group is enclosed in a Pane, which controls the ordering
+  // of the layers on the map. Rendering them in a particular order (see below)
+  // within the map controls which layer overlays which.
+  const markerLayersById = {
+    data: (
+      <Pane name="dataValueMarkerPane">
+        <LayersControl.Overlay
+          name={config.map.markerLayers.definitions.data}
+          checked={true}
+        >
+          <LayerGroup>
+            <StationDataMarkers
+              variable={variable}
+              dataset={dataset}
+              stations={stationsForDataset}
+              dataMarkerOptions={config.map.markers.data}
+              dataLocationOptions={config.map.markers.location}
+              colourScales={config.colourScales}
+            />
+          </LayerGroup>
+        </LayersControl.Overlay>
+      </Pane>
+    ),
+
+    monthly: (
+      <Pane name="monthlyStationLocationMarkerPane">
+        <LayersControl.Overlay
+          name={config.map.markerLayers.definitions.monthly}
+          checked={false}
+        >
+          <LayerGroup>
+            <StationLocationMarkers
+              type="monthly"
+              stations={monthly}
+              options={config.map.markers.location}
+            />
+          </LayerGroup>
+        </LayersControl.Overlay>
+      </Pane>
+    ),
+
+    baseline: (
+      <Pane name="baselineStationLocationMarkerPane">
+        <LayersControl.Overlay
+          name={config.map.markerLayers.definitions.baseline}
+          checked={false}
+        >
+          <LayerGroup>
+            <StationLocationMarkers
+              type="baseline"
+              stations={baseline}
+              options={config.map.markers.location}
+            />
+          </LayerGroup>
+        </LayersControl.Overlay>
+      </Pane>
+    ),
+  };
 
   const content =
     (baseline?.length > 0 && monthly?.length > 0) ?
     (
       <LayersControl position='topright'>
-        <LayersControl.Overlay name='Data values' checked>
-          <LayerGroup>
-            <StationDataMarkers
-              variable={variable}
-              dataset={dataset}
-              stations={stationsForDataset()}
-            />
-          </LayerGroup>
-        </LayersControl.Overlay>
-        <LayersControl.Overlay name='Baseline stations'>
-          <LayerGroup>
-            <StationLocationMarkers
-              type="baseline"
-              stations={baseline}
-            />
-          </LayerGroup>
-        </LayersControl.Overlay>
-        <LayersControl.Overlay name='Monthly stations' checked>
-          <LayerGroup>
-            <StationLocationMarkers
-              type="monthly"
-              stations={monthly}
-            />
-          </LayerGroup>
-        </LayersControl.Overlay>
+        {
+          // Render marker layers in order defined by config. Because each
+          // layer group is enclosed in a Pane, the ordering controls which
+          // layer overlays which. Later-rendered Panes overlay earlier ones.
+          // The ordering also controls the order the layer is listed
+          // in the LayersControl.
+          config.map.markerLayers.order.map(id => markerLayersById[id])
+        }
       </LayersControl>
     ) : (
       <MapSpinner/>

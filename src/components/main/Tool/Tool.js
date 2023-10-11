@@ -9,12 +9,14 @@ import MonthSelector from '../../controls/MonthSelector';
 import IncrementDecrement from '../../controls/IncrementDecrement';
 import ColourScale from '../../map/ColourScale';
 import DataMap from '../../map/DataMap';
-import VariableTitle from '../../misc/VariableTitle';
+import VariableTitle from '../../variables/VariableTitle';
+
+import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
+  from '../../../data-services/weather-anomaly-data-service';
+import { useConfigContext } from '../ConfigContext';
 
 import 'react-input-range/lib/css/index.css';
 import './Tool.css';
-import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
-  from '../../../data-services/weather-anomaly-data-service';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
@@ -33,13 +35,12 @@ import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
 // determined by consulting the backend.
 const latestPossibleDataDate = moment().subtract(15, 'days');
 
-export default function Tool({
-  controlVariant = "secondary",
-  monthIncrDecrBy = [1, 3, 6],
-  yearIncrDecrBy = [1, 2, 3, 4, 5, 10],
-}) {
-  const [dataset, setDataset] = useState('anomaly');
-  const [variable, setVariable] = useState('precip');
+export default function Tool() {
+  const config = useConfigContext();
+  const wadsUrl = config.backends.weatherAnomalyDataService;
+
+  const [variable, setVariable] = useState(config.ui.variableSelector.initial);
+  const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
   const [date, setDate] = useState(latestPossibleDataDate);
   const [baseline, setBaseline] = useState(null);
   const [monthly, setMonthly] = useState(null);
@@ -49,7 +50,7 @@ export default function Tool({
   useEffect(() => {
     setBaseline(null);
     setMonthly(null);
-    getLastDateWithDataBefore(variable, date)
+    getLastDateWithDataBefore(variable, date, wadsUrl)
     .then(date => {
       setDate(date);
     });
@@ -62,10 +63,12 @@ export default function Tool({
   useEffect(() => {
     setBaseline(null);
     setMonthly(null);
-    getBaselineData(variable, date).then(r => {
+    getBaselineData(variable, date, wadsUrl)
+    .then(r => {
       setBaseline(r.data);
     });
-    getMonthlyData(variable, date).then(r => {
+    getMonthlyData(variable, date, wadsUrl)
+    .then(r => {
       setMonthly(r.data);
     });
   }, [variable, date]);
@@ -90,35 +93,34 @@ export default function Tool({
   const isBaselineDataset = dataset === 'baseline';
 
   const displayColWidths = { xs: 12, md: "auto" };
+  const rowSpacing = "mt-3"
 
   return (
     <React.Fragment>
       <Row className="Tool">
         <Col xs={3} className="selectors">
-          <Row><Col>Display</Col></Row>
-          <Row className="justify-content-md-center">
+          <Row className={rowSpacing}><Col>Display</Col></Row>
+          <Row className={`${rowSpacing} justify-content-md-center`}>
             <Col {...displayColWidths} className="mb-sm-2 mb-lg-0">
               <VariableSelector
                 vertical
-                size="sm"
-                variant={controlVariant}
                 disabled={isDataLoading}
                 value={variable}
                 onChange={setVariable}
+                styling={config.ui.variableSelector.styling}
               />
             </Col>
             <Col {...displayColWidths}>
               <DatasetSelector
                 vertical
-                size="sm"
-                variant={controlVariant}
                 value={dataset}
                 onChange={setDataset}
+                styling={config.ui.datasetSelector.styling}
               />
             </Col>
           </Row>
-          <Row><Col>for</Col></Row>
-          <Row className="ps-2 pe-5">
+          <Row className={rowSpacing}><Col>for</Col></Row>
+          <Row className={`${rowSpacing} mt-1 ps-2 pe-5`}>
             <Col>
               <MonthSelector
                 disabled={isDataLoading}
@@ -131,16 +133,17 @@ export default function Tool({
             <Col>
               <IncrementDecrement
                 id="month-increment"
-                variant={controlVariant}
                 disabled={isDataLoading}
-                bys={monthIncrDecrBy}
+                defaultBy={config.ui.monthIncrementDecrement.defaultBy}
+                bys={config.ui.monthIncrementDecrement.by}
                 onIncrement={handleIncrementMonth}
+                styling={config.ui.monthIncrementDecrement.styling}
               />
             </Col>
           </Row>
           {!isBaselineDataset &&
             <React.Fragment>
-              <Row className="ps-2 pe-5">
+              <Row className={`${rowSpacing} ps-2 pe-5`}>
                 <Col>
                     <YearSelector
                       disabled={isDataLoading}
@@ -155,10 +158,11 @@ export default function Tool({
                 <Col>
                   <IncrementDecrement
                     id="year-increment"
-                    variant={controlVariant}
                     disabled={isDataLoading}
-                    bys={yearIncrDecrBy}
+                    defaultBy={config.ui.yearIncrementDecrement.defaultBy}
+                    bys={config.ui.yearIncrementDecrement.by}
                     onIncrement={handleIncrementYear}
+                    styling={config.ui.yearIncrementDecrement.styling}
                   />
                 </Col>
               </Row>

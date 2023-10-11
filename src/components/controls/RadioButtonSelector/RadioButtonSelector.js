@@ -8,10 +8,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import classNames from 'classnames';
-import './RadioButtonSelector.css';
 
 function RadioButtonSelector({
-  options, name, disabled, className, variant, ...rest
+  options,
+  name,
+  disabled,
+  className,
+  value,
+  onChange,
+  styling: { buttons: { variant, ...bsRest } },
 }) {
   return (
     <ToggleButtonGroup
@@ -19,7 +24,9 @@ function RadioButtonSelector({
       type="radio"
       name={name}
       disabled={disabled}
-      {...rest}
+      value={value}
+      onChange={onChange}
+      {...bsRest}
     >
       {options.map((option, i) => (
         // Note: prop `id` is essential; omit => onChange callback fails.

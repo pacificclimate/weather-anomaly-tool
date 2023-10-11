@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  colorsForVariable,
-  variableToColourScale
-} from '../DataMap/stationColor';
-import './ColourScale.css';
+import { useConfigContext } from '../../main/ConfigContext';
 
 
 export default function ColourScale({
@@ -27,32 +23,9 @@ export default function ColourScale({
     return csItem.annotation;
   },
 }) {
-  const opacity = 0.8;
+  const config = useConfigContext();
 
-  if (dataset === 'monthly' || dataset === 'baseline') {
-    const color = colorsForVariable[variable];
-    return (
-      <div className="mb-2">
-        All stations are represented by this colour:
-        <div
-          className="ms-2 d-inline-block"
-          style={{
-            height: "1em",
-            width: "1em",
-            borderRadius: "50%",
-            backgroundColor: color,
-            opacity,
-            position: "relative",
-            top: "0.2em",
-        }}
-        >
-          &nbsp;
-        </div>
-      </div>
-    );
-  }
-
-  const colourScale = variableToColourScale[variable];
+  const colourScale = config.colourScales[variable][dataset];
   const numItems = colourScale.length;
   const width= 100 / numItems;
   return (
@@ -66,7 +39,6 @@ export default function ColourScale({
             className="pe-1 d-inline-block position-relative"
             style={{
               backgroundColor: item.color,
-              opacity,
               height: "1em",
               width: `${width}%`,
               ...item.blockStyle,

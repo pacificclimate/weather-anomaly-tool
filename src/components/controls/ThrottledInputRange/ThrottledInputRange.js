@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import InputRange from 'react-input-range';
 
-import './ThrottledInputRange.css';
 
 function ThrottledInputRange({ value, onChange, ...rest }) {
   const [intermediateValue, setIntermediateValue] = useState(value);

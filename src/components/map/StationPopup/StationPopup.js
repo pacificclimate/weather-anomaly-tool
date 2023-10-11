@@ -1,13 +1,10 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 
-import VariableLabel from '../../misc/VariableLabel';
-import {
-  decimalPlacesForVariable,
-  unitsForVariable
-} from '../../../utils/variables';
-import './StationPopup.css';
+import VariableLabel from '../../variables/VariableLabel';
+import VariableUnits from '../../variables/VariableUnits';
+import { useConfigContext } from '../../main/ConfigContext';
 
 
 export default function StationPopup({
@@ -27,25 +24,26 @@ export default function StationPopup({
     departure,
   },
 }) {
-    const units = unitsForVariable[variable];
-    const decimalPlaces = decimalPlacesForVariable[variable];
+  const config = useConfigContext();
+  const units = <VariableUnits variable={variable}/>;
+  const decimalPlaces = config?.variables?.[variable]?.decimalPlaces;
 
-    // Convenience function for number formatting. Uses Number.toLocaleString;
-    // supplies common options; provides fixed-precision option.
-    function fmt(num, { fixedFractionDigits, ...restOptions }) {
-      return num.toLocaleString(
-        undefined,
-        {
-          signDisplay: dataset === 'anomaly' ? "always" : "negative",
-          minimumFractionDigits: fixedFractionDigits,
-          maximumFractionDigits: fixedFractionDigits,
-          ...restOptions,
-        }
-      );
-    }
+  // Convenience function for number formatting. Uses Number.toLocaleString;
+  // supplies common options; provides fixed-precision option.
+  function fmt(num, { fixedFractionDigits, ...restOptions }) {
+    return num.toLocaleString(
+      undefined,
+      {
+        signDisplay: dataset === 'anomaly' ? "always" : "negative",
+        minimumFractionDigits: fixedFractionDigits,
+        maximumFractionDigits: fixedFractionDigits,
+        ...restOptions,
+      }
+    );
+  }
 
   return (
-    <Popup className="StationPopup">
+    <Popup className="StationPopup" pane="popupPane">
       <div className="fw-bold border-bottom py-1">{station_name}</div>
 
       <div className="border-bottom py-1">

@@ -1,0 +1,274 @@
+# App title
+title: Weather Anomaly Viewer
+
+# The `variables` object defines important information about each variable. Its
+# keys must be exactly the set `precip`, `tmin`, `tmax`.
+variables:
+  precip:
+    label: Precipitation
+    units: mm/mon
+    decimalPlaces: 1
+  tmin:
+    label: T<sub>min</sub>
+    units: C
+    decimalPlaces: 2
+  tmax:
+    label: T<sub>max</sub>
+    units: C
+    decimalPlaces: 2
+
+# The `datasets` object defines important information about each dataset. Its
+# keys must be exactly the set `anomaly`, `monthly`, `baseline`.
+datasets:
+  anomaly:
+    label: Anomaly
+  monthly:
+    label: Monthly
+  baseline:
+    label: Baseline
+
+# The `map` object defines certain features of the map appearance, except the
+# colour scale.
+map:
+  markers:
+    # Appearance of all (data, monthly, baseline) station location markers.
+    location:
+      color: '#222222'
+      radius: 1
+      weight: 1
+      fillOpacity: 1
+    # Appearance of data markers (the fillColour value is replaced according
+    # to the station value and the colour scale definition.
+    data:
+      radius: 8
+      color: "#999999"
+      weight: 1
+      fillColor: "#000000"  # Replaced according to station value
+      fillOpacity: 1
+  # Order and labelling for the 3 marker layers.
+  markerLayers:
+    order:
+      - data
+      - monthly
+      - baseline
+    definitions:
+      data: Data values
+      monthly: Monthly station locations
+      baseline: Baseline station locations
+
+# The `colourScales` object defines a colour scale for each combination of
+# variable and dataset. A colour scale defines a mapping numerical values to
+# colours, and determines the colours of the data markers on the map.
+#
+# Specifically, a colour scale divides the real numbers into a sequence of
+# contiguous intervals. Intervals are defined by a list
+# of thresholds. Interval `i` is the range `threshold[i-1] < x <= threshold[i]`.
+# Interval 0 is implicitly `-Infinity < x < threshold[0]`. A value falling into
+# a given interval is mapped to a colour specified for that interval.
+#
+# A colour scale is defined by a list of objects. Each list item must
+# have values for
+#
+#   `threshold`: Upper limit of numerical interval.
+#   `color`: Colour a value in the interval is rendered as/
+#
+# Each colour scale list item may also specify values that affect how the
+# colour scale graphic (but not station data markers) is rendered:
+#
+#   `blockStyle`: CSS styles applied to colour block
+#   `labelStyle`: CSS styles applied to label rendered below and centered on
+#     the right-hand edge of colour block
+#   `annotation`: string rendered inside colour block
+#   `annotationStyle`: CSS styles applied to annotation
+#
+# See below for some examples of how these are used.
+colourScales:
+  precip:
+    anomaly:
+      - threshold: -0.875
+        color: 'rgba(140,81,10,0.75)'
+      - threshold: -0.625
+        color: 'rgba(191,129,45,0.75)'
+      - threshold: -0.375
+        color: 'rgba(223,194,125,0.75)'
+      - threshold: -0.125
+        color: 'rgba(246,232,195,0.75)'
+      - threshold: 0.125
+        color: 'rgba(245,245,245,0.75)'
+      - threshold: 0.375
+        color: 'rgba(199,234,229,0.75)'
+      - threshold: 1.125
+        color: 'rgba(128,205,193,0.75)'
+      - threshold: 3.375
+        color: 'rgba(53,151,143,0.75)'
+      - threshold: 10
+        color: 'rgba(1,102,94,0.75)'
+      - threshold: +Infinity
+        color: 'rgba(253,187,213,0.75)'
+        labelStyle:
+          display: none
+        blockStyle:
+          borderLeft: "3px solid white"
+          borderRight: "3px solid white"
+          borderRadius: "1em"
+        annotation: "erroneous"
+    monthly:
+      - threshold: 1000
+        color: 'rgba(54,255,50,0.8)'
+        blockStyle:
+          width: "20%"
+        annotation: all other data values
+      - threshold: +Infinity
+        color: 'rgba(253,187,213,0.75)'
+        blockStyle:
+          width: "10%"
+          borderLeft: "3px solid white"
+          borderRight: "3px solid white"
+          borderRadius: "1em"
+        labelStyle:
+          display: none
+        annotation: "erroneous"
+
+    baseline:
+      - threshold: +Infinity
+        color: 'rgba(54,255,50,0.8)'
+        blockStyle:
+          width: "20%"
+        labelStyle:
+          display: none
+        annotation: all data values
+  tmin:
+    anomaly:
+      - threshold: -4.5
+        color: 'rgba(5,48,97,0.75)'
+      - threshold: -3.5
+        color: 'rgba(33,102,172,0.75)'
+      - threshold: -2.5
+        color: 'rgba(67,147,195,0.75)'
+      - threshold: -1.5
+        color: 'rgba(146,197,222,0.75)'
+      - threshold: -0.5
+        color: 'rgba(209,229,240,0.75)'
+      - threshold: 0.5
+        color: 'rgba(247,247,247,0.75)'
+      - threshold: 1.5
+        color: 'rgba(253,219,199,0.75)'
+      - threshold: 2.5
+        color: 'rgba(244,165,130,0.75)'
+      - threshold: 3.5
+        color: 'rgba(214,96,77,0.75)'
+      - threshold: 4.5
+        color: 'rgba(178,24,43,0.75)'
+      - threshold: +Infinity
+        color: 'rgba(103,0,31,0.75)'
+        labelStyle:
+          display: none
+    monthly:
+      - threshold: +Infinity
+        color: 'rgba(51,136,255,0.8)'
+        blockStyle:
+          width: "20%"
+        labelStyle:
+          display: none
+        annotation: all data values
+    baseline:
+      - threshold: +Infinity
+        color: 'rgba(51,136,255,0.8)'
+        blockStyle:
+          width: "20%"
+        labelStyle:
+          display: none
+        annotation: all data values
+  tmax:
+    anomaly:
+      - threshold: -4.5
+        color: 'rgba(5,48,97,0.75)'
+      - threshold: -3.5
+        color: 'rgba(33,102,172,0.75)'
+      - threshold: -2.5
+        color: 'rgba(67,147,195,0.75)'
+      - threshold: -1.5
+        color: 'rgba(146,197,222,0.75)'
+      - threshold: -0.5
+        color: 'rgba(209,229,240,0.75)'
+      - threshold: 0.5
+        color: 'rgba(247,247,247,0.75)'
+      - threshold: 1.5
+        color: 'rgba(253,219,199,0.75)'
+      - threshold: 2.5
+        color: 'rgba(244,165,130,0.75)'
+      - threshold: 3.5
+        color: 'rgba(214,96,77,0.75)'
+      - threshold: 4.5
+        color: 'rgba(178,24,43,0.75)'
+      - threshold: +Infinity
+        color: 'rgba(103,0,31,0.75)'
+        labelStyle:
+          display: none
+    monthly:
+      - threshold: +Infinity
+        color: 'rgba(255,104,49,0.8)'
+        blockStyle:
+          width: "20%"
+        labelStyle:
+          display: none
+        annotation: all data values
+    baseline:
+      - threshold: +Infinity
+        color: 'rgba(255,104,49,0.8)'
+        blockStyle:
+          width: "20%"
+        labelStyle:
+          display: none
+        annotation: all data values
+
+# The ui object determines (some of) how various non-map UI components are
+# rendered.
+#
+# Contents of `styling.buttons` objects are passed as arguments to
+# the relevant React Bootstrap components (buttons and button groups).
+#
+ui:
+  variableSelector:
+    # Default variable on startup
+    initial: precip  # precip | tmin | tmax
+    # Styling of variable selector control
+    styling:
+      buttons:
+        vertical: true
+        size: sm
+        variant: outline-dark
+  datasetSelector:
+    # Default dataset on startup
+    initial: anomaly  # anomaly | monthly | baseline
+    # Styling of dataset selector control
+    styling:
+      buttons:
+        vertical: true
+        size: sm
+        variant: outline-dark
+  monthIncrementDecrement:
+    # Available values in month increment-/decrement-by dropdown
+    by: [1, 3, 6]
+    # Initial month increment-by value
+    defaultBy: 1
+    # Styling of month increment-decrement buttons
+    styling:
+      buttons:
+        size: sm
+        variant: outline-dark
+  yearIncrementDecrement:
+    # Available values in month increment-/decrement-by dropdown
+    by: [1, 2, 3, 4, 5, 10]
+    # Initial year increment-by value
+    defaultBy: 1
+    # Styling of year increment-decrement buttons
+    styling:
+      buttons:
+        size: sm
+        variant: outline-dark
+
+backends:
+  # URL of weather anomaly data service backend
+  weatherAnomalyDataService: |
+    https://services.pacificclimate.org/dev/weather-anomaly
