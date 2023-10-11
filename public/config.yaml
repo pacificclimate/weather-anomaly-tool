@@ -1,5 +1,8 @@
+# App title
 title: Weather Anomaly Viewer
 
+# The `variables` object defines important information about each variable. Its
+# keys must be exactly the set `precip`, `tmin`, `tmax`.
 variables:
   precip:
     label: Precipitation
@@ -14,6 +17,8 @@ variables:
     units: C
     decimalPlaces: 2
 
+# The `datasets` object defines important information about each dataset. Its
+# keys must be exactly the set `anomaly`, `monthly`, `baseline`.
 datasets:
   anomaly:
     label: Anomaly
@@ -22,19 +27,25 @@ datasets:
   baseline:
     label: Baseline
 
+# The `map` object defines certain features of the map appearance, except the
+# colour scale.
 map:
   markers:
+    # Appearance of all (data, monthly, baseline) station location markers.
     location:
       color: '#222222'
       radius: 1
       weight: 1
       fillOpacity: 1
+    # Appearance of data markers (the fillColour value is replaced according
+    # to the station value and the colour scale definition.
     data:
       radius: 8
       color: "#999999"
       weight: 1
       fillColor: "#000000"  # Replaced according to station value
       fillOpacity: 1
+  # Order and labelling for the 3 marker layers.
   markerLayers:
     order:
       - data
@@ -45,22 +56,32 @@ map:
       monthly: Monthly station locations
       baseline: Baseline station locations
 
-# This object defines a colour scale for each combination of dataset and anomaly
-# (in that hierarchical order). A colour scale maps numerical values to colours,
-# and determines the appearance of markers on the map. A colour scale is
-# defined by a list of objects. Each list item must have values for
+# The `colourScales` object defines a colour scale for each combination of
+# variable and dataset. A colour scale defines a mapping numerical values to
+# colours, and determines the colours of the data markers on the map.
 #
-#   threshold: upper limit of numerical interval
-#   color: colour a value in the interval is rendered as
+# Specifically, a colour scale divides the real numbers into a sequence of
+# contiguous intervals. Intervals are defined by a list
+# of thresholds. Interval `i` is the range `threshold[i-1] < x <= threshold[i]`.
+# Interval 0 is implicitly `-Infinity < x < threshold[0]`. A value falling into
+# a given interval is mapped to a colour specified for that interval.
 #
-# Each colour scale list item may also specify values that affect how a
-# colour scale graphic is rendered:
+# A colour scale is defined by a list of objects. Each list item must
+# have values for
 #
-#   blockStyle: CSS styles applied to colour block
-#   labelStyle: CSS styles applied to label rendered below and centered on
+#   `threshold`: Upper limit of numerical interval.
+#   `color`: Colour a value in the interval is rendered as/
+#
+# Each colour scale list item may also specify values that affect how the
+# colour scale graphic (but not station data markers) is rendered:
+#
+#   `blockStyle`: CSS styles applied to colour block
+#   `labelStyle`: CSS styles applied to label rendered below and centered on
 #     the right-hand edge of colour block
-#   annotation: string rendered inside colour block
-#   annotationStyle: CSS styles applied to annotation
+#   `annotation`: string rendered inside colour block
+#   `annotationStyle`: CSS styles applied to annotation
+#
+# See below for some examples of how these are used.
 colourScales:
   precip:
     anomaly:
@@ -201,36 +222,53 @@ colourScales:
           display: none
         annotation: all data values
 
+# The ui object determines (some of) how various non-map UI components are
+# rendered.
+#
+# Contents of `styling.buttons` objects are passed as arguments to
+# the relevant React Bootstrap components (buttons and button groups).
+#
 ui:
   variableSelector:
+    # Default variable on startup
     initial: precip  # precip | tmin | tmax
+    # Styling of variable selector control
     styling:
       buttons:
         vertical: true
         size: sm
         variant: outline-dark
   datasetSelector:
+    # Default dataset on startup
     initial: anomaly  # anomaly | monthly | baseline
+    # Styling of dataset selector control
     styling:
       buttons:
         vertical: true
         size: sm
         variant: outline-dark
   monthIncrementDecrement:
-    defaultBy: 1
+    # Available values in month increment-/decrement-by dropdown
     by: [1, 3, 6]
+    # Initial month increment-by value
+    defaultBy: 1
+    # Styling of month increment-decrement buttons
     styling:
       buttons:
         size: sm
         variant: outline-dark
   yearIncrementDecrement:
-    defaultBy: 1
+    # Available values in month increment-/decrement-by dropdown
     by: [1, 2, 3, 4, 5, 10]
+    # Initial year increment-by value
+    defaultBy: 1
+    # Styling of year increment-decrement buttons
     styling:
       buttons:
         size: sm
         variant: outline-dark
 
 backends:
+  # URL of weather anomaly data service backend
   weatherAnomalyDataService: |
     https://services.pacificclimate.org/dev/weather-anomaly
