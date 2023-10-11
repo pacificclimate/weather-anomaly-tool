@@ -12,8 +12,6 @@ import { useConfigContext } from '../../main/ConfigContext';
 export default function VariableTitle({
   variable, dataset, withAnnotation = true, withUnits = true
 }) {
-  const config = useConfigContext();
-
   const isAnomaly = dataset === 'anomaly';
   const isRelative = variable === 'precip' && isAnomaly;
   const suffixes = flow(

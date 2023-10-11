@@ -45,7 +45,22 @@ map:
       monthly: Monthly station locations
       baseline: Baseline station locations
 
-
+# This object defines a colour scale for each combination of dataset and anomaly
+# (in that hierarchical order). A colour scale maps numerical values to colours,
+# and determines the appearance of markers on the map. A colour scale is
+# defined by a list of objects. Each list item must have values for
+#
+#   threshold: upper limit of numerical interval
+#   color: colour a value in the interval is rendered as
+#
+# Each colour scale list item may also specify values that affect how a
+# colour scale graphic is rendered:
+#
+#   blockStyle: CSS styles applied to colour block
+#   labelStyle: CSS styles applied to label rendered below and centered on
+#     the right-hand edge of colour block
+#   annotation: string rendered inside colour block
+#   annotationStyle: CSS styles applied to annotation
 colourScales:
   precip:
     anomaly:
@@ -79,12 +94,16 @@ colourScales:
     monthly:
       - threshold: +Infinity
         color: 'rgba(54,255,50,0.8)'
+        blockStyle:
+          width: "20%"
         labelStyle:
             display: none
         annotation: all data values
     baseline:
       - threshold: +Infinity
         color: 'rgba(54,255,50,0.8)'
+        blockStyle:
+          width: "20%"
         labelStyle:
           display: none
         annotation: all data values
@@ -117,12 +136,16 @@ colourScales:
     monthly:
       - threshold: +Infinity
         color: 'rgba(51,136,255,0.8)'
+        blockStyle:
+          width: "20%"
         labelStyle:
           display: none
         annotation: all data values
     baseline:
       - threshold: +Infinity
         color: 'rgba(51,136,255,0.8)'
+        blockStyle:
+          width: "20%"
         labelStyle:
           display: none
         annotation: all data values
@@ -155,12 +178,16 @@ colourScales:
     monthly:
       - threshold: +Infinity
         color: 'rgba(255,104,49,0.8)'
+        blockStyle:
+          width: "20%"
         labelStyle:
           display: none
         annotation: all data values
     baseline:
       - threshold: +Infinity
         color: 'rgba(255,104,49,0.8)'
+        blockStyle:
+          width: "20%"
         labelStyle:
           display: none
         annotation: all data values

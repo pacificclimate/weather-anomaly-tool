@@ -93,13 +93,14 @@ export default function Tool() {
   const isBaselineDataset = dataset === 'baseline';
 
   const displayColWidths = { xs: 12, md: "auto" };
+  const rowSpacing = "mt-3"
 
   return (
     <React.Fragment>
       <Row className="Tool">
         <Col xs={3} className="selectors">
-          <Row><Col>Display</Col></Row>
-          <Row className="justify-content-md-center">
+          <Row className={rowSpacing}><Col>Display</Col></Row>
+          <Row className={`${rowSpacing} justify-content-md-center`}>
             <Col {...displayColWidths} className="mb-sm-2 mb-lg-0">
               <VariableSelector
                 vertical
@@ -118,8 +119,8 @@ export default function Tool() {
               />
             </Col>
           </Row>
-          <Row><Col>for</Col></Row>
-          <Row className="ps-2 pe-5">
+          <Row className={rowSpacing}><Col>for</Col></Row>
+          <Row className={`${rowSpacing} mt-1 ps-2 pe-5`}>
             <Col>
               <MonthSelector
                 disabled={isDataLoading}
@@ -142,7 +143,7 @@ export default function Tool() {
           </Row>
           {!isBaselineDataset &&
             <React.Fragment>
-              <Row className="ps-2 pe-5">
+              <Row className={`${rowSpacing} ps-2 pe-5`}>
                 <Col>
                     <YearSelector
                       disabled={isDataLoading}

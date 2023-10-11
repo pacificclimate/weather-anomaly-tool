@@ -31,20 +31,17 @@ function IncrementDecrement({
   const handleDecrement = () => onIncrement(-by);
   const handleIncrement = () => onIncrement(by);
 
-  let selector = null;
-  if (Array.isArray(bys)) {
-    selector = (
-      <Form.Select
-        size="sm"
-        style={{ width: "0.5em" }}
-        title={"Select increment"}
-        disabled={disabled}
-        onChange={handleChangeBy}
-      >
-        {bys.map(by => (<option key={by}>{by}</option>))}
-      </Form.Select>
-    );
-  }
+  const selector = Array.isArray(bys) &&  (
+    <Form.Select
+      size="sm"
+      style={{ width: "0.5em" }}
+      title={"Select increment"}
+      disabled={disabled}
+      onChange={handleChangeBy}
+    >
+      {bys.map(by => (<option key={by}>{by}</option>))}
+    </Form.Select>
+  );
 
   return (
     <ButtonGroup

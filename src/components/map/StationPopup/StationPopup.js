@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 
@@ -27,7 +27,7 @@ export default function StationPopup({
 }) {
   const config = useConfigContext();
   const units = <VariableUnits variable={variable}/>;
-  const decimalPlaces = config.variables[variable].decimalPlaces;
+  const decimalPlaces = config?.variables?.[variable]?.decimalPlaces;
 
   // Convenience function for number formatting. Uses Number.toLocaleString;
   // supplies common options; provides fixed-precision option.

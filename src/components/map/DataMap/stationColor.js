@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import find from 'lodash/fp/find';
 
 
 // TODO: Move into utils
@@ -13,7 +13,7 @@ function dataValueName(variable, dataset){
 }
 
 function valueToColourScaleItem(value, colourScale) {
-  return colourScale && _.find(colourScale, item => value < item.threshold);
+  return colourScale && find(item => value < item.threshold, colourScale);
 }
 
 

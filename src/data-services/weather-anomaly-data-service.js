@@ -13,7 +13,7 @@ export function getBaselineData(variable, date, url) {
 
 
 export function getMonthlyData(variable, date, url) {
-  logger.log(this, variable, date.format());
+  // logger.log(this, variable, date.format());
   // TODO: Change 'weather' to 'monthly' when WADS changes
   return axios.get(
     urljoin(url, 'weather', `${variable};${date.year()}-${date.month() + 1}`)
