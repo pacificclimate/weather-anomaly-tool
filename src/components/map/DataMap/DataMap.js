@@ -2,78 +2,18 @@
 
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  LayerGroup,
-  LayersControl,
-  CircleMarker,
-  SVGOverlay,
-  useMap, Pane,
-} from 'react-leaflet';
-import * as SVGLoaders from 'svg-loaders-react';
+import { LayerGroup, LayersControl, Pane, } from 'react-leaflet';
 import _ from 'lodash';
 import flow from 'lodash/fp/flow';
 import map from 'lodash/fp/map';
 import compact from 'lodash/fp/compact';
 
 import { BCBaseMap } from 'pcic-react-leaflet-components';
-import StationPopup from '../StationPopup';
-import { stationColor } from './stationColor';
 import './DataMap.css';
 import { useConfigContext } from '../../main/ConfigContext';
-
-
-function uniqueKey(station) {
-  return station.station_db_id.toString() + station.network_variable_name;
-}
-
-function StationLocationMarkers({ type, stations, options }) {
-  // Return a set of markers (<CircleMarker/>) for the locations of each
-  // station in `props.station`. Icon markers `<Marker/>` don't work in this
-  // environment. I think it is because Webpack isn't including the image
-  // files that are needed. Certainly the GETs for those images fail. But
-  // circle markers work.
-  return stations.map(station =>
-    <CircleMarker
-      key={`loc-${type}-${uniqueKey(station)}`}
-      center={{ lng: station.lon, lat: station.lat }}
-      {...options}
-    />
-  );
-}
-
-function StationDataMarkers({
-  variable, dataset, stations, dataMarkerOptions, dataLocationOptions, colourScales
-}) {
-  // Return a list of markers (<CircleMarker/>) for the data for each station
-  // in `station`.
-  return stations.map(station =>
-    <>
-      <CircleMarker
-        key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
-        center={{ lng: station.lon, lat: station.lat }}
-        {...dataMarkerOptions}
-        {...stationColor(variable, dataset, station, colourScales)}
-      >
-        <StationPopup variable={variable} dataset={dataset}  station={station}/>
-      </CircleMarker>
-      <CircleMarker
-        key={`dataloc-${variable}-${uniqueKey(station)}`}
-        center={{ lng: station.lon, lat: station.lat }}
-        {...dataLocationOptions}
-      />
-    </>
-  );
-}
-
-
-function MapSpinner() {
-  const map = useMap();
-  return (
-    <SVGOverlay bounds={map.getBounds()}>
-      <SVGLoaders.Bars x="40%" y="40%" stroke="#98ff98"/>
-    </SVGOverlay>
-  );
-}
+import MapSpinner from '../MapSpinner';
+import StationDataMarkers from '../StationDataMarkers';
+import StationLocationMarkers from '../StationLocationMarkers';
 
 
 export default function DataMap({ dataset, variable, monthly, baseline }) {
