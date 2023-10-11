@@ -43,7 +43,7 @@ export default function StationPopup({
   }
 
   return (
-    <Popup className="StationPopup">
+    <Popup className="StationPopup" pane="popupPane">
       <div className="fw-bold border-bottom py-1">{station_name}</div>
 
       <div className="border-bottom py-1">
