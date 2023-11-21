@@ -27,7 +27,8 @@
     "react-scripts": "^4.0.3",
     "react-test-renderer": "^16.0.0",
     "svg-loaders-react": "^2.2.1",
-    "url-join": "^2.0.2"
+    "url-join": "^2.0.2",
+    "zustand": "^4.4.6"
   },
   "scripts": {
     "start": "react-scripts start",
