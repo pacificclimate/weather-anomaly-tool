@@ -9,7 +9,7 @@ import RadioButtonSelector from '../RadioButtonSelector';
 import { useStore } from '../../../state-store';
 
 
-function DatasetSelector(props) {
+export default function DatasetSelector(props) {
   const config = useStore(state => state.config);
 
   // TODO: Memoize
@@ -34,10 +34,3 @@ function DatasetSelector(props) {
     />
   );
 }
-
-DatasetSelector.propTypes = {
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-};
-
-export default DatasetSelector;
