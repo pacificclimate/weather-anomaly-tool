@@ -16,7 +16,6 @@ import './Tool.css';
 
 
 export default function Tool() {
-  const initialize = useStore(state => state.initialize);
   const isBaselineDataset = useStore(state => state.isBaselineDataset);
 
   // Subsumed in state store, not used in this component
@@ -25,10 +24,6 @@ export default function Tool() {
   // const [date, setDate] = useState(latestPossibleDataDate);
   // const [baseline, setBaseline] = useState(null);
   // const [monthly, setMonthly] = useState(null);
-
-  useEffect(() => {
-    initialize();
-  });
 
   // Part of initialize
   // // Determine latest date with data, and set date to it. This happens once,
