@@ -11,8 +11,9 @@ export default function DataDisplay() {
   const dataset = useStore(state => state.dataset);
   const baseline = useStore(state => state.baseline);
   const monthly = useStore(state => state.monthly);
+  const hasValidState = useStore(state => state.hasValidState());
 
-  return (
+  return hasValidState && (
     <>
       <Row className="my-1">
         <Col>
