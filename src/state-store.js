@@ -1,12 +1,17 @@
 // This is the Zustand state store for the app.
+//
+// Comments:
+// - The store knows a lot here, such as the structure of config and the names
+//    and usages of the data services. OK? Too much dependency?
+
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
-// *mutates* its objects. We are using functional components,
-// which require values whose identity changes when their value is changed,
-// i.e., a new object. Therefore, every change to a `moment` date object should
-// be preceded by `.clone()`; for example, `y = x.clone().subtract(1, 'month')`
-// yields a new moment object with a value 1 month before the `x` object. `x` is
-// unchanged by this operation; `y` is a different object than `x`.
+// *mutates* its objects. We use functional components, which require values
+// whose identity changes when their value is changed, i.e., a new object.
+// Therefore, every change to a `moment` date object should be preceded by
+// `.clone()`; for example, `y = x.clone().subtract(1, 'month')` yields a new
+// moment object with a value 1 month before the `x` object. `x` is unchanged by
+// this operation; `y` is a different object than `x`.
 
 
 import { create } from 'zustand';
@@ -22,10 +27,6 @@ import filter from 'lodash/fp/filter';
 import isUndefined from 'lodash/fp/isUndefined';
 
 
-// Comments: 
-// - The store knows a lot here, such as the structure of config and the names 
-//    and usages of the data services. OK? Too much dependency?
-//
 
 // Likely latest possible date of available data = current date - 15 d.
 // This allows for cron jobs that run in first half of month.
@@ -51,14 +52,14 @@ export const useStore = create((set, get) => ({
   // Important: Wrap in useEffect
   // Load configuration
   // This should not be called except by initialize.
-  _loadConfig: ({ defaultConfig= {}, requiredConfigKeys = []}) => {
+  _loadConfig: ({ dfault = {}, requiredKeys = [] }) => {
     return axios.get(`${process.env.PUBLIC_URL}/config.yaml`)
     .then(response => {
       // Extend default config with values loaded from config.yaml
       let config;
       try {
         const customConfig = yaml.load(response.data);
-        config = { ...defaultConfig, ...customConfig };
+        config = { ...dfault, ...customConfig };
       } catch (error) {
         set({
           configError: (
@@ -70,7 +71,7 @@ export const useStore = create((set, get) => ({
 
       // Check for required config keys (we don't check value types, yet)
       const missingRequiredKeys = filter(
-        key => isUndefined(config[key]), requiredConfigKeys
+        key => isUndefined(config[key]), requiredKeys
       );
       if (missingRequiredKeys.length > 0) {
         const configErrorMsg = (
@@ -100,12 +101,13 @@ export const useStore = create((set, get) => ({
     });
   },
 
+  isConfigLoaded: () => get().config !== null,
+
   // Important: Wrap in useEffect
-  // Initialize state from config and other async data sources.
-  // TODO: Add params and pass thru to _loadConfig
-  initialize: () => {
+  // Load config and initialize state.
+  initialize: ({ configOpts = { dfault: {}, requiredKeys: [] } }) => {
     // TODO: This can probably be done more nicely with async/await.
-    get()._loadConfig().then(() => {
+    get()._loadConfig(configOpts).then(() => {
       // TODO: return config from _loadConfig as well as setting
       //  state.config. Would be neater.
       const config = get().config;
@@ -122,11 +124,20 @@ export const useStore = create((set, get) => ({
     });
   },
 
+  hasValidState: () =>
+    get().variable !== null
+    && get().dataset !== null
+    && get().date !== null,
+
   // Important: Wrap in useEffect
   // Set the variable and load the data associated with it.
   setVariable: (variable) => {
     set({ variable });
     get().getData();
+  },
+
+  setDataset: dataset => {
+    set({ dataset });
   },
 
   // Important: Wrap in useEffect
@@ -153,7 +164,7 @@ export const useStore = create((set, get) => ({
 
   isDataLoading: () => get().baseline === null || get().monthly === null,
 
-  isBaselineDataset: () => dataset === 'baseline',
+  isBaselineDataset: () => get().dataset === 'baseline',
   
   setYear: year => {
     get().setDate(get().date.clone().year(year));
