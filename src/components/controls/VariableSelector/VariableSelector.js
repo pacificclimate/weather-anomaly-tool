@@ -19,13 +19,13 @@ function VariableSelector(props) {
 
   const variable = useStore(state => state.variable);
   const setVariable = useStore(state => state.setVariable);
-  const isDataLoading = useStore(state => state.isDataLoading);
+  const isDataLoading = useStore(state => state.isDataLoading());
 
   return (
     <RadioButtonSelector
       options={variableOptions}
       name="variable"
-      disabled={isDataLoading()}
+      disabled={isDataLoading}
       value={variable}
       onChange={setVariable}
       styling={config.ui.variableSelector.styling}
@@ -33,15 +33,6 @@ function VariableSelector(props) {
     />
   );
 }
-
-VariableSelector.propTypes = {
-  disabled: PropTypes.bool,
-  // Is control disabled
-  value: PropTypes.string,
-  // Current value of control
-  onChange: PropTypes.func,
-  // Callback when new option selected
-};
 
 VariableSelector.tooltips = {
   precip: <Tooltip id="precip">Monthly total precipitation</Tooltip>,

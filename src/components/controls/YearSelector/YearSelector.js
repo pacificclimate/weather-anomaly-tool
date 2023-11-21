@@ -5,7 +5,7 @@ import { latestPossibleDataDate, useStore } from '../../../state-store';
 function YearSelector(props) {
   const date = useStore(state => state.date);
   const setYear = useStore(state => state.setYear);
-  const isDataLoading = useStore(state => state.isDataLoading);
+  const isDataLoading = useStore(state => state.isDataLoading());
 
   return (
     <ThrottledInputRange
