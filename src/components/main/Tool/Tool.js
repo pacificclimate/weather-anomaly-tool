@@ -16,7 +16,7 @@ import './Tool.css';
 
 
 export default function Tool() {
-  const isBaselineDataset = useStore(state => state.isBaselineDataset);
+  const isBaselineDataset = useStore(state => state.isBaselineDataset());
 
   // Subsumed in state store, not used in this component
   // const [variable, setVariable] = useState(config.ui.variableSelector.initial);
@@ -103,7 +103,7 @@ export default function Tool() {
               <MonthIncrementDecrement/>
             </Col>
           </Row>
-          {!isBaselineDataset() &&
+          {!isBaselineDataset &&
             <React.Fragment>
               <Row className={`${rowSpacing} ps-2 pe-5`}>
                 <Col>
