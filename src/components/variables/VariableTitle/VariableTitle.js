@@ -1,3 +1,7 @@
+// Variable title: Long-form description of variable for titling displays of
+// data. It is generic, meaning it does not subscribe to the state store, but
+// accepts arbitrary inputs for these values.
+
 import React from 'react';
 import compact from 'lodash/fp/compact';
 import flow from 'lodash/fp/flow';
@@ -6,7 +10,6 @@ import { alternate } from '../../utils';
 import VariableLabel from '../VariableLabel';
 import VariableUnits from '../VariableUnits';
 import DatasetLabel from '../../datasets/DatasetLabel';
-import { useConfigContext } from '../../main/ConfigContext';
 
 
 export default function VariableTitle({
