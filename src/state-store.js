@@ -102,6 +102,7 @@ export const useStore = create((set, get) => ({
 
   // Important: Wrap in useEffect
   // Initialize state from config and other async data sources.
+  // TODO: Add params and pass thru to _loadConfig
   initialize: () => {
     // TODO: This can probably be done more nicely with async/await.
     get()._loadConfig().then(() => {
