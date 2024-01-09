@@ -3,10 +3,10 @@ import { Row, Col } from 'react-bootstrap';
 import logo from './logo.png';
 
 import './Header.css';
-import { useConfigContext } from '../ConfigContext';
+import { useStore } from '../../../state-store';
 
 export default function Header() {
-  const config = useConfigContext();
+  const config = useStore(state => state.config);
   return (
     <Row className={'Header'}>
       <Col lg={3} className="text-left">

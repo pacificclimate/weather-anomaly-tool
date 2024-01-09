@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useConfigContext } from '../../main/ConfigContext';
+import { useStore } from '../../../state-store';
 
 
 export default function ColourScale({
@@ -23,7 +23,7 @@ export default function ColourScale({
     return csItem.annotation;
   },
 }) {
-  const config = useConfigContext();
+  const config = useStore(state => state.config);
 
   const colourScale = config.colourScales[variable][dataset];
   const numItems = colourScale.length;

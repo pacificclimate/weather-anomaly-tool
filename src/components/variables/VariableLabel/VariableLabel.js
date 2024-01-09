@@ -1,8 +1,8 @@
 import React from 'react';
-import { useConfigContext } from '../../main/ConfigContext';
+import { useStore } from '../../../state-store';
 
 export default function VariableLabel({ variable }) {
-  const config = useConfigContext();
+  const config = useStore(state => state.config);
   return <span dangerouslySetInnerHTML={{
     __html: config?.variables?.[variable]?.label || `${variable}`
   }}/> ;

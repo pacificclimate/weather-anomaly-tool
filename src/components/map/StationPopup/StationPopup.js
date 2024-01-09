@@ -4,7 +4,7 @@ import { Popup } from 'react-leaflet'
 
 import VariableLabel from '../../variables/VariableLabel';
 import VariableUnits from '../../variables/VariableUnits';
-import { useConfigContext } from '../../main/ConfigContext';
+import { useStore } from '../../../state-store';
 
 
 export default function StationPopup({
@@ -24,7 +24,7 @@ export default function StationPopup({
     departure,
   },
 }) {
-  const config = useConfigContext();
+  const config = useStore(state => state.config);
   const units = <VariableUnits variable={variable}/>;
   const decimalPlaces = config?.variables?.[variable]?.decimalPlaces;
 

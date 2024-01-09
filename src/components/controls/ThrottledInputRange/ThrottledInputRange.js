@@ -7,6 +7,8 @@ import InputRange from 'react-input-range';
 function ThrottledInputRange({ value, onChange, ...rest }) {
   const [intermediateValue, setIntermediateValue] = useState(value);
 
+  // TODO: This is probably better as useMemo.
+  // Update intermediate value whenever external value changes.
   useEffect(() => {
     setIntermediateValue(value);
   }, [value]);
