@@ -17,13 +17,14 @@ To view the monthly anomaly, observation, or baseline value of a particular weat
 
 ### Notes:
 
-- Some stations report precipitation values in a format that causes the WAV to compute erroneous values. These values are flagged by a contrasting colour different from the normal data range colours. These values occur more often in recent years than in past years (prior to 2020). We are working to correct this problem.
-- If you choose a date in the future, the map displays an endless waiting spinner. Please choose a date prior to the current date.
 - When initially loaded into your web browser, the WAV sometimes displays an endless waiting spinner on the map. To fix this, please refresh the page.
+- If you choose a date in the future, the map displays an endless waiting spinner. Please choose a date prior to the current date.
+- Data acquisition is as close to real-time as possible given the sources. Same-day data is _not_ available on all networks.
+- Some stations report precipitation values in a format that causes the WAV to compute erroneous values. These values are flagged by a contrasting colour different from the normal data range colours. These values occur more often in recent years than in past years (prior to 2020). We are working to correct this problem.
 
 ## Weather anomalies
 
-A weather anomaly is a measure, at a given station, of the departure of weather observations for a given variable (e.g. total precipitation) over a given period (e.g., a specific month) from historical baseline value for that period at that station.
+A weather anomaly is a measure, at a given station, of the departure of weather observations for a given variable (e.g. total precipitation) over a given period (e.g., a specific month) from a historical baseline value for that period at that station.
 - The periods available are calendar months.
 - The variables available are total precipitation, average minimum temperature, and average maximum temperature over the period.
 
@@ -43,7 +44,7 @@ The WAV is a web application. It presents an interface to the user comprising tw
 
 ## Variable, value, and period selectors
 
-These selectors are intended to read as an English sentence of the form "Display `<observation variable>` `<value>` for `<period>`." A couple of examples of this sentence: 
+These selectors are intended to read as an English sentence of the form "Display `<observation variable>` `<value type>` for `<period>`." A couple of examples of this sentence: 
 - Display T<sub>min</sub> Anomaly for Jun 2020.
 - Display Precipitation Baseline for Feb.
 
@@ -51,7 +52,7 @@ These selectors determine what is displayed on the map.
 
 _Variable_: To select the observation variable, click on one of the three buttons labelled **Precipitation**, **T<sub>min</sub>**, or **T<sub>max</sub>**. The selected button is highlighted.
 
-_Value_: To select the value shown, click on one of the three buttons labelled **Anomaly**, **Monthly**, or **Baseline**.
+_Value type_: To select the value type shown, click on one of the three buttons labelled **Anomaly**, **Monthly**, or **Baseline**.
 
 _Month_: To select the period month, click or drag the top slider to the desired month. 
 
@@ -82,13 +83,35 @@ The map display consists of several parts. From top to bottom, roughly:
 The central feature of the map is of course the markers, which represent data at each station.
 
 There are three categories of markers:
-- _Baseline markers_: A small black dot at the location of each station for which there is baseline data for the selected variable and month.
-- _Monthly data markers_: A small black dot at the location of each station for which there is monthly data for the selected variable and month.
-- _Anomaly data markers_: A coloured circle at the location of each station for which there is anomaly data for the selected variable and month, which requires both baseline and monthly data.
+- _Baseline data markers_: A small black dot at the location of each station for which there is baseline data for the selected variable and month.
+- _Monthly data markers_: A small black dot at the location of each station for which there is monthly data for the selected variable, month and year.
+- _Data value markers_: A coloured circle at the location of each station for which there is data (of the selected value type) for the selected variable, month and year. 
 
-Each anomaly data marker is filled with a colour representing the value of the anomaly at that station. The meaning (value range) of the colour is shown in the colour bar above the map.
+Baseline markers and monthly data markers do not differ in appearance. They can be shown or hidden (the default) using the map layer control in the upper right of the map.
 
-An anomaly data marker can be clicked to show a pop-up that displays information on the station proper (its network, identity, location, etc.) and the anomaly and baseline data values for the selected variable and time period at that station.
+Each data value marker is filled with a colour representing the value of the anomaly at that station. The meaning (value range) of each colour is shown in the colour bar above the map. See below for more details.
+
+A data value marker can be clicked to show a pop-up that displays information on the station proper (its network, identity, location, etc.) and the data values for the selected variable and time period at that station. See below for more details.
+
+### Data value popups
+
+A data value popup contains the following information:
+- Station metadata
+  - Station name
+  - Network the station belongs to
+  - Station native ID: a unique station identifier provided by the network
+  - Location and elevation
+- Data
+  - Variable name (e.g., Precipitation)
+  - For Anomaly value type
+    - Baseline: absolute baseline value
+    - Anomaly: absolute difference from baseline
+    - Departure: relative difference from baseline
+  - For Monthly value type
+    - Monthly statistic: absolute value of monthly statistic (varies by variable: cumulative for precipitation; average for temperature)
+    - Data coverage: Fraction of contributing observations present in database relative to total number possible in selected period (month)
+  - For Baseline value type
+      - Baseline: absolute baseline value
 
 ### Marker colours: colour bar and colour scales
 
@@ -98,7 +121,7 @@ For Precipitation Anomaly values, a marker colour has been defined for computed 
 
 ### Marker visibility
 
-The marker layer control in the upper right of the map allows you to select which of the three marker types are visible. Normally only the anomaly markers are of interest, and this is the default. If you are interested in where all baseline and/or where all monthly data value stations are located, you can display these markers too.
+The marker layer control in the upper right of the map allows you to select which of the three marker types are visible. Normally only the data value markers are of interest, and this is the default. If you are interested in where all baseline and/or where all monthly data value stations are located, you can display these markers too.
 
 ### Map zooming and scrolling
 
