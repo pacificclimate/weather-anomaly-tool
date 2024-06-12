@@ -2,14 +2,14 @@
 
 ## Purpose
 
-The WAV (Weather Anomaly Viewer) allows you to view anomalies of weather observations recorded at stations throughout the region covered by the observation database. It presents anomalies as colour-coded markers on a map of the region, one marker for each station for which there is sufficient data to compute the anomaly. You choose the variable (e.g., maximum temperature) and the time period (e.g., month and year). The anomalies for that combination are displayed on the map.
+The Weather Anomaly Viewer (WAV) allows you to view anomalies of weather observations recorded at stations throughout the region covered by the observation database. It presents anomalies as colour-coded markers on a map of the region, one marker for each station for which there is sufficient data to compute the anomaly. You choose the variable (e.g., maximum temperature) and the time period (e.g., month and year), and the WAV displays anomalies (or other selected value type) for that combination on the map.
 
 ## Quick How-To
 
-To view the monthly anomaly, observation, or baseline value of a particular weather variable for a particular month and year:
+To view the monthly anomaly, observation, or baseline value of a weather variable for a particular month and year:
 
 1. Click the weather variable of interest (**Precipitation**, **T<sub>min</sub>**, or **T<sub>max</sub>**).
-2. Click the value of interest (**Anomaly**, **Monthly**, or **Baseline**).
+2. Click the value type of interest (**Anomaly**, **Monthly**, or **Baseline**).
 3. Use the date sliders to choose the month and year of interest. (For baseline values, only the month is selectable, since the baseline is a multi-year average of the selected month.)
 4. The map displays markers at each station representing the data values corresponding to those selections.
 5. Look at the colour bar at the top of the map to get an idea of what data ranges the colours represent.
@@ -87,7 +87,7 @@ There are three categories of markers:
 - _Monthly data markers_: A small black dot at the location of each station for which there is monthly data for the selected variable, month and year.
 - _Data value markers_: A coloured circle at the location of each station for which there is data (of the selected value type) for the selected variable, month and year. 
 
-Baseline markers and monthly data markers do not differ in appearance. They can be shown or hidden (the default) using the map layer control in the upper right of the map.
+Baseline markers and monthly data markers do not differ in appearance. They can be shown or hidden (the default) using the map layer control in the upper right of the map. When displayed, they give an idea of the spatial extents of data available to form anomaly values. Anomalies can only be computed where there is both baseline and monthly data available.
 
 Each data value marker is filled with a colour representing the value of the anomaly at that station. The meaning (value range) of each colour is shown in the colour bar above the map. See below for more details.
 
@@ -103,15 +103,12 @@ A data value popup contains the following information:
   - Location and elevation
 - Data
   - Variable name (e.g., Precipitation)
-  - For Anomaly value type
-    - Baseline: absolute baseline value
+  - Data values: One or more of the following items, depending on the value type selected (anomaly, monthly, baseline):
     - Anomaly: absolute difference from baseline
     - Departure: relative difference from baseline
-  - For Monthly value type
+    - Baseline: absolute baseline value
     - Monthly statistic: absolute value of monthly statistic (varies by variable: cumulative for precipitation; average for temperature)
     - Data coverage: Fraction of contributing observations present in database relative to total number possible in selected period (month)
-  - For Baseline value type
-      - Baseline: absolute baseline value
 
 ### Marker colours: colour bar and colour scales
 
