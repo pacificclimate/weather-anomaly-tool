@@ -271,4 +271,4 @@ ui:
 backends:
   # URL of weather anomaly data service backend
   weatherAnomalyDataService: |
-    https://services.pacificclimate.org/dev/weather-anomaly
+    https://services.pacificclimate.org/weather-anomaly/weather/monthly
