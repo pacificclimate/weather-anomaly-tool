@@ -1,9 +1,9 @@
 import React from 'react';
-import ThrottledInputRange from '../ThrottledInputRange';
+import SingleValueSlider from '../SingleValueSlider';
 
 function YearSelector(props) {
   return (
-    <ThrottledInputRange {...props} />
+    <SingleValueSlider ticks={{ count: 5 }} {...props} />
   );
 }
 

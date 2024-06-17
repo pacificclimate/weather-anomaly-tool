@@ -15,7 +15,6 @@ import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
   from '../../../data-services/weather-anomaly-data-service';
 import { useConfigContext } from '../ConfigContext';
 
-import 'react-input-range/lib/css/index.css';
 import './Tool.css';
 
 
@@ -74,7 +73,10 @@ export default function Tool() {
   }, [variable, date]);
 
   const handleChangeMonth = (month) => {
+    console.log("handleChangeMonth month", month)
     setDate((date) => date.clone().month(month));
+    console.log("handleChangeMonth date", date)
+
   };
 
   const handleChangeYear = (year) => {
@@ -94,6 +96,8 @@ export default function Tool() {
 
   const displayColWidths = { xs: 12, md: "auto" };
   const rowSpacing = "mt-3"
+
+  console.log("date", date)
 
   return (
     <React.Fragment>
