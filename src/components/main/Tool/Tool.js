@@ -176,7 +176,7 @@ export default function Tool() {
         <Col xs={9}>
           <Row className="my-1">
             <Col>
-              <VariableTitle variable={variable} dataset={dataset}/>
+              <VariableTitle variable={variable} dataset={dataset} date={date}/>
             </Col>
           </Row>
           <Row>

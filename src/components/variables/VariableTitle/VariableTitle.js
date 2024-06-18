@@ -10,7 +10,11 @@ import { useConfigContext } from '../../main/ConfigContext';
 
 
 export default function VariableTitle({
-  variable, dataset, withAnnotation = true, withUnits = true
+  variable,
+  dataset,
+  date,
+  withAnnotation = true,
+  withUnits = true
 }) {
   const isAnomaly = dataset === 'anomaly';
   const isRelative = variable === 'precip' && isAnomaly;
@@ -25,7 +29,8 @@ export default function VariableTitle({
     <>
       <VariableLabel variable={variable}/> {' '}
       <DatasetLabel dataset={dataset}/> {' '}
-      {suffixes.length > 0 && (<>({suffixes})</>)}
+      {suffixes.length > 0 && (<>({suffixes})</>)} {' '}
+      for {date.format("MMM YYYY")}
     </>
   )
 }
