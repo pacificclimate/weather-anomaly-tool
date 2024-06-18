@@ -40,5 +40,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "react-app-alias": "^2.2.2"
+  }
 }
