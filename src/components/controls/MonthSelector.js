@@ -10,8 +10,7 @@ function MonthSelector(props) {
       minValue={0}
       maxValue={11}
       formatLabel={formatLabel}
-      // ticks={{ values: [0, 2, 5, 8, 11]}}
-      ticks={{ values: [0, 3, 6, 9]}}
+      ticks={{ values: [0, 3, 6, 9] }}
       {...props}
     />
   );
