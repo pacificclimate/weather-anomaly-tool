@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Slider, Handles, Rail, Ticks } from "react-compound-slider";
-import css from './SingleValueSlider.module.css';
+import css from '@/components/controls/SingleValueSlider.module.css';
 
 
 function Handle({

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import logo from './logo.png';
+import logo from '@/components/main/logo.png';
 
-import './Header.css';
-import { useConfigContext } from './ConfigContext';
+import '@/components/main/Header.css';
+import { useConfigContext } from '@/components/main/ConfigContext';
 
 export default function Header() {
   const config = useConfigContext();

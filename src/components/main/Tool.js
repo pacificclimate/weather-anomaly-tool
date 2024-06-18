@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import moment from 'moment';
 
-import DatasetSelector from '../controls/DatasetSelector'
-import VariableSelector from '../controls/VariableSelector'
-import YearSelector from '../controls/YearSelector';
-import MonthSelector from '../controls/MonthSelector';
-import IncrementDecrement from '../controls/IncrementDecrement';
-import ColourScale from '../map/ColourScale';
-import DataMap from '../map/DataMap';
-import VariableTitle from '../variables/VariableTitle';
+import DatasetSelector from '@/components/controls/DatasetSelector'
+import VariableSelector from '@/components/controls/VariableSelector'
+import YearSelector from '@/components/controls/YearSelector';
+import MonthSelector from '@/components/controls/MonthSelector';
+import IncrementDecrement from '@/components/controls/IncrementDecrement';
+import ColourScale from '@/components/map/ColourScale';
+import DataMap from '@/components/map/DataMap';
+import VariableTitle from '@/components/variables/VariableTitle';
 
 import { getBaselineData, getLastDateWithDataBefore, getMonthlyData }
-  from '../../data-services/weather-anomaly-data-service';
-import { useConfigContext } from './ConfigContext';
+  from '@/data-services/weather-anomaly-data-service';
+import { useConfigContext } from '@/components/main/ConfigContext';
 
-import './Tool.css';
+import '@/components/main/Tool.css';
 
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it

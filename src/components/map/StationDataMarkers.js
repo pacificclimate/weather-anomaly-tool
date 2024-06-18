@@ -1,9 +1,9 @@
 import React from 'react';
 import { CircleMarker } from 'react-leaflet';
 
-import { stationColor } from './stationColor';
-import StationPopup from './StationPopup';
-import uniqueKey from './uniqueKey';
+import { stationColor } from '@/components/map/stationColor';
+import StationPopup from '@/components/map/StationPopup';
+import uniqueKey from '@/components/map/uniqueKey';
 
 export default function StationDataMarkers({
   variable,

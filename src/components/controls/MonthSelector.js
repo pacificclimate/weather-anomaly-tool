@@ -1,5 +1,5 @@
 import React from 'react';
-import SingleValueSlider from './SingleValueSlider';
+import SingleValueSlider from '@/components/controls/SingleValueSlider';
 
 const monthNames = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
 const formatLabel = ({value}) => monthNames[value];

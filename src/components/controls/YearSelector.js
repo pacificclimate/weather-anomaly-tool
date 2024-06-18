@@ -1,5 +1,5 @@
 import React from 'react';
-import SingleValueSlider from './SingleValueSlider';
+import SingleValueSlider from '@/components/controls/SingleValueSlider';
 
 function YearSelector(props) {
   return (

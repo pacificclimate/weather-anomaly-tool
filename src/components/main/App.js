@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 
-import logger from '../../logger';
-import Header from './Header';
-import Tool from './Tool'
-import ConfigContext, { useFetchConfigContext } from './ConfigContext';
+import logger from '@/logger';
+import Header from '@/components/main/Header';
+import Tool from '@/components/main/Tool'
+import ConfigContext, { useFetchConfigContext } from '@/components/main/ConfigContext';
 
-import './App.css';
+import '@/components/main/App.css';
 
 logger.configure({ active: true });
 
