@@ -4,9 +4,9 @@ import flow from 'lodash/fp/flow';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 
-import DatasetLabel from '../../datasets/DatasetLabel';
-import RadioButtonSelector from '../RadioButtonSelector';
-import { useConfigContext } from '../../main/ConfigContext';
+import DatasetLabel from '../datasets/DatasetLabel';
+import RadioButtonSelector from './RadioButtonSelector';
+import { useConfigContext } from '../main/ConfigContext';
 
 
 function DatasetSelector(props) {

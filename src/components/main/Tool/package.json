@@ -1,6 +1,0 @@
-{
-  "name": "Tool",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./Tool.js"
-}

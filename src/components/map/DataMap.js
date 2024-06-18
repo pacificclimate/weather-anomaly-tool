@@ -10,10 +10,10 @@ import compact from 'lodash/fp/compact';
 
 import { BCBaseMap } from 'pcic-react-leaflet-components';
 import './DataMap.css';
-import { useConfigContext } from '../../main/ConfigContext';
-import MapSpinner from '../MapSpinner';
-import StationDataMarkers from '../StationDataMarkers';
-import StationLocationMarkers from '../StationLocationMarkers';
+import { useConfigContext } from '../main/ConfigContext';
+import MapSpinner from './MapSpinner';
+import StationDataMarkers from './StationDataMarkers';
+import StationLocationMarkers from './StationLocationMarkers';
 
 
 export default function DataMap({ dataset, variable, monthly, baseline }) {

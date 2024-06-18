@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Tooltip } from 'react-bootstrap';
 import keys from 'lodash/fp/keys';
 
-import { useConfigContext } from '../../main/ConfigContext';
-import RadioButtonSelector from '../RadioButtonSelector';
-import VariableLabel from '../../variables/VariableLabel';
+import { useConfigContext } from '../main/ConfigContext';
+import RadioButtonSelector from './RadioButtonSelector';
+import VariableLabel from '../variables/VariableLabel';
 
 
 function VariableSelector(props) {

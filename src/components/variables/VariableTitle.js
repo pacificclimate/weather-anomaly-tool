@@ -1,12 +1,12 @@
 import React from 'react';
 import compact from 'lodash/fp/compact';
 import flow from 'lodash/fp/flow';
-import { alternate } from '../../utils';
+import { alternate } from '../utils';
 
-import VariableLabel from '../VariableLabel';
-import VariableUnits from '../VariableUnits';
-import DatasetLabel from '../../datasets/DatasetLabel';
-import { useConfigContext } from '../../main/ConfigContext';
+import VariableLabel from './VariableLabel';
+import VariableUnits from './VariableUnits';
+import DatasetLabel from '../datasets/DatasetLabel';
+import { useConfigContext } from '../main/ConfigContext';
 
 
 export default function VariableTitle({

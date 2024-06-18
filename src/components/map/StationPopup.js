@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet'
 
-import VariableLabel from '../../variables/VariableLabel';
-import VariableUnits from '../../variables/VariableUnits';
-import { useConfigContext } from '../../main/ConfigContext';
+import VariableLabel from '../variables/VariableLabel';
+import VariableUnits from '../variables/VariableUnits';
+import { useConfigContext } from '../main/ConfigContext';
 
 
 export default function StationPopup({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useConfigContext } from '../../main/ConfigContext';
+import { useConfigContext } from '../main/ConfigContext';
 
 export default function VariableLabel({ variable }) {
   const config = useConfigContext();
