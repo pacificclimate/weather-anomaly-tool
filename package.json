@@ -18,6 +18,7 @@
     "pcic-react-leaflet-components": "git+https://git@github.com/pacificclimate/pcic-react-leaflet-components.git#3.0.1",
     "proj4": "^2.11.0",
     "proj4leaflet": "^1.0.2",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-compound-slider": "^3.4.0",
