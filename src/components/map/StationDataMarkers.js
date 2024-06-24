@@ -16,7 +16,7 @@ export default function StationDataMarkers({
   // Return a list of markers (<CircleMarker/>) for the data for each station
   // in `station`.
   return stations.map(station =>
-    <>
+    <React.Fragment key={`frag-${variable}-${dataset}-${uniqueKey(station)}`}>
       <CircleMarker
         key={`data-${variable}-${dataset}-${uniqueKey(station)}`}
         center={{ lng: station.lon, lat: station.lat }}
@@ -30,6 +30,6 @@ export default function StationDataMarkers({
         center={{ lng: station.lon, lat: station.lat }}
         {...dataLocationOptions}
       />
-    </>
+    </React.Fragment>
   );
 }

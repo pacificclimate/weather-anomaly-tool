@@ -12,7 +12,7 @@ import classNames from 'classnames';
 function RadioButtonSelector({
   options,
   name,
-  disabled,
+  disabled = false,
   className,
   value,
   onChange,
@@ -59,10 +59,6 @@ RadioButtonSelector.propTypes = {
   // Default value for selector.
   onChange: PropTypes.func.isRequired,
   // Callback called when selection changes.
-};
-
-RadioButtonSelector.defaultProps = {
-  disabled: false,
 };
 
 export default RadioButtonSelector;

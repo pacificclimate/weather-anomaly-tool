@@ -63,7 +63,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
   // within the map controls which layer overlays which.
   const markerLayersById = {
     data: (
-      <Pane name="dataValueMarkerPane">
+      <Pane key={"data"} name="dataValueMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.data}
           checked={true}
@@ -83,7 +83,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
     ),
 
     monthly: (
-      <Pane name="monthlyStationLocationMarkerPane">
+      <Pane key={"monthly"} name="monthlyStationLocationMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.monthly}
           checked={false}
@@ -100,7 +100,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
     ),
 
     baseline: (
-      <Pane name="baselineStationLocationMarkerPane">
+      <Pane key={"baseline"} name="baselineStationLocationMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.baseline}
           checked={false}

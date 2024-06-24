@@ -36,6 +36,7 @@ export default function ColourScale({
           // - annotation centred within it
           // - label below and centred on its right edge
           <span
+            key={i}
             className="pe-1 d-inline-block position-relative"
             style={{
               backgroundColor: item.color,
