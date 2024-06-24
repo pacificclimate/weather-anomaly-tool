@@ -16,7 +16,12 @@ export default function Help({
   return (
     <>
       <span onClick={toggleShow}>{target}</span>
-      <Offcanvas show={show} onHide={handleClose} style={style} {...offcanvasProps}>
+      <Offcanvas
+        show={show}
+        onHide={handleClose}
+        style={style}
+        {...offcanvasProps}
+      >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>{title}</Offcanvas.Title>
         </Offcanvas.Header>
