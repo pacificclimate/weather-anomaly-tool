@@ -9,11 +9,10 @@
 // by dropdown control from an array of numbers, according to the type of
 // property `by`.
 
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { ButtonGroup, Button, Form } from 'react-bootstrap';
-import classNames from 'classnames';
-
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { ButtonGroup, Button, Form } from "react-bootstrap";
+import classNames from "classnames";
 
 function IncrementDecrement({
   id,
@@ -22,15 +21,17 @@ function IncrementDecrement({
   onIncrement,
   disabled = false,
   className,
-  styling: { buttons: { variant, ...rest } },
+  styling: {
+    buttons: { variant, ...rest },
+  },
 }) {
   const [by, setBy] = useState(defaultBy | bys?.[0]);
-  const handleChangeBy = e => setBy(+e.target.value);
+  const handleChangeBy = (e) => setBy(+e.target.value);
 
   const handleDecrement = () => onIncrement(-by);
   const handleIncrement = () => onIncrement(by);
 
-  const selector = Array.isArray(bys) &&  (
+  const selector = Array.isArray(bys) && (
     <Form.Select
       size="sm"
       style={{ width: "0.5em" }}
@@ -38,29 +39,23 @@ function IncrementDecrement({
       disabled={disabled}
       onChange={handleChangeBy}
     >
-      {bys.map(by => (<option key={by}>{by}</option>))}
+      {bys.map((by) => (
+        <option key={by}>{by}</option>
+      ))}
     </Form.Select>
   );
 
   return (
     <ButtonGroup
       id={id}
-      className={classNames('IncrementDecrement', className)}
+      className={classNames("IncrementDecrement", className)}
       {...rest}
     >
-      <Button
-        variant={variant}
-        disabled={disabled}
-        onClick={handleDecrement}
-      >
+      <Button variant={variant} disabled={disabled} onClick={handleDecrement}>
         -{by}
       </Button>
       {selector}
-      <Button
-        variant={variant}
-        disabled={disabled}
-        onClick={handleIncrement}
-      >
+      <Button variant={variant} disabled={disabled} onClick={handleIncrement}>
         +{by}
       </Button>
     </ButtonGroup>
@@ -74,18 +69,18 @@ IncrementDecrement.propTypes = {
   // user to select an increment value from the array. If a single number is provided,
   // there is no dropdown selector and this is the increment value.
   bys: PropTypes.arrayOf(PropTypes.number),
-  defaultBy: PropTypes.number,  // Default by value.
+  defaultBy: PropTypes.number, // Default by value.
   // Callback called with either `-by` (decrement) or `+by` (increment),
   // where `by` is the currently chosen increment value.
   onIncrement: PropTypes.func.isRequired,
-  className: PropTypes.string,  // Additional class names for ButtonGroup
+  className: PropTypes.string, // Additional class names for ButtonGroup
   styling: PropTypes.shape({
     buttons: PropTypes.shape({
-      variant: PropTypes.string,  // Button variant
+      variant: PropTypes.string, // Button variant
       // Remaining props are passed to ButtonGroup (for some reason variant
       // doesn't apply to contained buttons).
-    })
-  })
+    }),
+  }),
 };
 
 export default IncrementDecrement;

@@ -2,9 +2,10 @@
 
 ## 2.0.0
 
-*2023-Oct-11*
+_2023-Oct-11_
 
 This release includes several major improvements to the UI:
+
 - Improve appearance of station data markers and location markers.
 - Add colour scales (graphic rendition of data-to-colour mapping) for each map.
 - Add additional info to station popup; improve its presentation.
@@ -14,6 +15,7 @@ This release includes several major improvements to the UI:
 It also includes a major improvement to deployment and configuration, namely that configuration is now done via an external file that allows significant alterations to app appearance and behaviour without changes to the app code.
 
 PRs included:
+
 - [Move hardcoded config into external config file](https://github.com/pacificclimate/weather-anomaly-tool/pull/95)
 - [Reorganize code](https://github.com/pacificclimate/weather-anomaly-tool/pull/94)
 - [Add info to station popup](https://github.com/pacificclimate/weather-anomaly-tool/pull/91)
@@ -26,7 +28,7 @@ PRs included:
 
 ## 1.0.0
 
-*2020-Sep-10*
+_2020-Sep-10_
 
 This release primarily fixes problems with date selection.
 Also includes DevOps improvements.
@@ -36,6 +38,7 @@ Also includes DevOps improvements.
 - [Add GitHub actions for CI and Docker](https://github.com/pacificclimate/weather-anomaly-tool/pull/57)
 
 ## 0.1.0
-*2017 - 2018*
+
+_2017 - 2018_
 
 Initial release(s).
