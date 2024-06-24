@@ -1,8 +1,6 @@
 import axios from 'axios';
 import urljoin from 'url-join';
 
-import logger from '../logger';
-
 
 export function getBaselineData(variable, date, url) {
   // logger.log(this, variable, date.format());

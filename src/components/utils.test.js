@@ -1,4 +1,4 @@
-import { alternate } from './utils';
+import { alternate } from '@/components/utils';
 
 describe('alternate', function () {
   const sep = ';';

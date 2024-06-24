@@ -1,6 +1,6 @@
 import React from 'react';
 import { CircleMarker } from 'react-leaflet';
-import uniqueKey from './uniqueKey';
+import uniqueKey from '@/components/map/uniqueKey';
 
 export default function StationLocationMarkers({ type, stations, options }) {
   // Return a set of markers (<CircleMarker/>) for the locations of each
