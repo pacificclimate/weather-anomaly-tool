@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Stack } from "react-bootstrap";
 import moment from "moment";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 import DatasetSelector from "@/components/controls/DatasetSelector";
 import VariableSelector from "@/components/controls/VariableSelector";
@@ -10,6 +12,7 @@ import IncrementDecrement from "@/components/controls/IncrementDecrement";
 import ColourScale from "@/components/map/ColourScale";
 import DataMap from "@/components/map/DataMap";
 import VariableTitle from "@/components/variables/VariableTitle";
+import Help from "@/components/help/Help";
 
 import {
   getBaselineData,
@@ -95,12 +98,29 @@ export default function Tool() {
   const displayColWidths = { xs: 12, md: "auto" };
   const rowSpacing = "mt-3";
 
-  console.log("date", date);
-
   return (
-    <React.Fragment>
+    <>
       <Row className="Tool">
         <Col xs={3} className="selectors">
+          <Row className={"my-1"}>
+            <Col>
+              <Stack direction={"horizontal"} gap={2}>
+                <div>Help:</div>
+                {config.help.offcanvas.map((item, i) => (
+                  <Help
+                    key={i}
+                    target={<a href={"#"}>{item.title}</a>}
+                    title={`Help: ${item.title}`}
+                    backdrop={false}
+                    placement={item.placement}
+                    style={item.style}
+                  >
+                    <Markdown rehypePlugins={[rehypeRaw]}>{item.body}</Markdown>
+                  </Help>
+                ))}
+              </Stack>
+            </Col>
+          </Row>
           <Row className={rowSpacing}>
             <Col>Display</Col>
           </Row>
@@ -200,6 +220,6 @@ export default function Tool() {
           </Row>
         </Col>
       </Row>
-    </React.Fragment>
+    </>
   );
 }
