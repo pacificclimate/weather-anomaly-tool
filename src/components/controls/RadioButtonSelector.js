@@ -4,10 +4,10 @@
 // TODO: Add prop for option item height?
 // TODO: Use inline styles only?
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
-import classNames from 'classnames';
+import React from "react";
+import PropTypes from "prop-types";
+import { ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import classNames from "classnames";
 
 function RadioButtonSelector({
   options,
@@ -16,11 +16,13 @@ function RadioButtonSelector({
   className,
   value,
   onChange,
-  styling: { buttons: { variant, ...bsRest } },
+  styling: {
+    buttons: { variant, ...bsRest },
+  },
 }) {
   return (
     <ToggleButtonGroup
-      className={classNames('RadioButtonSelector', className)}
+      className={classNames("RadioButtonSelector", className)}
       type="radio"
       name={name}
       disabled={disabled}
@@ -32,7 +34,7 @@ function RadioButtonSelector({
         // Note: prop `id` is essential; omit => onChange callback fails.
         <ToggleButton
           variant={variant}
-          className={classNames('RadioButtonSelector-button', className)}
+          className={classNames("RadioButtonSelector-button", className)}
           disabled={disabled}
           id={`${name}-btn-${i}`}
           key={option.value}

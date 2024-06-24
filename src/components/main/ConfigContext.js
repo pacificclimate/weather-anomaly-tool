@@ -1,17 +1,15 @@
 // This module provides a React context for app configuration values,
 // a hook for fetching its value from a YAML file in the public folder ,
 // and a hook for using the context value in a functional component.
-import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import yaml from "js-yaml";
 import filter from "lodash/fp/filter";
 import isUndefined from "lodash/fp/isUndefined";
 
-
 // The context
 const ConfigContext = React.createContext({});
 export default ConfigContext;
-
 
 // Custom hook for fetching configuration from public/config.yaml.
 // This hook returns two state variables, `[config, errorMessage]`.
@@ -35,8 +33,9 @@ export function useFetchConfigContext({
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
-    axios.get(`${process.env.PUBLIC_URL}/config.yaml`)
-      .then(response => {
+    axios
+      .get(`${process.env.PUBLIC_URL}/config.yaml`)
+      .then((response) => {
         // Extend default config with values loaded from config.yaml
         let cfg;
         try {
@@ -44,19 +43,22 @@ export function useFetchConfigContext({
           cfg = { ...defaultConfig, ...customConfig };
         } catch (e) {
           setErrorMsg(
-            <div>Error loading config.yaml: <pre>{e.toString()}</pre></div>
+            <div>
+              Error loading config.yaml: <pre>{e.toString()}</pre>
+            </div>,
           );
           return;
         }
 
         // Check for required config keys (we don't check value types, yet)
         const missingRequiredKeys = filter(
-          key => isUndefined(cfg[key]), requiredConfigKeys
+          (key) => isUndefined(cfg[key]),
+          requiredConfigKeys,
         );
         if (missingRequiredKeys.length > 0) {
           setErrorMsg(
             `Error in config.yaml: The following keys must have values, 
-            but do not: ${missingRequiredKeys}`
+            but do not: ${missingRequiredKeys}`,
           );
           return;
         }
@@ -70,16 +72,17 @@ export function useFetchConfigContext({
         // Update the config state.
         setConfig(cfg);
       })
-      .catch(error => {
+      .catch((error) => {
         setErrorMsg(
-          <div>Error fetching configuration: <pre>{error.toString()}</pre></div>
+          <div>
+            Error fetching configuration: <pre>{error.toString()}</pre>
+          </div>,
         );
       });
   }, []);
 
   return [config, errorMsg];
 }
-
 
 // Custom hook to make it slightly simpler to access the config context from a
 // client component.

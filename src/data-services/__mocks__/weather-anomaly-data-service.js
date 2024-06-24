@@ -1,5 +1,4 @@
-import moment from 'moment';
-
+import moment from "moment";
 
 export function getBaselineData() {
   return Promise.resolve({
