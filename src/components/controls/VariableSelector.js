@@ -20,12 +20,12 @@ function VariableSelector(props) {
 }
 
 VariableSelector.propTypes = {
+  // Is control disabled?
   disabled: PropTypes.bool,
-  // Is control disabled
-  value: PropTypes.string,
   // Current value of control
-  onChange: PropTypes.func,
+  value: PropTypes.string,
   // Callback when new option selected
+  onChange: PropTypes.func,
 };
 
 VariableSelector.tooltips = {

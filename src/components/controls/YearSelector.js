@@ -1,3 +1,6 @@
+// Control for selecting a year (integer value).
+// Current presentation: a slider.
+
 import React from 'react';
 import SingleValueSlider from '@/components/controls/SingleValueSlider';
 

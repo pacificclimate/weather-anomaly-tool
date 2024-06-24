@@ -68,16 +68,24 @@ function IncrementDecrement({
 }
 
 IncrementDecrement.propTypes = {
-  disabled: PropTypes.bool,
-  // Is control disabled
-  by: PropTypes.arrayOf(PropTypes.number),
-  // Determines the value with which the callback is called. If an array of
-  // numbers is provided, a dropdown selector allows the user to select an
-  // increment value from the array. If a single number is provided, there is
-  // no dropdown selector and this is the increment value.
-  onIncrement: PropTypes.func.isRequired,
+  id: PropTypes.string, // Button group id
+  disabled: PropTypes.bool, // Is control disabled
+  // Possible values for the increment/decrement. A dropdown selector allows the
+  // user to select an increment value from the array. If a single number is provided,
+  // there is no dropdown selector and this is the increment value.
+  bys: PropTypes.arrayOf(PropTypes.number),
+  defaultBy: PropTypes.number,  // Default by value.
   // Callback called with either `-by` (decrement) or `+by` (increment),
   // where `by` is the currently chosen increment value.
+  onIncrement: PropTypes.func.isRequired,
+  className: PropTypes.string,  // Additional class names for ButtonGroup
+  styling: PropTypes.shape({
+    buttons: PropTypes.shape({
+      variant: PropTypes.string,  // Button variant
+      // Remaining props are passed to ButtonGroup (for some reason variant
+      // doesn't apply to contained buttons).
+    })
+  })
 };
 
 export default IncrementDecrement;

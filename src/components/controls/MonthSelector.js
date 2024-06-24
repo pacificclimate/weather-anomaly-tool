@@ -1,3 +1,6 @@
+// Control for selecting a "month" value, an integer between 0 and 11.
+// Current presentation: a slider.
+
 import React from 'react';
 import SingleValueSlider from '@/components/controls/SingleValueSlider';
 

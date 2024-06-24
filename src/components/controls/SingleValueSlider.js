@@ -1,3 +1,5 @@
+// A single-value (single-handle) numeric slider control, based on react-compound-slider.
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -49,7 +51,10 @@ function Tick({
 
 
 function SingleValueSlider({
-  value, onChange, minValue, maxValue,
+  value,
+  onChange,
+  minValue,
+  maxValue,
   step = 1,
   formatLabel = ({value}) => value,
   ticks,
@@ -105,8 +110,25 @@ function SingleValueSlider({
 }
 
 SingleValueSlider.propTypes = {
+  // Slider value
   value: PropTypes.number,
+  // Function triggered when slider value has changed.
   onChange: PropTypes.func.isRequired,
+  // Slider min
+  minValue: PropTypes.number.isRequired,
+  // Slider max
+  maxValue: PropTypes.number.isRequired,
+  // Slider step value.
+  step: PropTypes.number,
+  // Function called to convert slider values to labels. Receives argument
+  // `{ value, percent }`.
+  formatLabel: PropTypes.func,
+  // Defines tick placement. Provides arguments to React Compound Slider
+  // Ticks component. See its documentation for detail.
+  ticks: PropTypes.shape({
+    count: PropTypes.number,
+    values: PropTypes.array,
+  }),
 };
 
 export default SingleValueSlider;
