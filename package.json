@@ -8,6 +8,7 @@
     "Rod Glover <rglover@uvic.ca>"
   ],
   "dependencies": {
+    "@tanstack/react-query": "^5.48.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "classnames": "^2.2.5",
