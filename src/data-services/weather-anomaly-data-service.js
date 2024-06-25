@@ -1,11 +1,6 @@
 import axios from "axios";
 import urljoin from "url-join";
 
-export function getBaselineData(variable, date, url) {
-  // logger.log(this, variable, date.format());
-  return axios.get(urljoin(url, "baseline", `${variable};${date.month() + 1}`));
-}
-
 export function getMonthlyData(variable, date, url) {
   // logger.log(this, variable, date.format());
   // TODO: Change 'weather' to 'monthly' when WADS changes

@@ -15,11 +15,11 @@ import VariableTitle from "@/components/variables/VariableTitle";
 import Help from "@/components/help/Help";
 
 import {
-  getBaselineData,
   getLastDateWithDataBefore,
   getMonthlyData,
 } from "@/data-services/weather-anomaly-data-service";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
+import useBaseline from "@/state/query-hooks/use-baseline";
 
 import "@/components/main/Tool.css";
 
@@ -46,13 +46,16 @@ export default function Tool() {
   const [variable, setVariable] = useState(config.ui.variableSelector.initial);
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
   const [date, setDate] = useState(latestPossibleDataDate);
-  const [baseline, setBaseline] = useState(null);
   const [monthly, setMonthly] = useState(null);
+  const {
+    data: baseline,
+    isLoading: baselineIsLoading,
+    isError: baselineIsError,
+  } = useBaseline(variable, date);
 
   // Determine latest date with data, and set date to it. This happens once,
   // on first render.
   useEffect(() => {
-    setBaseline(null);
     setMonthly(null);
     getLastDateWithDataBefore(variable, date, wadsUrl).then((date) => {
       setDate(date);
@@ -64,11 +67,7 @@ export default function Tool() {
   // be refined to get only the dataset(s) required by the value of `dataset`.)
   // Consider splitting this into two separate effects, with an if on `dataset`.
   useEffect(() => {
-    setBaseline(null);
     setMonthly(null);
-    getBaselineData(variable, date, wadsUrl).then((r) => {
-      setBaseline(r.data);
-    });
     getMonthlyData(variable, date, wadsUrl).then((r) => {
       setMonthly(r.data);
     });
@@ -92,7 +91,7 @@ export default function Tool() {
     setDate((date) => date.clone().add(by, "month"));
   };
 
-  const isDataLoading = baseline === null || monthly === null;
+  const isDataLoading = baselineIsLoading || monthly === null;
   const isBaselineDataset = dataset === "baseline";
 
   const displayColWidths = { xs: 12, md: "auto" };
