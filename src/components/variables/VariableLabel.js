@@ -2,7 +2,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 
 export default function VariableLabel({ variable }) {
   const config = useConfigContext();

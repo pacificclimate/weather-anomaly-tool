@@ -4,7 +4,7 @@ import { Popup } from "react-leaflet";
 
 import VariableLabel from "@/components/variables/VariableLabel";
 import VariableUnits from "@/components/variables/VariableUnits";
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 
 export default function StationPopup({
   variable,

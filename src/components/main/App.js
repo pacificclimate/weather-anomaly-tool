@@ -4,36 +4,21 @@ import { Container } from "react-bootstrap";
 import logger from "@/logger";
 import Header from "@/components/main/Header";
 import Tool from "@/components/main/Tool";
-import ConfigContext, {
-  useFetchConfigContext,
-} from "@/components/main/ConfigContext";
+import { ConfigContext } from "@/state/context-hooks/use-config-context";
+import useConfigDefaults from "@/state/client-server-hooks/use-config-defaults";
 
 import "@/components/main/App.css";
 
 logger.configure({ active: true });
 
-function App() {
-  // must be invoked before any other items dependent on context.
-  const [config, configErrorMessage] = useFetchConfigContext({
-    defaultConfig: {
-      // TODO
-    },
-    requiredConfigKeys: [
-      // TODO
-    ],
-  });
+export default function App() {
+  const { data: config, isLoading, isError } = useConfigDefaults();
 
-  if (configErrorMessage !== null) {
-    // TODO: Improve presentation
-    return (
-      <div>
-        <div>{configErrorMessage}</div>
-      </div>
-    );
+  if (isError) {
+    return <div>An error occurred while loading the app configuration.</div>;
   }
 
-  if (config === null) {
-    // TODO: Replace with spinner
+  if (isLoading) {
     return <div>Loading configuration...</div>;
   }
 
@@ -46,5 +31,3 @@ function App() {
     </ConfigContext.Provider>
   );
 }
-
-export default App;

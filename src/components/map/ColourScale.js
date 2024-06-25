@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 
 export default function ColourScale({
   variable,

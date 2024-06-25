@@ -10,7 +10,7 @@ import compact from "lodash/fp/compact";
 
 import { BCBaseMap } from "pcic-react-leaflet-components";
 import "@/components/map/DataMap.css";
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import MapSpinner from "@/components/map/MapSpinner";
 import StationDataMarkers from "@/components/map/StationDataMarkers";
 import StationLocationMarkers from "@/components/map/StationLocationMarkers";

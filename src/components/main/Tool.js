@@ -19,7 +19,7 @@ import {
   getLastDateWithDataBefore,
   getMonthlyData,
 } from "@/data-services/weather-anomaly-data-service";
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 
 import "@/components/main/Tool.css";
 

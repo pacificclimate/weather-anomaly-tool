@@ -1,7 +1,7 @@
 // Compose and present units of a variable
 
 import React from "react";
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import PropTypes from "prop-types";
 import VariableTitle from "@/components/variables/VariableTitle";
 
