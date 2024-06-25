@@ -18,9 +18,11 @@ Async promises for data retreval are provided by Layer 1.
 
 ### **TBD**: Layer 3: business logic (see [client-server-hooks](./client-server-hooks/README.md), [context-hooks](./context-hooks/README.md), [client](./client/README.md))
 
-****
+---
+
 **TBD**: Client state is currently managed through `React.useState` and prop drilling. This README outlines how we will transition to Zustand in a future update.
-****
+
+---
 
 Manages how returned server data should affect client state. For client-server-hooks this takes the form of (generally) updating client state defaults.
 

@@ -10,7 +10,6 @@ const defaultConfig = {
 const requiredConfigKeys = [
   // Absolutely required values
   // TBD
-
   // Required values with defaults
   // TBD
 ];
@@ -27,7 +26,6 @@ const checkMissingKeys = (config) => {
     );
   }
 };
-
 
 /**
  * Layer 1. Server fetch and config parsing.
