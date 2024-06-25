@@ -362,11 +362,11 @@ help:
           - Data
               - Variable name (e.g., Precipitation)
               - Data values: One or more of the following items, depending on the value type selected (anomaly, monthly, baseline):
-                               - Anomaly: absolute difference from baseline
-                               - Departure: relative difference from baseline
-                               - Baseline: absolute baseline value
-                               - Monthly statistic: absolute value of monthly statistic (varies by variable: cumulative for precipitation; average for temperature)
-                               - Data coverage: Fraction of contributing observations present in database relative to total number possible in selected period (month)
+                   - Anomaly: absolute difference from baseline
+                   - Departure: relative difference from baseline
+                   - Baseline: absolute baseline value
+                   - Monthly statistic: absolute value of monthly statistic (varies by variable: cumulative for precipitation; average for temperature)
+                   - Data coverage: Fraction of contributing observations present in database relative to total number possible in selected period (month)
 
           ### Marker colours: colour bar and colour scales
 
