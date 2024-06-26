@@ -16,10 +16,10 @@ import Help from "@/components/help/Help";
 
 import {
   getLastDateWithDataBefore,
-  getMonthlyData,
 } from "@/data-services/weather-anomaly-data-service";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import useBaseline from "@/state/query-hooks/use-baseline";
+import useMonthly from "@/state/query-hooks/use-monthly";
 
 import "@/components/main/Tool.css";
 
@@ -46,17 +46,21 @@ export default function Tool() {
   const [variable, setVariable] = useState(config.ui.variableSelector.initial);
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
   const [date, setDate] = useState(latestPossibleDataDate);
-  const [monthly, setMonthly] = useState(null);
   const {
     data: baseline,
     isLoading: baselineIsLoading,
     isError: baselineIsError,
   } = useBaseline(variable, date);
+  const {
+    data: monthly,
+    isLoading: monthlyIsLoading,
+    isError: monthlyIsError,
+  } = useMonthly(variable, date);
 
   // Determine latest date with data, and set date to it. This happens once,
   // on first render.
   useEffect(() => {
-    setMonthly(null);
+    // setMonthly(null);
     getLastDateWithDataBefore(variable, date, wadsUrl).then((date) => {
       setDate(date);
     });
@@ -67,10 +71,10 @@ export default function Tool() {
   // be refined to get only the dataset(s) required by the value of `dataset`.)
   // Consider splitting this into two separate effects, with an if on `dataset`.
   useEffect(() => {
-    setMonthly(null);
-    getMonthlyData(variable, date, wadsUrl).then((r) => {
-      setMonthly(r.data);
-    });
+    // setMonthly(null);
+    // getMonthlyData(variable, date, wadsUrl).then((r) => {
+    //   setMonthly(r.data);
+    // });
   }, [variable, date]);
 
   const handleChangeMonth = (month) => {
@@ -91,7 +95,7 @@ export default function Tool() {
     setDate((date) => date.clone().add(by, "month"));
   };
 
-  const isDataLoading = baselineIsLoading || monthly === null;
+  const dataIsLoading = baselineIsLoading || monthlyIsLoading;
   const isBaselineDataset = dataset === "baseline";
 
   const displayColWidths = { xs: 12, md: "auto" };
@@ -127,7 +131,7 @@ export default function Tool() {
             <Col {...displayColWidths} className="mb-sm-2 mb-lg-0">
               <VariableSelector
                 vertical
-                disabled={isDataLoading}
+                disabled={dataIsLoading}
                 value={variable}
                 onChange={setVariable}
                 styling={config.ui.variableSelector.styling}
@@ -148,7 +152,7 @@ export default function Tool() {
           <Row className={`${rowSpacing} mt-1 ps-2 pe-5`}>
             <Col>
               <MonthSelector
-                disabled={isDataLoading}
+                disabled={dataIsLoading}
                 value={date.month()}
                 onChange={handleChangeMonth}
               />
@@ -158,7 +162,7 @@ export default function Tool() {
             <Col>
               <IncrementDecrement
                 id="month-increment"
-                disabled={isDataLoading}
+                disabled={dataIsLoading}
                 defaultBy={config.ui.monthIncrementDecrement.defaultBy}
                 bys={config.ui.monthIncrementDecrement.by}
                 onIncrement={handleIncrementMonth}
@@ -171,7 +175,7 @@ export default function Tool() {
               <Row className={`${rowSpacing} ps-2 pe-5`}>
                 <Col>
                   <YearSelector
-                    disabled={isDataLoading}
+                    disabled={dataIsLoading}
                     minValue={1970}
                     maxValue={latestPossibleDataDate.year()}
                     value={date.year()}
@@ -183,7 +187,7 @@ export default function Tool() {
                 <Col>
                   <IncrementDecrement
                     id="year-increment"
-                    disabled={isDataLoading}
+                    disabled={dataIsLoading}
                     defaultBy={config.ui.yearIncrementDecrement.defaultBy}
                     bys={config.ui.yearIncrementDecrement.by}
                     onIncrement={handleIncrementYear}
