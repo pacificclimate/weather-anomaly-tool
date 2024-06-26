@@ -5,7 +5,7 @@ import { useConfigContext } from "../context-hooks/use-config-context";
 
 export const MONTHLY_QUERY_KEY = ["monthly"];
 
-const getMonthly = async ({ config, variable, date }) => {
+export const getMonthly = async ({ config, variable, date }) => {
   const { data } = await axios(
     urljoin(
       config.backends.weatherAnomalyDataService,
