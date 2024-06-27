@@ -128,11 +128,15 @@ export default function DataMap({ dataset, variable, date }) {
 
   const makeContent = () => {
     if (baselineIsLoading || monthlyIsLoading) {
-      return <MapSpinner />;
+      return <MapSpinner>Loading data...</MapSpinner>;
     }
 
     if (baselineIsError || monthlyIsError) {
-      return <div style={{ zIndex: 9999 }}>Error loading data</div>;
+      return <MapSpinner>Sorry, there was an error loading this data.</MapSpinner>;
+    }
+
+    if (baseline.length === 0 || monthly.length === 0) {
+      return <MapSpinner>There is no data for this date.</MapSpinner>
     }
 
     return (
