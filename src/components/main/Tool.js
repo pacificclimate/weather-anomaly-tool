@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Stack } from "react-bootstrap";
+import React, {useState} from "react";
+import { Col, Row } from "react-bootstrap";
 import moment from "moment";
-import Markdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
 
+import Help from "@/components/help/Help";
+import Loader from "@/components/util/Loader";
 import DatasetSelector from "@/components/controls/DatasetSelector";
 import VariableSelector from "@/components/controls/VariableSelector";
 import YearSelector from "@/components/controls/YearSelector";
@@ -12,14 +12,11 @@ import IncrementDecrement from "@/components/controls/IncrementDecrement";
 import ColourScale from "@/components/map/ColourScale";
 import DataMap from "@/components/map/DataMap";
 import VariableTitle from "@/components/variables/VariableTitle";
-import Help from "@/components/help/Help";
 
-import {
-  getLastDateWithDataBefore,
-} from "@/data-services/weather-anomaly-data-service";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import useBaseline from "@/state/query-hooks/use-baseline";
 import useMonthly from "@/state/query-hooks/use-monthly";
+import useDateState from "@/state/query-hooks/use-date-state";
 
 import "@/components/main/Tool.css";
 
@@ -41,46 +38,31 @@ const latestPossibleDataDate = moment().subtract(15, "days");
 
 export default function Tool() {
   const config = useConfigContext();
-  const wadsUrl = config.backends.weatherAnomalyDataService;
 
   const [variable, setVariable] = useState(config.ui.variableSelector.initial);
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
-  const [date, setDate] = useState(latestPossibleDataDate);
+
+  const {
+    isLoading: dateIsLoading,
+    isError: dateIsError,
+    date,
+    setDate,
+  } = useDateState();
+
   const {
     data: baseline,
     isLoading: baselineIsLoading,
     isError: baselineIsError,
   } = useBaseline(variable, date);
+
   const {
     data: monthly,
     isLoading: monthlyIsLoading,
     isError: monthlyIsError,
   } = useMonthly(variable, date);
 
-  // Determine latest date with data, and set date to it. This happens once,
-  // on first render.
-  useEffect(() => {
-    // setMonthly(null);
-    getLastDateWithDataBefore(variable, date, wadsUrl).then((date) => {
-      setDate(date);
-    });
-  }, []);
-
-  // When variable or date changes, get data.
-  // (Both datasets are is retrieved for all values of `dataset`. This could
-  // be refined to get only the dataset(s) required by the value of `dataset`.)
-  // Consider splitting this into two separate effects, with an if on `dataset`.
-  useEffect(() => {
-    // setMonthly(null);
-    // getMonthlyData(variable, date, wadsUrl).then((r) => {
-    //   setMonthly(r.data);
-    // });
-  }, [variable, date]);
-
   const handleChangeMonth = (month) => {
-    console.log("handleChangeMonth month", month);
     setDate((date) => date.clone().month(month));
-    console.log("handleChangeMonth date", date);
   };
 
   const handleChangeYear = (year) => {
@@ -101,27 +83,17 @@ export default function Tool() {
   const displayColWidths = { xs: 12, md: "auto" };
   const rowSpacing = "mt-3";
 
+  if (dateIsLoading) {
+    return <Loader message={"Starting..."}/>
+  }
+
   return (
     <>
       <Row className="Tool">
         <Col xs={3} className="selectors">
           <Row className={"my-1"}>
             <Col>
-              <Stack direction={"horizontal"} gap={2}>
-                <div>Help:</div>
-                {config.help.offcanvas.map((item, i) => (
-                  <Help
-                    key={i}
-                    target={<a href={"#"}>{item.title}</a>}
-                    title={`Help: ${item.title}`}
-                    backdrop={false}
-                    placement={item.placement}
-                    style={item.style}
-                  >
-                    <Markdown rehypePlugins={[rehypeRaw]}>{item.body}</Markdown>
-                  </Help>
-                ))}
-              </Stack>
+              <Help />
             </Col>
           </Row>
           <Row className={rowSpacing}>
@@ -171,7 +143,7 @@ export default function Tool() {
             </Col>
           </Row>
           {!isBaselineDataset && (
-            <React.Fragment>
+            <>
               <Row className={`${rowSpacing} ps-2 pe-5`}>
                 <Col>
                   <YearSelector
@@ -195,7 +167,7 @@ export default function Tool() {
                   />
                 </Col>
               </Row>
-            </React.Fragment>
+            </>
           )}
         </Col>
         <Col xs={9}>

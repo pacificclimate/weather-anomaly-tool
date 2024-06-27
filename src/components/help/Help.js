@@ -1,32 +1,27 @@
-import { InfoCircle } from "react-bootstrap-icons";
-import React, { useState } from "react";
-import { Offcanvas } from "react-bootstrap";
+import {Stack} from "react-bootstrap";
+import HelpItem from "@/components/help/HelpItem";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import React from "react";
+import useConfigContext from "@/state/context-hooks/use-config-context";
 
-export default function Help({
-  target = <InfoCircle />,
-  title,
-  children,
-  style,
-  ...offcanvasProps
-}) {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const toggleShow = () => setShow(!show);
-
+export default function Help() {
+  const config = useConfigContext();
   return (
-    <>
-      <span onClick={toggleShow}>{target}</span>
-      <Offcanvas
-        show={show}
-        onHide={handleClose}
-        style={style}
-        {...offcanvasProps}
-      >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>{title}</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>{children}</Offcanvas.Body>
-      </Offcanvas>
-    </>
-  );
+    <Stack direction={"horizontal"} gap={2}>
+      <div>Help:</div>
+      {config.help.offcanvas.map((item, i) => (
+        <HelpItem
+          key={i}
+          target={<a href={"#"}>{item.title}</a>}
+          title={`Help: ${item.title}`}
+          backdrop={false}
+          placement={item.placement}
+          style={item.style}
+        >
+          <Markdown rehypePlugins={[rehypeRaw]}>{item.body}</Markdown>
+        </HelpItem>
+      ))}
+    </Stack>
+  )
 }
