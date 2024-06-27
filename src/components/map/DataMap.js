@@ -127,8 +127,16 @@ export default function DataMap({ dataset, variable, date }) {
     ),
   };
 
-  const content =
-    baseline?.length > 0 && monthly?.length > 0 ? (
+  const makeContent = () => {
+    if (baselineIsLoading || monthlyIsLoading) {
+      return <MapSpinner />;
+    }
+
+    if (baselineIsError || monthlyIsError) {
+      return <div style={{ zIndex: 9999 }}>Error loading data</div>;
+    }
+
+    return (
       <LayersControl position="topright">
         {
           // Render marker layers in order defined by config. Because each
@@ -139,9 +147,8 @@ export default function DataMap({ dataset, variable, date }) {
           config.map.markerLayers.order.map((id) => markerLayersById[id])
         }
       </LayersControl>
-    ) : (
-      <MapSpinner />
-    );
+    )
+  }
 
   return (
     <BCBaseMap
@@ -149,7 +156,7 @@ export default function DataMap({ dataset, variable, date }) {
       center={BCBaseMap.initialViewport.center}
       zoom={BCBaseMap.initialViewport.zoom}
     >
-      {content}
+      {makeContent()}
     </BCBaseMap>
   );
 }
