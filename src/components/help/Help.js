@@ -1,4 +1,4 @@
-import {Stack} from "react-bootstrap";
+import { Stack } from "react-bootstrap";
 import HelpItem from "@/components/help/HelpItem";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -23,5 +23,5 @@ export default function Help() {
         </HelpItem>
       ))}
     </Stack>
-  )
+  );
 }

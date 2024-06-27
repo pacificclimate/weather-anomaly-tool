@@ -6,7 +6,9 @@
 // Initialized date is settled when !isLoading and !isError.
 
 import { useMemo, useState } from "react";
-import useLastDateWithMonthlyData, {latestPossibleDataDate} from "@/state/query-hooks/use-last-date-with-monthly-data";
+import useLastDateWithMonthlyData, {
+  latestPossibleDataDate,
+} from "@/state/query-hooks/use-last-date-with-monthly-data";
 import moment from "moment/moment";
 
 const useDateState = () => {

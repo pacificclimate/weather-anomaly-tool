@@ -9,7 +9,7 @@ export const getMonthly = async ({ config, variable, date }) => {
   const { data } = await axios(
     urljoin(
       config.backends.weatherAnomalyDataService,
-      "weather",  // This is not a very good name, but it's in the backend
+      "weather", // This is not a very good name, but it's in the backend
       `${variable};${date.year()}-${date.month() + 1}`,
     ),
   );

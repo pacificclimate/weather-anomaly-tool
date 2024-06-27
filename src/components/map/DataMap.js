@@ -31,7 +31,6 @@ export default function DataMap({ dataset, variable, date }) {
     isError: monthlyIsError,
   } = useMonthly(variable, date);
 
-
   const stationsForDataset = useMemo(() => {
     // Return a set of stations determined by `dataset`.
     // For `baseline` and `monthly`, return the respective station sets.
@@ -147,8 +146,8 @@ export default function DataMap({ dataset, variable, date }) {
           config.map.markerLayers.order.map((id) => markerLayersById[id])
         }
       </LayersControl>
-    )
-  }
+    );
+  };
 
   return (
     <BCBaseMap

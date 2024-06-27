@@ -18,7 +18,9 @@ const getLastDateWithMonthlyDataBefore = async ({ config, variable, date }) => {
     return date;
   }
   const prior = await getLastDateWithMonthlyDataBefore({
-    config, variable, date:date.clone().subtract(1, "month")
+    config,
+    variable,
+    date: date.clone().subtract(1, "month"),
   });
   return prior;
 };
@@ -30,7 +32,10 @@ export const getLastDateQuery = (config, variable, date) => ({
   staleTime: 86400000, // 24 hours
 });
 
-export const useLastDateWithMonthlyData = (variable, date = latestPossibleDataDate) => {
+export const useLastDateWithMonthlyData = (
+  variable,
+  date = latestPossibleDataDate,
+) => {
   const config = useConfigContext();
 
   if (!variable || !date) {

@@ -42,11 +42,7 @@ export default function Tool() {
   // Application state
   const [variable, setVariable] = useState(config.ui.variableSelector.initial);
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
-  const {
-    isLoading: dateIsLoading,
-    date,
-    setDate,
-  } = useDateState();
+  const { isLoading: dateIsLoading, date, setDate } = useDateState();
 
   // Server state
   const { isLoading: baselineIsLoading } = useBaseline(variable, date);
