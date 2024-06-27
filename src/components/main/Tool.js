@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import moment from "moment";
 
 import Help from "@/components/help/Help";
-import Loader from "@/components/util/Loader";
+import Loading from "@/components/util/Loading";
 import DatasetSelector from "@/components/controls/DatasetSelector";
 import VariableSelector from "@/components/controls/VariableSelector";
 import YearSelector from "@/components/controls/YearSelector";
@@ -71,7 +71,7 @@ export default function Tool() {
   const rowSpacing = "mt-3";
 
   if (dateIsLoading) {
-    return <Loader message={"Starting..."} />;
+    return <Loading>Starting...</Loading>;
   }
 
   return (

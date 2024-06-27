@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "react-bootstrap";
 
 import logger from "@/logger";
+import Loading from "@/components/util/Loading";
 import Header from "@/components/main/Header";
 import Tool from "@/components/main/Tool";
 import { ConfigContext } from "@/state/context-hooks/use-config-context";
@@ -19,7 +20,7 @@ export default function App() {
   }
 
   if (isLoading) {
-    return <div>Loading configuration...</div>;
+    return <Loading>Loading configuration...</Loading>;
   }
 
   return (
