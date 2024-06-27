@@ -166,8 +166,6 @@ DataMap.propTypes = {
   // Name of dataset to display on data layer
   variable: PropTypes.oneOf(["precip", "tmin", "tmax"]).isRequired,
   // Variable we are displaying ... may affect how/what we show
-  baseline: PropTypes.array.isRequired,
-  // Array of baseline data from monthly Anomaly Data Service.
-  monthly: PropTypes.array.isRequired,
-  // Array of monthly data from monthly Anomaly Data Service.
+  date: PropTypes.object,
+  // moment object representing date (year, month) to display
 };

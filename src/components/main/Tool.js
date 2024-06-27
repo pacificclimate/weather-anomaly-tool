@@ -44,7 +44,6 @@ export default function Tool() {
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
   const {
     isLoading: dateIsLoading,
-    isError: dateIsError,
     date,
     setDate,
   } = useDateState();
