@@ -14,9 +14,23 @@ import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import MapSpinner from "@/components/map/MapSpinner";
 import StationDataMarkers from "@/components/map/StationDataMarkers";
 import StationLocationMarkers from "@/components/map/StationLocationMarkers";
+import useBaseline from "@/state/query-hooks/use-baseline";
+import useMonthly from "@/state/query-hooks/use-monthly";
 
-export default function DataMap({ dataset, variable, monthly, baseline }) {
+export default function DataMap({ dataset, variable, date }) {
   const config = useConfigContext();
+  const {
+    data: baseline,
+    isLoading: baselineIsLoading,
+    isError: baselineIsError,
+  } = useBaseline(variable, date);
+
+  const {
+    data: monthly,
+    isLoading: monthlyIsLoading,
+    isError: monthlyIsError,
+  } = useMonthly(variable, date);
+
 
   const stationsForDataset = useMemo(() => {
     // Return a set of stations determined by `dataset`.

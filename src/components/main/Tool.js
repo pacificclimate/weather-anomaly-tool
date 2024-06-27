@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import moment from "moment";
 
@@ -39,9 +39,9 @@ const latestPossibleDataDate = moment().subtract(15, "days");
 export default function Tool() {
   const config = useConfigContext();
 
+  // Application state
   const [variable, setVariable] = useState(config.ui.variableSelector.initial);
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
-
   const {
     isLoading: dateIsLoading,
     isError: dateIsError,
@@ -49,17 +49,9 @@ export default function Tool() {
     setDate,
   } = useDateState();
 
-  const {
-    data: baseline,
-    isLoading: baselineIsLoading,
-    isError: baselineIsError,
-  } = useBaseline(variable, date);
-
-  const {
-    data: monthly,
-    isLoading: monthlyIsLoading,
-    isError: monthlyIsError,
-  } = useMonthly(variable, date);
+  // Server state
+  const { isLoading: baselineIsLoading } = useBaseline(variable, date);
+  const { isLoading: monthlyIsLoading } = useMonthly(variable, date);
 
   const handleChangeMonth = (month) => {
     setDate((date) => date.clone().month(month));
@@ -84,7 +76,7 @@ export default function Tool() {
   const rowSpacing = "mt-3";
 
   if (dateIsLoading) {
-    return <Loader message={"Starting..."}/>
+    return <Loader message={"Starting..."} />;
   }
 
   return (
@@ -186,12 +178,7 @@ export default function Tool() {
             </Col>
           </Row>
           <Row>
-            <DataMap
-              dataset={dataset}
-              variable={variable}
-              baseline={baseline}
-              monthly={monthly}
-            />
+            <DataMap dataset={dataset} variable={variable} date={date} />
           </Row>
         </Col>
       </Row>
