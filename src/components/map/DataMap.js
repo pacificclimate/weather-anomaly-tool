@@ -31,16 +31,20 @@ export default function DataMap({ dataset, variable, date }) {
     isError: monthlyIsError,
   } = useMonthly(variable, date);
 
+  const isBaseline = dataset === "baseline";
+  const isMonthly = dataset === "monthly";
+  const isAnomaly = dataset === "anomaly";
+
   const stationsForDataset = useMemo(() => {
     // Return a set of stations determined by `dataset`.
     // For `baseline` and `monthly`, return the respective station sets.
     // For `anomaly`, compute the anomaly for stations for which there is both
     // baseline and monthly data.
-    if (dataset === "baseline") {
+    if (isBaseline) {
       return baseline;
     }
 
-    if (dataset === "monthly") {
+    if (isMonthly) {
       return monthly;
     }
 
@@ -137,8 +141,12 @@ export default function DataMap({ dataset, variable, date }) {
       );
     }
 
-    if (baseline.length === 0 || monthly.length === 0) {
-      return <MapSpinner>There is no data for this date.</MapSpinner>;
+    if (stationsForDataset.length === 0) {
+      return (
+        <MapSpinner>
+          No {dataset} data is available for {date.format("MMM YYYY")}.
+        </MapSpinner>
+      );
     }
 
     return (
