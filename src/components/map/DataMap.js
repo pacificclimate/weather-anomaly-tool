@@ -132,11 +132,13 @@ export default function DataMap({ dataset, variable, date }) {
     }
 
     if (baselineIsError || monthlyIsError) {
-      return <MapSpinner>Sorry, there was an error loading this data.</MapSpinner>;
+      return (
+        <MapSpinner>Sorry, there was an error loading this data.</MapSpinner>
+      );
     }
 
     if (baseline.length === 0 || monthly.length === 0) {
-      return <MapSpinner>There is no data for this date.</MapSpinner>
+      return <MapSpinner>There is no data for this date.</MapSpinner>;
     }
 
     return (
