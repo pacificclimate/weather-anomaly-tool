@@ -1,4 +1,4 @@
-The selectors on the right-hand side determine what is displayed on the map. They are intended to read as an English sentence of the form "Display `<observation variable>` `<value type>` for `<period>`." A couple of examples of this sentence:
+The selectors on the left-hand side determine what is displayed on the map. They are intended to read as an English sentence of the form "Display `<observation variable>` `<value type>` for `<period>`." A couple of examples of this sentence:
 
 - Display T<sub>min</sub> Anomaly for Jun 2020.
 - Display Precipitation Baseline for Feb.
