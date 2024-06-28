@@ -1,4 +1,4 @@
-import { Badge, Stack } from "react-bootstrap";
+import { Stack } from "react-bootstrap";
 import React from "react";
 import useConfigContext from "@/state/context-hooks/use-config-context";
 import HelpItemFromFile from "@/components/help/HelpItemFromFile";
