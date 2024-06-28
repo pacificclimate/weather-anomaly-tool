@@ -1,6 +1,6 @@
 import { InfoCircle } from "react-bootstrap-icons";
 import React, { useState } from "react";
-import { Offcanvas } from "react-bootstrap";
+import {Badge, Button, Offcanvas} from "react-bootstrap";
 
 export default function HelpItem({
   target = <InfoCircle />,
