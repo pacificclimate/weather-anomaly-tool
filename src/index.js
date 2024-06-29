@@ -14,6 +14,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       //notifyOnChangeProps: 'tracked',
+      staleTime: 86400000, // 24 hours,
     },
   },
   queryCache: new QueryCache({

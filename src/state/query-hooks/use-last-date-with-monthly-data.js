@@ -29,7 +29,6 @@ export const getLastDateQuery = (config, variable, date) => ({
   queryKey: [LAST_DATE_QUERY_KEY, variable, date.year(), date.month()],
   queryFn: () => getLastDateWithMonthlyDataBefore({ config, variable, date }),
   enabled: !!config,
-  staleTime: 86400000, // 24 hours
 });
 
 export const useLastDateWithMonthlyData = (

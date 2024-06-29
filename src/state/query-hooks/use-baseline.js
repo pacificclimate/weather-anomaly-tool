@@ -21,7 +21,6 @@ export const baselineQuery = (config, variable, date) => ({
   queryKey: [BASELINE_QUERY_KEY, variable, date.month()],
   queryFn: () => getBaseline({ config, variable, date }),
   enabled: !!config,
-  staleTime: 86400000, // 24 hours
 });
 
 export const useBaseline = (variable, date) => {

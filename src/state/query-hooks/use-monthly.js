@@ -21,7 +21,6 @@ export const monthlyQuery = (config, variable, date) => ({
   queryKey: [MONTHLY_QUERY_KEY, variable, date.year(), date.month()],
   queryFn: () => getMonthly({ config, variable, date }),
   enabled: !!config,
-  staleTime: 86400000, // 24 hours
 });
 
 export const useMonthly = (variable, date) => {
