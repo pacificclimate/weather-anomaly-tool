@@ -4,8 +4,9 @@ import rehypeRaw from "rehype-raw";
 import React from "react";
 import usePublicFile from "@/state/query-hooks/use-public-file";
 import Loading from "@/components/util/Loading";
+import PropTypes from "prop-types";
 
-export default function HelpItemFromFile({ item, key }) {
+export default function HelpItemFromFile({ item, index }) {
   const { data, isLoading, isError } = usePublicFile(item.filePath);
 
   const body = () => {
@@ -20,7 +21,7 @@ export default function HelpItemFromFile({ item, key }) {
 
   return (
     <HelpItem
-      key={key}
+      index={index}
       target={<a href={"#"}>{item.title}</a>}
       title={`Help: ${item.title}`}
       backdrop={false}
@@ -30,4 +31,9 @@ export default function HelpItemFromFile({ item, key }) {
       {body()}
     </HelpItem>
   );
+}
+
+HelpItemFromFile.propTypes = {
+  item: PropTypes.object.isRequired,
+  index: PropTypes.string,
 }
