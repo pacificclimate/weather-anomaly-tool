@@ -3,7 +3,9 @@
 // needs to be set from a query to the backend. This hook also encapsulates the complication
 // associated with that.
 // date always has a valid value, and setDate is always usable
-// Initialized date is settled when !isLoading and !isError.
+// Initialized date is settled when !isPending and !isError.
+// Note we don't return the full set of useQuery returns, just a roll-up
+// of isPending, isError, and the maximum (latest) date.
 
 import { useMemo, useState } from "react";
 import useLastDateWithMonthlyData, {
@@ -18,7 +20,7 @@ const useDateState = () => {
     useLastDateWithMonthlyData(variable),
   );
   const isError = lastDates.some((query) => query.isError);
-  const isLoading = lastDates.some((query) => query.isLoading);
+  const isPending = lastDates.some((query) => query.isPending);
   const lastDateWithMonthlyData = moment.max(
     lastDates.map((query) => query.data ?? moment.invalid()),
   );
@@ -26,9 +28,9 @@ const useDateState = () => {
   // Never set if a latest date does not load or errors out.
   useMemo(() => {
     setDate(lastDateWithMonthlyData);
-  }, [isLoading]);
+  }, [isPending]);
 
-  return { isLoading, isError, date, setDate };
+  return { isPending, isError, date, setDate };
 };
 
 export default useDateState;

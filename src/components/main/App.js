@@ -13,13 +13,13 @@ import "@/components/main/App.css";
 logger.configure({ active: true });
 
 export default function App() {
-  const { data: config, isLoading, isError } = useConfigDefaults();
+  const { data: config, isPending, isError } = useConfigDefaults();
 
   if (isError) {
     return <div>An error occurred while loading the app configuration.</div>;
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <Loading>Loading configuration...</Loading>;
   }
 

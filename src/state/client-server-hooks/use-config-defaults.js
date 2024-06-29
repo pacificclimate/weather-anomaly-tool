@@ -2,15 +2,17 @@ import { useEffect } from "react";
 import { useConfig } from "../query-hooks/use-config";
 
 /**
- * This hook runs after config is loaded, used once at the "App" component level to ensure that
- * Defaults are applied
+ * This hook runs after config is loaded, used once at the "App" component
+ * level to ensure that defaults are applied. At present very little is or
+ * needs to be done here.
+ *
  * @returns {object} results from useConfig hook.
  */
 export const useConfigDefaults = () => {
-  const { data: config, isLoading, isError } = useConfig();
+  const { data: config, isPending, isError } = useConfig();
 
   useEffect(() => {
-    if (isLoading || isError || !!config) {
+    if (isPending || isError || !!config) {
       return;
     }
 
@@ -18,9 +20,10 @@ export const useConfigDefaults = () => {
     document.title = config.title;
   }, [config]);
 
-  // TBD: Set Zustand state defaults.
+  // Set Zustand state defaults.
+  // TBD when Zustand in use
 
-  return { isLoading, isError, data: config };
+  return { isPending, isError, data: config };
 };
 
 export default useConfigDefaults;

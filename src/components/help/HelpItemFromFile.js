@@ -7,10 +7,10 @@ import Loading from "@/components/util/Loading";
 import PropTypes from "prop-types";
 
 export default function HelpItemFromFile({ item, index }) {
-  const { data, isLoading, isError } = usePublicFile(item.filePath);
+  const { data, isPending, isError } = usePublicFile(item.filePath);
 
   const body = () => {
-    if (isLoading) {
+    if (isPending) {
       return <Loading>Loading...</Loading>;
     }
     if (isError) {

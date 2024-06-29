@@ -21,13 +21,13 @@ export default function DataMap({ dataset, variable, date }) {
   const config = useConfigContext();
   const {
     data: baseline,
-    isLoading: baselineIsLoading,
+    isPending: baselineIsPending,
     isError: baselineIsError,
   } = useBaseline(variable, date);
 
   const {
     data: monthly,
-    isLoading: monthlyIsLoading,
+    isPending: monthlyIsPending,
     isError: monthlyIsError,
   } = useMonthly(variable, date);
 
@@ -131,7 +131,7 @@ export default function DataMap({ dataset, variable, date }) {
   };
 
   const makeContent = () => {
-    if (baselineIsLoading || monthlyIsLoading) {
+    if (baselineIsPending || monthlyIsPending) {
       return <MapSpinner>Loading data...</MapSpinner>;
     }
 

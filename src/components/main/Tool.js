@@ -42,11 +42,11 @@ export default function Tool() {
   // Application state
   const [variable, setVariable] = useState(config.ui.variableSelector.initial);
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
-  const { isLoading: dateIsLoading, date, setDate } = useDateState();
+  const { isPending: dateIsPending, date, setDate } = useDateState();
 
   // Server state
-  const { isLoading: baselineIsLoading } = useBaseline(variable, date);
-  const { isLoading: monthlyIsLoading } = useMonthly(variable, date);
+  const { isPending: baselineIsPending } = useBaseline(variable, date);
+  const { isPending: monthlyIsPending } = useMonthly(variable, date);
 
   const handleChangeMonth = (month) => {
     setDate((date) => date.clone().month(month));
@@ -64,13 +64,13 @@ export default function Tool() {
     setDate((date) => date.clone().add(by, "month"));
   };
 
-  const dataIsLoading = baselineIsLoading || monthlyIsLoading;
+  const stationDataIsPending = baselineIsPending || monthlyIsPending;
   const isBaselineDataset = dataset === "baseline";
 
   const displayColWidths = { xs: 12, md: "auto" };
   const rowSpacing = "mt-3";
 
-  if (dateIsLoading) {
+  if (dateIsPending) {
     return <Loading>Starting...</Loading>;
   }
 
@@ -90,7 +90,7 @@ export default function Tool() {
             <Col {...displayColWidths} className="mb-sm-2 mb-lg-0">
               <VariableSelector
                 vertical
-                disabled={dataIsLoading}
+                disabled={stationDataIsPending}
                 value={variable}
                 onChange={setVariable}
                 styling={config.ui.variableSelector.styling}
@@ -111,7 +111,7 @@ export default function Tool() {
           <Row className={`${rowSpacing} mt-1 ps-2 pe-5`}>
             <Col>
               <MonthSelector
-                disabled={dataIsLoading}
+                disabled={stationDataIsPending}
                 value={date.month()}
                 onChange={handleChangeMonth}
               />
@@ -121,7 +121,7 @@ export default function Tool() {
             <Col>
               <IncrementDecrement
                 id="month-increment"
-                disabled={dataIsLoading}
+                disabled={stationDataIsPending}
                 defaultBy={config.ui.monthIncrementDecrement.defaultBy}
                 bys={config.ui.monthIncrementDecrement.by}
                 onIncrement={handleIncrementMonth}
@@ -134,7 +134,7 @@ export default function Tool() {
               <Row className={`${rowSpacing} ps-2 pe-5`}>
                 <Col>
                   <YearSelector
-                    disabled={dataIsLoading}
+                    disabled={stationDataIsPending}
                     minValue={1970}
                     maxValue={latestPossibleDataDate.year()}
                     value={date.year()}
@@ -146,7 +146,7 @@ export default function Tool() {
                 <Col>
                   <IncrementDecrement
                     id="year-increment"
-                    disabled={dataIsLoading}
+                    disabled={stationDataIsPending}
                     defaultBy={config.ui.yearIncrementDecrement.defaultBy}
                     bys={config.ui.yearIncrementDecrement.by}
                     onIncrement={handleIncrementYear}
