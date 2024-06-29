@@ -1,6 +1,6 @@
 import { InfoCircle } from "react-bootstrap-icons";
 import React, { useState } from "react";
-import { Offcanvas } from "react-bootstrap";
+import { ListGroup, Offcanvas } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 export default function HelpItem({
@@ -16,8 +16,8 @@ export default function HelpItem({
   const toggleShow = () => setShow(!show);
 
   return (
-    <div key={index}>
-      <span onClick={toggleShow}>{target}</span>
+    <ListGroup.Item key={index} onClick={toggleShow} className={"px-2 py-1"}>
+      {target}
       <Offcanvas
         show={show}
         onHide={handleClose}
@@ -29,7 +29,7 @@ export default function HelpItem({
         </Offcanvas.Header>
         <Offcanvas.Body>{children}</Offcanvas.Body>
       </Offcanvas>
-    </div>
+    </ListGroup.Item>
   );
 }
 
@@ -44,4 +44,4 @@ HelpItem.propTypes = {
   style: PropTypes.object,
   // Key-like identifier for this item
   index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-}
+};
