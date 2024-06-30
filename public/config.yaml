@@ -30,6 +30,8 @@ datasets:
 # The `map` object defines certain features of the map appearance, except the
 # colour scale.
 map:
+  options:
+    maxZoom: 13
   markers:
     # Appearance of all (data, monthly, baseline) station location markers.
     location:
