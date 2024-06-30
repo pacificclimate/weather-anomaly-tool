@@ -3,7 +3,7 @@ import { Row, Col } from "react-bootstrap";
 import logo from "@/components/main/logo.png";
 
 import "@/components/main/Header.css";
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 
 export default function Header() {
   const config = useConfigContext();

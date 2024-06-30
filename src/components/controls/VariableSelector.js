@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Tooltip } from "react-bootstrap";
 import keys from "lodash/fp/keys";
 
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import RadioButtonSelector from "@/components/controls/RadioButtonSelector";
 import VariableLabel from "@/components/variables/VariableLabel";
 

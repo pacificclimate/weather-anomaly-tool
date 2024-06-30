@@ -10,24 +10,41 @@ import compact from "lodash/fp/compact";
 
 import { BCBaseMap } from "pcic-react-leaflet-components";
 import "@/components/map/DataMap.css";
-import { useConfigContext } from "@/components/main/ConfigContext";
+import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import MapSpinner from "@/components/map/MapSpinner";
 import StationDataMarkers from "@/components/map/StationDataMarkers";
 import StationLocationMarkers from "@/components/map/StationLocationMarkers";
+import useBaseline from "@/state/query-hooks/use-baseline";
+import useMonthly from "@/state/query-hooks/use-monthly";
 
-export default function DataMap({ dataset, variable, monthly, baseline }) {
+export default function DataMap({ dataset, variable, date }) {
   const config = useConfigContext();
+  const {
+    data: baseline,
+    isPending: baselineIsPending,
+    isError: baselineIsError,
+  } = useBaseline(variable, date);
+
+  const {
+    data: monthly,
+    isPending: monthlyIsPending,
+    isError: monthlyIsError,
+  } = useMonthly(variable, date);
+
+  const isBaseline = dataset === "baseline";
+  const isMonthly = dataset === "monthly";
+  const isAnomaly = dataset === "anomaly";
 
   const stationsForDataset = useMemo(() => {
     // Return a set of stations determined by `dataset`.
     // For `baseline` and `monthly`, return the respective station sets.
     // For `anomaly`, compute the anomaly for stations for which there is both
     // baseline and monthly data.
-    if (dataset === "baseline") {
+    if (isBaseline) {
       return baseline;
     }
 
-    if (dataset === "monthly") {
+    if (isMonthly) {
       return monthly;
     }
 
@@ -113,8 +130,26 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
     ),
   };
 
-  const content =
-    baseline?.length > 0 && monthly?.length > 0 ? (
+  const makeContent = () => {
+    if (baselineIsPending || monthlyIsPending) {
+      return <MapSpinner>Loading data...</MapSpinner>;
+    }
+
+    if (baselineIsError || monthlyIsError) {
+      return (
+        <MapSpinner>Sorry, there was an error loading this data.</MapSpinner>
+      );
+    }
+
+    if (stationsForDataset.length === 0) {
+      return (
+        <MapSpinner>
+          No {dataset} data is available for {date.format("MMM YYYY")}.
+        </MapSpinner>
+      );
+    }
+
+    return (
       <LayersControl position="topright">
         {
           // Render marker layers in order defined by config. Because each
@@ -125,9 +160,8 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
           config.map.markerLayers.order.map((id) => markerLayersById[id])
         }
       </LayersControl>
-    ) : (
-      <MapSpinner />
     );
+  };
 
   return (
     <BCBaseMap
@@ -135,7 +169,7 @@ export default function DataMap({ dataset, variable, monthly, baseline }) {
       center={BCBaseMap.initialViewport.center}
       zoom={BCBaseMap.initialViewport.zoom}
     >
-      {content}
+      {makeContent()}
     </BCBaseMap>
   );
 }
@@ -145,8 +179,6 @@ DataMap.propTypes = {
   // Name of dataset to display on data layer
   variable: PropTypes.oneOf(["precip", "tmin", "tmax"]).isRequired,
   // Variable we are displaying ... may affect how/what we show
-  baseline: PropTypes.array.isRequired,
-  // Array of baseline data from monthly Anomaly Data Service.
-  monthly: PropTypes.array.isRequired,
-  // Array of monthly data from monthly Anomaly Data Service.
+  date: PropTypes.object,
+  // moment object representing date (year, month) to display
 };
