@@ -12,6 +12,9 @@ import useLastDateWithMonthlyData, {
   latestPossibleDataDate,
 } from "@/state/query-hooks/use-last-date-with-monthly-data";
 import moment from "moment/moment";
+import flow from "lodash/fp/flow";
+import compact from "lodash/fp/compact";
+import map from "lodash/fp/map";
 
 const useDateState = () => {
   const [date, setDate] = useState(latestPossibleDataDate);
@@ -21,9 +24,7 @@ const useDateState = () => {
   );
   const isError = lastDates.some((query) => query.isError);
   const isPending = lastDates.some((query) => query.isPending);
-  const lastDateWithMonthlyData = moment.max(
-    lastDates.map((query) => query.data ?? moment.invalid()),
-  );
+  const lastDateWithMonthlyData = flow(map("data"), compact, moment.max);
   // Set to max latest date when all latest dates have loaded.
   // Never set if a latest date does not load or errors out.
   useMemo(() => {
