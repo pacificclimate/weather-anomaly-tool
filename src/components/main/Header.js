@@ -22,6 +22,9 @@ export default function Header() {
       <Col>
         <h1>{config.title}</h1>
       </Col>
+      <Col lg={2} className="text-right">
+        <p>Version: {config.appVersion}</p>
+      </Col>
     </Row>
   );
 }
