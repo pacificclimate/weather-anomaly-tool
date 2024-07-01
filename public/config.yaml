@@ -261,6 +261,8 @@ ui:
       buttons:
         size: sm
         variant: outline-dark
+  yearSelector:
+    minYear: 1970
   yearIncrementDecrement:
     # Available values in month increment-/decrement-by dropdown
     by: [1, 2, 3, 4, 5, 10]

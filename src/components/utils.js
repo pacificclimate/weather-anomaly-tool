@@ -3,6 +3,7 @@ import curry from "lodash/fp/curry";
 import flatten from "lodash/fp/flatten";
 import flow from "lodash/fp/flow";
 import map from "lodash/fp/map";
+import moment from "moment";
 
 export function pick(obj, names) {
   if (typeof names === "string") {
@@ -21,3 +22,6 @@ export const alternate = curry((sep, a) =>
     flatten,
   )(a),
 );
+
+export const clipMoment = (date, minDate, maxDate) =>
+  moment.max(minDate, moment.min(maxDate, date));

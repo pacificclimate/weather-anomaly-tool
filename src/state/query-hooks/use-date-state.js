@@ -24,14 +24,20 @@ const useDateState = () => {
   );
   const isError = lastDates.some((query) => query.isError);
   const isPending = lastDates.some((query) => query.isPending);
-  const lastDateWithMonthlyData = flow(map("data"), compact, moment.max);
+  const lastDateWithMonthlyData = flow(
+    map("data"),
+    compact,
+    moment.max,
+  )(lastDates);
   // Set to max latest date when all latest dates have loaded.
-  // Never set if a latest date does not load or errors out.
+  // Never set if latest date does not load or errors out.
   useMemo(() => {
-    setDate(lastDateWithMonthlyData);
+    if (!isError) {
+      setDate(lastDateWithMonthlyData);
+    }
   }, [isPending]);
 
-  return { isPending, isError, date, setDate };
+  return { isPending, isError, lastDateWithMonthlyData, date, setDate };
 };
 
 export default useDateState;

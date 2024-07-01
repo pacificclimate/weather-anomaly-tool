@@ -19,6 +19,7 @@ import useMonthly from "@/state/query-hooks/use-monthly";
 import useDateState from "@/state/query-hooks/use-date-state";
 
 import "@/components/main/Tool.css";
+import { clipMoment } from "@/components/utils";
 
 // Note: We use package `moment` for date arithmetic. It is excellent but it
 // *mutates* its objects. We are using functional components,
@@ -29,24 +30,30 @@ import "@/components/main/Tool.css";
 // object. `x` is unchanged by this operation, and `y` is a different object
 // than `x`.
 
-// Compute likely latest possible date of available data = current date - 15 d.
-// This allows for cron jobs that run in first half of month.
-// Subtract fewer/more days if cron jobs run earlier/later in month.
-// But it is not guaranteed that there is data for this date; that can only be
-// determined by consulting the backend.
-const latestPossibleDataDate = moment().subtract(15, "days");
-
 export default function Tool() {
   const config = useConfigContext();
 
   // Application state
   const [variable, setVariable] = useState(config.ui.variableSelector.initial);
   const [dataset, setDataset] = useState(config.ui.datasetSelector.initial);
-  const { isPending: dateIsPending, date, setDate } = useDateState();
+  const {
+    isPending: dateIsPending,
+    lastDateWithMonthlyData,
+    date,
+    setDate,
+  } = useDateState();
 
   // Server state
   const { isPending: baselineIsPending } = useBaseline(variable, date);
   const { isPending: monthlyIsPending } = useMonthly(variable, date);
+
+  const minYear = config.ui.yearSelector.minYear;
+  // There's a tricky and unresolved problem when dates are incremented beyond
+  // lastDateWithMonthlyData: the stations displayed on the map get out of sync
+  // with the actual date and data. This prevents such incrementing, and so the
+  // erroneous maps, but it does not fix the bug causing the error with the station
+  // markers.
+  const clipDate = (date) => clipMoment(date, minYear, lastDateWithMonthlyData);
 
   const handleChangeMonth = (month) => {
     setDate((date) => date.clone().month(month));
@@ -57,11 +64,11 @@ export default function Tool() {
   };
 
   const handleIncrementYear = (by) => {
-    setDate((date) => date.clone().add(by, "year"));
+    setDate((date) => clipDate(date.clone().add(by, "year")));
   };
 
   const handleIncrementMonth = (by) => {
-    setDate((date) => date.clone().add(by, "month"));
+    setDate((date) => clipDate(date.clone().add(by, "month")));
   };
 
   const stationDataIsPending = baselineIsPending || monthlyIsPending;
@@ -135,8 +142,8 @@ export default function Tool() {
                 <Col>
                   <YearSelector
                     disabled={stationDataIsPending}
-                    minValue={1970}
-                    maxValue={latestPossibleDataDate.year()}
+                    minValue={minYear}
+                    maxValue={lastDateWithMonthlyData.year()}
                     value={date.year()}
                     onChange={handleChangeYear}
                   />
