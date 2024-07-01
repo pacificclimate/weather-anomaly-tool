@@ -9,15 +9,14 @@
 FROM node:16
 
 WORKDIR /app
+RUN chown node /app
+
 ENV PATH /app/node_modules/.bin:$PATH
+COPY --chown=node:node  package.json /app/package.json
 
-COPY ../package.json ./
-COPY ../package-lock.json ./
-
-#RUN apk add --no-cache git bash
 RUN npm install --quiet
 RUN npm install -g serve
-COPY .. ./
+COPY --chown=node:node . /app
 
 EXPOSE 8080
 
@@ -27,4 +26,5 @@ EXPOSE 8080
 ARG REACT_APP_VERSION
 ENV REACT_APP_VERSION $REACT_APP_VERSION
 
-CMD ["/bin/bash", "./entrypoint.sh"]
+USER node
+ENTRYPOINT docker/entrypoint.sh
