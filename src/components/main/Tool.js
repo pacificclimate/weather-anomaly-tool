@@ -48,12 +48,14 @@ export default function Tool() {
   const { isPending: monthlyIsPending } = useMonthly(variable, date);
 
   const minYear = config.ui.yearSelector.minYear;
+  const minDate = moment({ year: minYear })
   // There's a tricky and unresolved problem when dates are incremented beyond
   // lastDateWithMonthlyData: the stations displayed on the map get out of sync
   // with the actual date and data. This prevents such incrementing, and so the
   // erroneous maps, but it does not fix the bug causing the error with the station
   // markers.
-  const clipDate = (date) => clipMoment(date, minYear, lastDateWithMonthlyData);
+  const maxDate = lastDateWithMonthlyData;
+  const clipDate = (date) => clipMoment(date, minDate, maxDate);
 
   const handleChangeMonth = (month) => {
     setDate((date) => date.clone().month(month));
@@ -143,7 +145,7 @@ export default function Tool() {
                   <YearSelector
                     disabled={stationDataIsPending}
                     minValue={minYear}
-                    maxValue={lastDateWithMonthlyData.year()}
+                    maxValue={maxDate.year()}
                     value={date.year()}
                     onChange={handleChangeYear}
                   />
