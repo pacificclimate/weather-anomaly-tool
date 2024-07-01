@@ -24,8 +24,8 @@ EXPOSE 8080
 # Move the build arg REACT_APP_CE_CURRENT_VERSION into an
 # environment variable of the same name, for consumption
 # by the npm build process in ./entrypoint.sh
-ARG REACT_APP_VERSION
-ENV REACT_APP_VERSION $REACT_APP_VERSION
+ARG REACT_APP_APP_VERSION
+ENV REACT_APP_APP_VERSION $REACT_APP_APP_VERSION
 
 USER node
 ENTRYPOINT docker/entrypoint.sh
