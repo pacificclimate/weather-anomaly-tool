@@ -33,6 +33,7 @@ map:
   # Options passed to MapContainer.
   options:
     maxZoom: 13
+  # Station marker appearance
   markers:
     # Appearance of all (data, monthly, baseline) station location markers.
     location:
