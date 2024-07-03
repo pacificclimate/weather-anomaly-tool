@@ -85,6 +85,7 @@ export default function DataMap({ dataset, variable, date }) {
             <StationDataMarkers
               variable={variable}
               dataset={dataset}
+              date={date}
               stations={stationsForDataset}
               dataMarkerOptions={config.map.markers.data}
               dataLocationOptions={config.map.markers.location}
@@ -103,7 +104,10 @@ export default function DataMap({ dataset, variable, date }) {
         >
           <LayerGroup>
             <StationLocationMarkers
-              type="monthly"
+              type="station-loc"
+              dataset={"monthly"}
+              variable={variable}
+              date={date}
               stations={monthly}
               options={config.map.markers.location}
             />
@@ -120,7 +124,10 @@ export default function DataMap({ dataset, variable, date }) {
         >
           <LayerGroup>
             <StationLocationMarkers
-              type="baseline"
+              type="station-loc"
+              dataset={"baseline"}
+              variable={variable}
+              date={date}
               stations={baseline}
               options={config.map.markers.location}
             />

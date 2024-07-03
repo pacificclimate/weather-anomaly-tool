@@ -9,6 +9,7 @@ import { useConfigContext } from "@/state/context-hooks/use-config-context";
 export default function StationPopup({
   variable,
   dataset,
+  date,
   station: {
     network_name,
     station_name,
@@ -54,7 +55,7 @@ export default function StationPopup({
 
       <div className="border-bottom py-1">
         <div className="fst-italic">
-          <VariableLabel variable={variable} />
+          <VariableLabel variable={variable} /> for {date.format("MMM YYYY")}
         </div>
         {anomaly && (
           <div>
@@ -91,15 +92,18 @@ export default function StationPopup({
 }
 
 StationPopup.propTypes = {
-  station_name: PropTypes.string,
-  lat: PropTypes.number,
-  lon: PropTypes.number,
-  elevation: PropTypes.number,
-  datum: PropTypes.number, // Baseline
-  statistic: PropTypes.number, // Monthly
-  data_coverage: PropTypes.number, // Monthly
-  anomaly: PropTypes.number, // Anomaly
-  departure: PropTypes.number, // Anomaly
-  variable: PropTypes.string,
-  dataset: PropTypes.string,
+  variable: PropTypes.string.isRequired,
+  dataset: PropTypes.string.isRequired,
+  date: PropTypes.object.isRequired,
+  station: PropTypes.shape({
+    station_name: PropTypes.string,
+    lat: PropTypes.number,
+    lon: PropTypes.number,
+    elevation: PropTypes.number,
+    datum: PropTypes.number, // Baseline
+    statistic: PropTypes.number, // Monthly
+    data_coverage: PropTypes.number, // Monthly
+    anomaly: PropTypes.number, // Anomaly
+    departure: PropTypes.number, // Anomaly
+  }),
 };
