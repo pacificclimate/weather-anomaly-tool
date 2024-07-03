@@ -57,6 +57,10 @@ export default function Tool() {
   const maxDate = lastDateWithMonthlyData;
   const clipDate = (date) => clipMoment(date, minDate, maxDate);
 
+  // TODO: It would be much better to isolate the date-handling mechanism in
+  //  a separate component, but it requires quite a bit of data that will be
+  //  tedious to pass around, so we will delay this until state is
+  //  moved to Zustand.
   const handleChangeMonth = (month) => {
     setDate((date) => date.clone().month(month));
   };
