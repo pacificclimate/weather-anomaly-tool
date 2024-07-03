@@ -30,6 +30,10 @@ datasets:
 # The `map` object defines certain features of the map appearance, except the
 # colour scale.
 map:
+  # Options passed to MapContainer.
+  options:
+    maxZoom: 13
+  # Station marker appearance
   markers:
     # Appearance of all (data, monthly, baseline) station location markers.
     location:
@@ -273,8 +277,20 @@ backends:
   weatherAnomalyDataService: |
     https://services.pacificclimate.org/weather-anomaly/weather/monthly
 
+# The `help` object configures help in the app. The app uses React Bootstrap
+# `Offcanvas` components for (at present) all help, hence the name. It is an array
+# that defines the help items in the order in which the access buttons are
+# presented in the app. Each element of this array defines a single help item.
+# Each item's content is retrieved from the file specified in `filePath`, relative
+# to the app's public URL.
 help:
   offcanvas:
+    # Help item config template.
+    # - title: Help Title # Help item title and access label
+    #   placement: end  # Passed to Offcanvas element
+    #   style:  # Passed to Offcanvas element
+    #     width: 600
+    #   filePath: # location body content for help, relative to app public URL
     - title: Quick How-To
       placement: end
       style:
