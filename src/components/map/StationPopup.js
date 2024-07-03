@@ -5,6 +5,7 @@ import { Popup } from "react-leaflet";
 import VariableLabel from "@/components/variables/VariableLabel";
 import VariableUnits from "@/components/variables/VariableUnits";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
+import { formatDate } from "@/components/utils";
 
 export default function StationPopup({
   variable,
@@ -55,7 +56,7 @@ export default function StationPopup({
 
       <div className="border-bottom py-1">
         <div className="fst-italic">
-          <VariableLabel variable={variable} /> for {date.format("MMM YYYY")}
+          <VariableLabel variable={variable} /> for {formatDate(date, dataset)}
         </div>
         {anomaly && (
           <div>

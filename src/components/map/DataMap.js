@@ -16,6 +16,7 @@ import StationDataMarkers from "@/components/map/StationDataMarkers";
 import StationLocationMarkers from "@/components/map/StationLocationMarkers";
 import useBaseline from "@/state/query-hooks/use-baseline";
 import useMonthly from "@/state/query-hooks/use-monthly";
+import { formatDate } from "@/components/utils";
 
 export default function DataMap({ dataset, variable, date }) {
   const config = useConfigContext();
@@ -151,7 +152,7 @@ export default function DataMap({ dataset, variable, date }) {
     if (stationsForDataset.length === 0) {
       return (
         <MapSpinner>
-          No {dataset} data is available for {date.format("MMM YYYY")}.
+          No {dataset} data is available for {formatDate(date, dataset)}.
         </MapSpinner>
       );
     }

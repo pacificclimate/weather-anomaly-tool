@@ -25,3 +25,6 @@ export const alternate = curry((sep, a) =>
 
 export const clipMoment = (date, minDate, maxDate) =>
   moment.max(minDate, moment.min(maxDate, date));
+
+export const formatDate = (date, dataset) =>
+  date.format(dataset === "baseline" ? "MMM" : "MMM YYYY");
