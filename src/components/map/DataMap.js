@@ -16,6 +16,7 @@ import StationDataMarkers from "@/components/map/StationDataMarkers";
 import StationLocationMarkers from "@/components/map/StationLocationMarkers";
 import useBaseline from "@/state/query-hooks/use-baseline";
 import useMonthly from "@/state/query-hooks/use-monthly";
+import { formatDate } from "@/components/utils";
 
 export default function DataMap({ dataset, variable, date }) {
   const config = useConfigContext();
@@ -85,6 +86,7 @@ export default function DataMap({ dataset, variable, date }) {
             <StationDataMarkers
               variable={variable}
               dataset={dataset}
+              date={date}
               stations={stationsForDataset}
               dataMarkerOptions={config.map.markers.data}
               dataLocationOptions={config.map.markers.location}
@@ -103,7 +105,10 @@ export default function DataMap({ dataset, variable, date }) {
         >
           <LayerGroup>
             <StationLocationMarkers
-              type="monthly"
+              type="station-loc"
+              dataset={"monthly"}
+              variable={variable}
+              date={date}
               stations={monthly}
               options={config.map.markers.location}
             />
@@ -120,7 +125,10 @@ export default function DataMap({ dataset, variable, date }) {
         >
           <LayerGroup>
             <StationLocationMarkers
-              type="baseline"
+              type="station-loc"
+              dataset={"baseline"}
+              variable={variable}
+              date={date}
               stations={baseline}
               options={config.map.markers.location}
             />
@@ -144,7 +152,7 @@ export default function DataMap({ dataset, variable, date }) {
     if (stationsForDataset.length === 0) {
       return (
         <MapSpinner>
-          No {dataset} data is available for {date.format("MMM YYYY")}.
+          No {dataset} data is available for {formatDate(date, dataset)}.
         </MapSpinner>
       );
     }
@@ -168,7 +176,7 @@ export default function DataMap({ dataset, variable, date }) {
       id={"data-map"}
       center={BCBaseMap.initialViewport.center}
       zoom={BCBaseMap.initialViewport.zoom}
-      {...config.map?.options ?? 13}
+      {...config.map?.options}
     >
       {makeContent()}
     </BCBaseMap>

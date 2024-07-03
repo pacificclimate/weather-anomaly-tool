@@ -2,7 +2,8 @@
 
 ---
 
-**TBD**: Client state is currently managed through `React.useState` and prop drilling. This README outlines how we will transition to Zustand in a future update.
+**TBD**: Client state is currently managed through `React.useState` and prop drilling. This README outlines how we will
+transition to Zustand in a future update.
 
 ---
 

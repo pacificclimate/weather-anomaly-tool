@@ -5,7 +5,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import compact from "lodash/fp/compact";
 import flow from "lodash/fp/flow";
-import { alternate } from "@/components/utils";
+import { alternate, formatDate } from "@/components/utils";
 
 import VariableLabel from "@/components/variables/VariableLabel";
 import VariableUnits from "@/components/variables/VariableUnits";
@@ -33,7 +33,7 @@ export default function VariableTitle({
     <>
       <VariableLabel variable={variable} /> <DatasetLabel dataset={dataset} />{" "}
       {suffixes.length > 0 && <>({suffixes})</>}{" "}
-      {withDate && <>for {date.format(isBaseline ? "MMM" : "MMM YYYY")}</>}
+      {withDate && <>for {formatDate(date, dataset)}</>}
     </>
   );
 }
