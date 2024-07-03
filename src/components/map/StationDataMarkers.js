@@ -3,7 +3,7 @@ import { CircleMarker } from "react-leaflet";
 
 import { stationColor } from "@/components/map/stationColor";
 import StationPopup from "@/components/map/StationPopup";
-import {uniqueStationKey} from "@/components/map/uniqueKey";
+import { uniqueStationKey } from "@/components/map/uniqueKey";
 import PropTypes from "prop-types";
 
 export default function StationDataMarkers({
@@ -19,17 +19,30 @@ export default function StationDataMarkers({
   // in `station`.
   return stations.map((station) => (
     // Is key necessary for this? Alternatively, are CircleMarker keys nec?
-    <React.Fragment key={uniqueStationKey("frag", variable, dataset, date, station)}>
+    <React.Fragment
+      key={uniqueStationKey("frag", variable, dataset, date, station)}
+    >
       <CircleMarker
         key={uniqueStationKey("data-value", variable, dataset, date, station)}
         center={{ lng: station.lon, lat: station.lat }}
         {...dataMarkerOptions}
         {...stationColor(variable, dataset, station, colourScales)}
       >
-        <StationPopup variable={variable} dataset={dataset} date={date} station={station} />
+        <StationPopup
+          variable={variable}
+          dataset={dataset}
+          date={date}
+          station={station}
+        />
       </CircleMarker>
       <CircleMarker
-        key={uniqueStationKey("data-location", variable, dataset, date, station)}
+        key={uniqueStationKey(
+          "data-location",
+          variable,
+          dataset,
+          date,
+          station,
+        )}
         center={{ lng: station.lon, lat: station.lat }}
         {...dataLocationOptions}
       />

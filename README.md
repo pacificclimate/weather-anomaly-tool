@@ -11,7 +11,6 @@ Frontend for visualizing weather anomaly data.
 - [User documentation](docs/user-doc.md)
 - [Development notes](docs/dev-notes.md)
 
-
 ## Releasing
 
 To create a release version:

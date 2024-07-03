@@ -175,7 +175,7 @@ export default function DataMap({ dataset, variable, date }) {
       id={"data-map"}
       center={BCBaseMap.initialViewport.center}
       zoom={BCBaseMap.initialViewport.zoom}
-      {...config.map?.options ?? 13}
+      {...config.map?.options}
     >
       {makeContent()}
     </BCBaseMap>

@@ -48,7 +48,7 @@ export default function Tool() {
   const { isPending: monthlyIsPending } = useMonthly(variable, date);
 
   const minYear = config.ui.yearSelector.minYear;
-  const minDate = moment({ year: minYear })
+  const minDate = moment({ year: minYear });
   // There's a tricky and unresolved problem when dates are incremented beyond
   // lastDateWithMonthlyData: the stations displayed on the map get out of sync
   // with the actual date and data. This prevents such incrementing, and so the

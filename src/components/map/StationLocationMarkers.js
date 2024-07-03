@@ -1,9 +1,14 @@
 import React from "react";
 import { CircleMarker } from "react-leaflet";
-import uniqueKey, {uniqueStationKey} from "@/components/map/uniqueKey";
+import { uniqueStationKey } from "@/components/map/uniqueKey";
 
 export default function StationLocationMarkers({
-   type, variable, dataset, date, stations, options
+  type,
+  variable,
+  dataset,
+  date,
+  stations,
+  options,
 }) {
   // Return a set of markers (<CircleMarker/>) for the locations of each
   // station in `props.station`. Icon markers `<Marker/>` don't work in this

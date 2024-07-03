@@ -36,4 +36,4 @@ export default function HelpItemFromFile({ item, index }) {
 HelpItemFromFile.propTypes = {
   item: PropTypes.object.isRequired,
   index: PropTypes.string,
-}
+};
