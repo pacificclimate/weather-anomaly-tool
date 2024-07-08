@@ -1,8 +1,8 @@
 // DataMap: Component that displays a map with data.
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { LayerGroup, LayersControl, Pane } from "react-leaflet";
+import { LayersControl, Pane } from "react-leaflet";
 import _ from "lodash";
 import flow from "lodash/fp/flow";
 import map from "lodash/fp/map";
@@ -19,18 +19,35 @@ import useMonthly from "@/state/query-hooks/use-monthly";
 import { formatDate } from "@/components/utils";
 
 export default function DataMap({ dataset, variable, date }) {
+  // Server state
   const config = useConfigContext();
   const {
     data: baseline,
     isPending: baselineIsPending,
     isError: baselineIsError,
   } = useBaseline(variable, date);
-
   const {
     data: monthly,
     isPending: monthlyIsPending,
     isError: monthlyIsError,
   } = useMonthly(variable, date);
+
+  // App state
+  const [visibleLayers, setVisibleLayers] = useState({
+    dataValueMarkers: true,
+    monthlyStationLocationMarkers: false,
+    baselineStationLocationMarkes: false,
+  });
+  const onAddLayer = (layer) =>
+    setVisibleLayers({
+      ...visibleLayers,
+      [layer]: true,
+    });
+  const onRemoveLayer = (layer) =>
+    setVisibleLayers({
+      ...visibleLayers,
+      [layer]: false,
+    });
 
   const isBaseline = dataset === "baseline";
   const isMonthly = dataset === "monthly";
@@ -80,19 +97,19 @@ export default function DataMap({ dataset, variable, date }) {
       <Pane key={"data"} name="dataValueMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.data}
-          checked={true}
+          checked={visibleLayers.dataValueMarkers}
         >
-          <LayerGroup>
-            <StationDataMarkers
-              variable={variable}
-              dataset={dataset}
-              date={date}
-              stations={stationsForDataset}
-              dataMarkerOptions={config.map.markers.data}
-              dataLocationOptions={config.map.markers.location}
-              colourScales={config.colourScales}
-            />
-          </LayerGroup>
+          <StationDataMarkers
+            variable={variable}
+            dataset={dataset}
+            date={date}
+            stations={stationsForDataset}
+            dataMarkerOptions={config.map.markers.data}
+            dataLocationOptions={config.map.markers.location}
+            colourScales={config.colourScales}
+            onAdd={() => onAddLayer("dataValueMarkers")}
+            onRemove={() => onRemoveLayer("dataValueMarkers")}
+          />
         </LayersControl.Overlay>
       </Pane>
     ),
@@ -101,18 +118,18 @@ export default function DataMap({ dataset, variable, date }) {
       <Pane key={"monthly"} name="monthlyStationLocationMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.monthly}
-          checked={false}
+          checked={visibleLayers.monthlyStationLocationMarkers}
         >
-          <LayerGroup>
-            <StationLocationMarkers
-              type="station-loc"
-              dataset={"monthly"}
-              variable={variable}
-              date={date}
-              stations={monthly}
-              options={config.map.markers.location}
-            />
-          </LayerGroup>
+          <StationLocationMarkers
+            type="station-loc"
+            dataset={"monthly"}
+            variable={variable}
+            date={date}
+            stations={monthly}
+            options={config.map.markers.location}
+            onAdd={() => onAddLayer("monthlyStationLocationMarkers")}
+            onRemove={() => onRemoveLayer("monthlyStationLocationMarkers")}
+          />
         </LayersControl.Overlay>
       </Pane>
     ),
@@ -121,18 +138,18 @@ export default function DataMap({ dataset, variable, date }) {
       <Pane key={"baseline"} name="baselineStationLocationMarkerPane">
         <LayersControl.Overlay
           name={config.map.markerLayers.definitions.baseline}
-          checked={false}
+          checked={visibleLayers.baselineStationLocationMarkers}
         >
-          <LayerGroup>
-            <StationLocationMarkers
-              type="station-loc"
-              dataset={"baseline"}
-              variable={variable}
-              date={date}
-              stations={baseline}
-              options={config.map.markers.location}
-            />
-          </LayerGroup>
+          <StationLocationMarkers
+            type="station-loc"
+            dataset={"baseline"}
+            variable={variable}
+            date={date}
+            stations={baseline}
+            options={config.map.markers.location}
+            onAdd={() => onAddLayer("baselineStationLocationMarkers")}
+            onRemove={() => onRemoveLayer("baselineStationLocationMarkers")}
+          />
         </LayersControl.Overlay>
       </Pane>
     ),
@@ -158,7 +175,10 @@ export default function DataMap({ dataset, variable, date }) {
     }
 
     return (
-      <LayersControl position="topright">
+      <LayersControl
+        position="topright"
+        eventHandlers={{ onClick: () => console.log("LayersControlr clicked") }}
+      >
         {
           // Render marker layers in order defined by config. Because each
           // layer group is enclosed in a Pane, the ordering controls which
