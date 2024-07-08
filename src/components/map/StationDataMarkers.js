@@ -1,5 +1,5 @@
 import React from "react";
-import { CircleMarker, LayerGroup } from "react-leaflet";
+import { CircleMarker } from "react-leaflet";
 
 import { stationColor } from "@/components/map/stationColor";
 import StationPopup from "@/components/map/StationPopup";
@@ -21,7 +21,15 @@ export default function StationDataMarkers({
   return (
     <>
       {stations.map((station) => (
-        <>
+        <React.Fragment
+          key={uniqueStationKey(
+            `${type}-value-wrapper`,
+            variable,
+            dataset,
+            date,
+            station,
+          )}
+        >
           <CircleMarker
             key={uniqueStationKey(
               `${type}-value`,
@@ -52,7 +60,7 @@ export default function StationDataMarkers({
             center={{ lng: station.lon, lat: station.lat }}
             {...dataLocationOptions}
           />
-        </>
+        </React.Fragment>
       ))}
     </>
   );

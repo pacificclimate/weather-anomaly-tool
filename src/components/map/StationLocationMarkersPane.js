@@ -1,10 +1,10 @@
 import {LayerGroup, LayersControl, Pane} from "react-leaflet";
-import StationDataMarkers from "@/components/map/StationDataMarkers";
 import React from "react";
 import useConfigContext from "@/state/context-hooks/use-config-context";
+import StationLocationMarkers from "@/components/map/StationLocationMarkers";
 
-export default function StationDataMarkersPane({
-  layerName = "stationDataValueMarkers",
+export default function StationLocationMarkersPane({
+  layerName,
   variable,
   dataset,
   date,
@@ -16,7 +16,7 @@ export default function StationDataMarkersPane({
   return (
     <Pane key={layerName} name={`${layerName}-pane`}>
       <LayersControl.Overlay
-        name={config.map.markerLayers.definitions.data}
+        name={config.map.markerLayers.definitions[dataset]}
         checked={getVisibility(layerName)}
       >
         <LayerGroup
@@ -25,14 +25,13 @@ export default function StationDataMarkersPane({
             remove: () => setVisibility(layerName, false),
           }}
         >
-          <StationDataMarkers
+          <StationLocationMarkers
+            type="station-loc"   // Use layerName here?
             variable={variable}
             dataset={dataset}
             date={date}
             stations={stations}
-            dataMarkerOptions={config.map.markers.data}
-            dataLocationOptions={config.map.markers.location}
-            colourScales={config.colourScales}
+            options={config.map.markers.location}
           />
         </LayerGroup>
       </LayersControl.Overlay>

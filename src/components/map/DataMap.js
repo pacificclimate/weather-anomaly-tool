@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { LayersControl, Pane } from "react-leaflet";
+import { LayersControl } from "react-leaflet";
 import _ from "lodash";
 import flow from "lodash/fp/flow";
 import map from "lodash/fp/map";
@@ -12,12 +12,11 @@ import { BCBaseMap } from "pcic-react-leaflet-components";
 import "@/components/map/DataMap.css";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import MapSpinner from "@/components/map/MapSpinner";
-import StationDataMarkers from "@/components/map/StationDataMarkers";
-import StationLocationMarkers from "@/components/map/StationLocationMarkers";
 import useBaseline from "@/state/query-hooks/use-baseline";
 import useMonthly from "@/state/query-hooks/use-monthly";
 import { formatDate } from "@/components/utils";
 import StationDataMarkersPane from "@/components/map/StationDataMarkersPane";
+import StationLocationMarkersPane from "@/components/map/StationLocationMarkersPane";
 
 export default function DataMap({ dataset, variable, date }) {
   // Server state
@@ -37,23 +36,13 @@ export default function DataMap({ dataset, variable, date }) {
   const [visibleLayers, setVisibleLayers] = useState({
     stationDataValueMarkers: true,
     monthlyStationLocationMarkers: false,
-    baselineStationLocationMarkes: false,
+    baselineStationLocationMarkers: false,
   });
-  const getLayerVisibility = layer => visibleLayers[layer];
+  const getLayerVisibility = (layer) => visibleLayers[layer];
   const setLayerVisibility = (layer, visibility) =>
     setVisibleLayers({
       ...visibleLayers,
       [layer]: visibility,
-    });
-  const handleAddLayer = (layer) =>
-    setVisibleLayers({
-      ...visibleLayers,
-      [layer]: true,
-    });
-  const handleRemoveLayer = (layer) =>
-    setVisibleLayers({
-      ...visibleLayers,
-      [layer]: false,
     });
 
   const isBaseline = dataset === "baseline";
@@ -101,6 +90,7 @@ export default function DataMap({ dataset, variable, date }) {
   const markerLayersById = {
     data: (
       <StationDataMarkersPane
+        key={"data"}
         layerName={"stationDataValueMarkers"}
         variable={variable}
         dataset={dataset}
@@ -112,43 +102,29 @@ export default function DataMap({ dataset, variable, date }) {
     ),
 
     monthly: (
-      <Pane key={"monthly"} name="monthlyStationLocationMarkerPane">
-        <LayersControl.Overlay
-          name={config.map.markerLayers.definitions.monthly}
-          checked={visibleLayers.monthlyStationLocationMarkers}
-        >
-          <StationLocationMarkers
-            type="station-loc"
-            dataset={"monthly"}
-            variable={variable}
-            date={date}
-            stations={monthly}
-            options={config.map.markers.location}
-            onAdd={() => handleAddLayer("monthlyStationLocationMarkers")}
-            onRemove={() => handleRemoveLayer("monthlyStationLocationMarkers")}
-          />
-        </LayersControl.Overlay>
-      </Pane>
+      <StationLocationMarkersPane
+        key={"monthly"}
+        layerName={"monthlyStationLocationMarkers"}
+        variable={variable}
+        dataset={"monthly"}
+        date={date}
+        stations={monthly}
+        getVisibility={getLayerVisibility}
+        setVisibility={setLayerVisibility}
+      />
     ),
 
     baseline: (
-      <Pane key={"baseline"} name="baselineStationLocationMarkerPane">
-        <LayersControl.Overlay
-          name={config.map.markerLayers.definitions.baseline}
-          checked={visibleLayers.baselineStationLocationMarkers}
-        >
-          <StationLocationMarkers
-            type="station-loc"
-            dataset={"baseline"}
-            variable={variable}
-            date={date}
-            stations={baseline}
-            options={config.map.markers.location}
-            onAdd={() => handleAddLayer("baselineStationLocationMarkers")}
-            onRemove={() => handleRemoveLayer("baselineStationLocationMarkers")}
-          />
-        </LayersControl.Overlay>
-      </Pane>
+      <StationLocationMarkersPane
+        key={"baseline"}
+        layerName={"baselineStationLocationMarkers"}
+        variable={variable}
+        dataset={"baseline"}
+        date={date}
+        stations={baseline}
+        getVisibility={getLayerVisibility}
+        setVisibility={setLayerVisibility}
+      />
     ),
   };
 
@@ -171,18 +147,14 @@ export default function DataMap({ dataset, variable, date }) {
       );
     }
 
+    // Render marker layers in order defined by config.
+    // Because each layer group is enclosed in a Pane, the ordering controls
+    // which layer overlays which. Later-rendered Panes overlay earlier ones.
+    // The ordering also controls the order the layer is listed
+    // in the LayersControl.
     return (
-      <LayersControl
-        position="topright"
-      >
-        {
-          // Render marker layers in order defined by config. Because each
-          // layer group is enclosed in a Pane, the ordering controls which
-          // layer overlays which. Later-rendered Panes overlay earlier ones.
-          // The ordering also controls the order the layer is listed
-          // in the LayersControl.
-          config.map.markerLayers.order.map((id) => markerLayersById[id])
-        }
+      <LayersControl position="topright">
+        {config.map.markerLayers.order.map((id) => markerLayersById[id])}
       </LayersControl>
     );
   };
