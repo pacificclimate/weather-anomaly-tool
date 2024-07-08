@@ -17,6 +17,7 @@ import StationLocationMarkers from "@/components/map/StationLocationMarkers";
 import useBaseline from "@/state/query-hooks/use-baseline";
 import useMonthly from "@/state/query-hooks/use-monthly";
 import { formatDate } from "@/components/utils";
+import StationDataMarkersPane from "@/components/map/StationDataMarkersPane";
 
 export default function DataMap({ dataset, variable, date }) {
   // Server state
@@ -34,16 +35,22 @@ export default function DataMap({ dataset, variable, date }) {
 
   // App state
   const [visibleLayers, setVisibleLayers] = useState({
-    dataValueMarkers: true,
+    stationDataValueMarkers: true,
     monthlyStationLocationMarkers: false,
     baselineStationLocationMarkes: false,
   });
-  const onAddLayer = (layer) =>
+  const getLayerVisibility = layer => visibleLayers[layer];
+  const setLayerVisibility = (layer, visibility) =>
+    setVisibleLayers({
+      ...visibleLayers,
+      [layer]: visibility,
+    });
+  const handleAddLayer = (layer) =>
     setVisibleLayers({
       ...visibleLayers,
       [layer]: true,
     });
-  const onRemoveLayer = (layer) =>
+  const handleRemoveLayer = (layer) =>
     setVisibleLayers({
       ...visibleLayers,
       [layer]: false,
@@ -51,7 +58,6 @@ export default function DataMap({ dataset, variable, date }) {
 
   const isBaseline = dataset === "baseline";
   const isMonthly = dataset === "monthly";
-  const isAnomaly = dataset === "anomaly";
 
   const stationsForDataset = useMemo(() => {
     // Return a set of stations determined by `dataset`.
@@ -94,24 +100,15 @@ export default function DataMap({ dataset, variable, date }) {
   // within the map controls which layer overlays which.
   const markerLayersById = {
     data: (
-      <Pane key={"data"} name="dataValueMarkerPane">
-        <LayersControl.Overlay
-          name={config.map.markerLayers.definitions.data}
-          checked={visibleLayers.dataValueMarkers}
-        >
-          <StationDataMarkers
-            variable={variable}
-            dataset={dataset}
-            date={date}
-            stations={stationsForDataset}
-            dataMarkerOptions={config.map.markers.data}
-            dataLocationOptions={config.map.markers.location}
-            colourScales={config.colourScales}
-            onAdd={() => onAddLayer("dataValueMarkers")}
-            onRemove={() => onRemoveLayer("dataValueMarkers")}
-          />
-        </LayersControl.Overlay>
-      </Pane>
+      <StationDataMarkersPane
+        layerName={"stationDataValueMarkers"}
+        variable={variable}
+        dataset={dataset}
+        date={date}
+        stations={stationsForDataset}
+        getVisibility={getLayerVisibility}
+        setVisibility={setLayerVisibility}
+      />
     ),
 
     monthly: (
@@ -127,8 +124,8 @@ export default function DataMap({ dataset, variable, date }) {
             date={date}
             stations={monthly}
             options={config.map.markers.location}
-            onAdd={() => onAddLayer("monthlyStationLocationMarkers")}
-            onRemove={() => onRemoveLayer("monthlyStationLocationMarkers")}
+            onAdd={() => handleAddLayer("monthlyStationLocationMarkers")}
+            onRemove={() => handleRemoveLayer("monthlyStationLocationMarkers")}
           />
         </LayersControl.Overlay>
       </Pane>
@@ -147,8 +144,8 @@ export default function DataMap({ dataset, variable, date }) {
             date={date}
             stations={baseline}
             options={config.map.markers.location}
-            onAdd={() => onAddLayer("baselineStationLocationMarkers")}
-            onRemove={() => onRemoveLayer("baselineStationLocationMarkers")}
+            onAdd={() => handleAddLayer("baselineStationLocationMarkers")}
+            onRemove={() => handleRemoveLayer("baselineStationLocationMarkers")}
           />
         </LayersControl.Overlay>
       </Pane>
@@ -177,7 +174,6 @@ export default function DataMap({ dataset, variable, date }) {
     return (
       <LayersControl
         position="topright"
-        eventHandlers={{ onClick: () => console.log("LayersControlr clicked") }}
       >
         {
           // Render marker layers in order defined by config. Because each

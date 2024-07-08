@@ -15,13 +15,11 @@ export default function StationDataMarkers({
   dataMarkerOptions,
   dataLocationOptions,
   colourScales, // Pass in just the applicable colour scale, not all
-  onAdd,
-  onRemove,
 }) {
-  // Return a LayerGroup containing markers (<CircleMarker>) for the data
+  // Return a fragment containing markers (<CircleMarker>) for the data
   // for each station in `station`.
   return (
-    <LayerGroup eventHandlers={{ add: onAdd, remove: onRemove }}>
+    <>
       {stations.map((station) => (
         <>
           <CircleMarker
@@ -56,7 +54,7 @@ export default function StationDataMarkers({
           />
         </>
       ))}
-    </LayerGroup>
+    </>
   );
 }
 
