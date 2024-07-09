@@ -33,6 +33,14 @@ export default function DataMap({ dataset, variable, date }) {
   } = useMonthly(variable, date);
 
   // App state
+
+  // Layer visibility.
+  //
+  // This set of states could be formulated differently,
+  // but this way works fine. To ensure correct behaviour have to create a new
+  // state object every time state is updated. The overall goal of this state
+  // structure and the related callbacks is to minimize the number of places
+  // the state keys ("stationDataValueMarkers", etc.) are used as literals.
   const [visibleLayers, setVisibleLayers] = useState({
     stationDataValueMarkers: true,
     monthlyStationLocationMarkers: false,
