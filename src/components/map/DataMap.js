@@ -1,8 +1,8 @@
 // DataMap: Component that displays a map with data.
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { LayerGroup, LayersControl, Pane } from "react-leaflet";
+import { LayersControl } from "react-leaflet";
 import _ from "lodash";
 import flow from "lodash/fp/flow";
 import map from "lodash/fp/map";
@@ -12,29 +12,49 @@ import { BCBaseMap } from "pcic-react-leaflet-components";
 import "@/components/map/DataMap.css";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import MapSpinner from "@/components/map/MapSpinner";
-import StationDataMarkers from "@/components/map/StationDataMarkers";
-import StationLocationMarkers from "@/components/map/StationLocationMarkers";
 import useBaseline from "@/state/query-hooks/use-baseline";
 import useMonthly from "@/state/query-hooks/use-monthly";
 import { formatDate } from "@/components/utils";
+import StationDataMarkersPane from "@/components/map/StationDataMarkersPane";
+import StationLocationMarkersPane from "@/components/map/StationLocationMarkersPane";
 
 export default function DataMap({ dataset, variable, date }) {
+  // Server state
   const config = useConfigContext();
   const {
     data: baseline,
     isPending: baselineIsPending,
     isError: baselineIsError,
   } = useBaseline(variable, date);
-
   const {
     data: monthly,
     isPending: monthlyIsPending,
     isError: monthlyIsError,
   } = useMonthly(variable, date);
 
+  // App state
+
+  // Layer visibility.
+  //
+  // This set of states could be formulated differently,
+  // but this way works fine. To ensure correct behaviour have to create a new
+  // state object every time state is updated. The overall goal of this state
+  // structure and the related callbacks is to minimize the number of places
+  // the state keys ("stationDataValueMarkers", etc.) are used as literals.
+  const [visibleLayers, setVisibleLayers] = useState({
+    stationDataValueMarkers: true,
+    monthlyStationLocationMarkers: false,
+    baselineStationLocationMarkers: false,
+  });
+  const getLayerVisibility = (layer) => visibleLayers[layer];
+  const setLayerVisibility = (layer, visibility) =>
+    setVisibleLayers({
+      ...visibleLayers,
+      [layer]: visibility,
+    });
+
   const isBaseline = dataset === "baseline";
   const isMonthly = dataset === "monthly";
-  const isAnomaly = dataset === "anomaly";
 
   const stationsForDataset = useMemo(() => {
     // Return a set of stations determined by `dataset`.
@@ -77,64 +97,42 @@ export default function DataMap({ dataset, variable, date }) {
   // within the map controls which layer overlays which.
   const markerLayersById = {
     data: (
-      <Pane key={"data"} name="dataValueMarkerPane">
-        <LayersControl.Overlay
-          name={config.map.markerLayers.definitions.data}
-          checked={true}
-        >
-          <LayerGroup>
-            <StationDataMarkers
-              variable={variable}
-              dataset={dataset}
-              date={date}
-              stations={stationsForDataset}
-              dataMarkerOptions={config.map.markers.data}
-              dataLocationOptions={config.map.markers.location}
-              colourScales={config.colourScales}
-            />
-          </LayerGroup>
-        </LayersControl.Overlay>
-      </Pane>
+      <StationDataMarkersPane
+        key={"data"}
+        layerName={"stationDataValueMarkers"}
+        variable={variable}
+        dataset={dataset}
+        date={date}
+        stations={stationsForDataset}
+        getVisibility={getLayerVisibility}
+        setVisibility={setLayerVisibility}
+      />
     ),
 
     monthly: (
-      <Pane key={"monthly"} name="monthlyStationLocationMarkerPane">
-        <LayersControl.Overlay
-          name={config.map.markerLayers.definitions.monthly}
-          checked={false}
-        >
-          <LayerGroup>
-            <StationLocationMarkers
-              type="station-loc"
-              dataset={"monthly"}
-              variable={variable}
-              date={date}
-              stations={monthly}
-              options={config.map.markers.location}
-            />
-          </LayerGroup>
-        </LayersControl.Overlay>
-      </Pane>
+      <StationLocationMarkersPane
+        key={"monthly"}
+        layerName={"monthlyStationLocationMarkers"}
+        variable={variable}
+        dataset={"monthly"}
+        date={date}
+        stations={monthly}
+        getVisibility={getLayerVisibility}
+        setVisibility={setLayerVisibility}
+      />
     ),
 
     baseline: (
-      <Pane key={"baseline"} name="baselineStationLocationMarkerPane">
-        <LayersControl.Overlay
-          name={config.map.markerLayers.definitions.baseline}
-          checked={false}
-        >
-          <LayerGroup>
-            <StationLocationMarkers
-              type="station-loc"
-              dataset={"baseline"}
-              variable={variable}
-              date={date}
-              stations={baseline}
-              options={config.map.markers.location}
-            />
-          </LayerGroup>
-        </LayersControl.Overlay>
-      </Pane>
+      <StationLocationMarkersPane
+        key={"baseline"}
+        layerName={"baselineStationLocationMarkers"}
+        variable={variable}
+        dataset={"baseline"}
+        date={date}
+        stations={baseline}
+        getVisibility={getLayerVisibility}
+        setVisibility={setLayerVisibility}
+      />
     ),
   };
 
@@ -157,16 +155,14 @@ export default function DataMap({ dataset, variable, date }) {
       );
     }
 
+    // Render marker layers in order defined by config.
+    // Because each layer group is enclosed in a Pane, the ordering controls
+    // which layer overlays which. Later-rendered Panes overlay earlier ones.
+    // The ordering also controls the order the layer is listed
+    // in the LayersControl.
     return (
       <LayersControl position="topright">
-        {
-          // Render marker layers in order defined by config. Because each
-          // layer group is enclosed in a Pane, the ordering controls which
-          // layer overlays which. Later-rendered Panes overlay earlier ones.
-          // The ordering also controls the order the layer is listed
-          // in the LayersControl.
-          config.map.markerLayers.order.map((id) => markerLayersById[id])
-        }
+        {config.map.markerLayers.order.map((id) => markerLayersById[id])}
       </LayersControl>
     );
   };
