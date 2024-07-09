@@ -1,5 +1,27 @@
 # News / Release Notes
 
+## 2.1.0
+
+_2024-Jul-09_
+
+Summary:
+- This is mainly an infrastructure improvement release, but the changes result in a more responsive UI, due to local caching by React Query.
+- Brings all dependencies to latest versions, specifically moves to React 18, React Leaflet 4, Leaflet 1.9.
+- Mediate backend requests with React Query.
+- Add version number display and prevent map from crashing at high zoom
+
+Includes these PRs:
+ - [Upgrade packages #100](https://github.com/pacificclimate/weather-anomaly-tool/pull/100)
+ - [Install and use Prettier #104](https://github.com/pacificclimate/weather-anomaly-tool/pull/104)
+ - [Mediate backend requests with React Query #106](https://github.com/pacificclimate/weather-anomaly-tool/pull/106)
+ - [Misc fixes #107](https://github.com/pacificclimate/weather-anomaly-tool/pull/nnn/107). Resolves issues:
+   - [App crashes when map is zoomed in too far #83](https://github.com/pacificclimate/weather-anomaly-tool/issues/88)
+   - [Update and improve README #88](https://github.com/pacificclimate/weather-anomaly-tool/issues/88)
+   - [Display version number #87](https://github.com/pacificclimate/weather-anomaly-tool/issues/87)
+   - [Clean up errors and warnings #93](https://github.com/pacificclimate/weather-anomaly-tool/issues/93)
+ - [Fix markers #110](https://github.com/pacificclimate/weather-anomaly-tool/pull/110)
+ - [Stabilize marker layer selection #112](https://github.com/pacificclimate/weather-anomaly-tool/pull/112)
+
 ## 2.0.0
 
 _2023-Oct-11_
