@@ -8,7 +8,7 @@ import flow from "lodash/fp/flow";
 import map from "lodash/fp/map";
 import compact from "lodash/fp/compact";
 
-import { BCBaseMap } from "pcic-react-leaflet-components";
+import { BCVectorBaseMap } from "pcic-react-leaflet-components";
 import "@/components/map/DataMap.css";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import MapSpinner from "@/components/map/MapSpinner";
@@ -168,14 +168,15 @@ export default function DataMap({ dataset, variable, date }) {
   };
 
   return (
-    <BCBaseMap
+    <BCVectorBaseMap
       id={"data-map"}
-      center={BCBaseMap.initialViewport.center}
-      zoom={BCBaseMap.initialViewport.zoom}
+      center={BCVectorBaseMap.initialViewport.center}
+      zoom={BCVectorBaseMap.initialViewport.zoom}
+      minZoom={6}
       {...config.map?.options}
     >
       {makeContent()}
-    </BCBaseMap>
+    </BCVectorBaseMap>
   );
 }
 
