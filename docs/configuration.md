@@ -10,39 +10,52 @@ environment variables.
 
 This [file](../public/config.yaml) is largely self-documenting, via comments and naming.
 
-## Environment variables
 
-A small number of configuration parameters must be provided via environment
-variables.
+## Environment variables (Build Time)
+
+CRA also provides a convenient system for setting default values of  
+environment variables in various contexts (development, production, etc.).
+
+Brief summary:
+
+- `.env`: Global default settings
+- `.env.development`: Development-specific settings (`npm start`)
+- `.env.production`: Production-specific settings (`npm run build`)
 
 In a Create React App app, [environment variables are managed carefully](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables).
-Therefore, most of the environment variables below begin with `REACT_APP_`,
-as required by CRA.
+Therefore, most of the environment variables below begin with
+`REACT_APP_`, as required by CRA.
 
-For development runs of the app launched with `npm start`, the files
-`.env` and `.env.development` provide environment variable values.
 For more details, see the
-[CRA documentation](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables).
+[CRA documentation](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables)).
 
-For production runs, environment variables are provided by
-`docker-compose.yaml`.
+`REACT_APP_VERSION`
 
-### Deployment
+- Version of the app.
+- This value should be set using `generate-commitish.sh` when the Docker image
+  is built (see below).
+- It is _not_ recommended to manually override the automatically generated
+  value when the image is run.
+- No default value for this variable is provided in any `.env` file.
+
+`NODE_ENV`
+
+- [**Automatically set; cannot be overridden manually.**](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables)
+
+## Configuration via `public/config.js`
+
+This file must be a key-value map. It overrides the default configuration
+values, which are given below. Certain keys do not have default values and
+_must_ be specified in `public/config.js` during development. This file
+contains general defaults for getting started.
+
+Configuration values in `config.js`:
 
 `PUBLIC_URL`
 
-- Base URL for Station Data Portal frontend.
-- Type: string.
-- For production, set this to the URL configured in our proxy server.
-- Required.
-
-`REACT_APP_APP_VERSION` (TBD)
-
-- Current version of the app.
-- Type: string.
-- This value should be set using `generate-commitish.sh` when the Docker image is built.
-- It is not recommended to manually override the automatically generated value when the image is run.
-- Note doubled `APP_` in name.
+- Base URL for for Climate Anomaly Tool frontend app.
+- For production, set this to the URL for Climate Anomaly Tool configured in our proxy
+  server.
 
 `REACT_APP_BASE_MAP`
 

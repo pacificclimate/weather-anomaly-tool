@@ -172,6 +172,7 @@ export default function DataMap({ dataset, variable, date }) {
       id={"data-map"}
       center={BCBaseMap.initialViewport.center}
       zoom={BCBaseMap.initialViewport.zoom}
+      baseMapTilesUrl={window.env.REACT_APP_BC_BASE_MAP_TILES_URL}
       {...config.map?.options}
     >
       {makeContent()}

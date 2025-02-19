@@ -1,0 +1,25 @@
+# This docker-compose uses the following shell environment variables:
+#
+# `SDP_TAG`: Image tag
+# `SDP_PORT`: External port to map to
+#
+# Their values are set appropriately in the Makefile for use on a workstation.
+# For use in a production setting, either set the shell
+# variables appropriately when invoking docker-compose, or modify (a copy of)
+# this file with the desired values.
+
+version: "3.8"
+services:
+  weather-anomaly-tool:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    image: pcic/weather-anomaly-tool:${SDP_TAG}
+    container_name: weather-anomaly-tool
+    ports:
+      - "${SDP_PORT:-30010}:8080"
+    volumes:
+      # Optionally provide different config for frontend and help files. Defaults will be baked into the image.
+      #- /var/lib/pcic/config/sync/link/apps/dev/weather-anomaly-viewer/config/fe-config.yaml:/app/public/config.yaml:ro
+      #- /var/lib/pcic/config/sync/link/apps/dev/weather-anomaly-viewer/config/help:/app/public/help:ro
+      - ./config.js:/app/config.js
