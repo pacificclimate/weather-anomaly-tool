@@ -16,4 +16,5 @@ rpl -iR \
 # It is possible that the above could be replaced by a node.js based
 # script which may prove more resillient long term 
 
+echo "Node version: $(node -v)"
 serve -s . -l 8080
