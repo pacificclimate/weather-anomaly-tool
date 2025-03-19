@@ -8,7 +8,7 @@ export const getPublicFile = async (relativePath) => {
   if (!relativePath) {
     return null;
   }
-  const { data } = await axios(urljoin(process.env.PUBLIC_URL, relativePath));
+  const { data } = await axios(urljoin(window.env.PUBLIC_URL, relativePath));
   return data;
 };
 

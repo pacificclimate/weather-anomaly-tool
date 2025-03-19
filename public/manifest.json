@@ -1,6 +1,6 @@
 {
-  "short_name": "WAV",
-  "name": "PCIC Weather Anomaly Viewer",
+  "short_name": "CAV",
+  "name": "PCIC Climate Anomaly Viewer",
   "icons": [
     {
       "src": "favicon.ico",
