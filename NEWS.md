@@ -1,5 +1,18 @@
 # News / Release Notes
 
+## 2.2.0
+
+_2025-Mar-19
+
+Summary:
+
+- Bumping versions primarily of internal packages and how the app starts.
+- Significant boost in frontend start up speed.
+- Consumers will need to move ENV variables into the new config.js to be mounted in the docker container.
+
+Includes these PRs:
+- [Fast startup and code quality updates](https://github.com/pacificclimate/weather-anomaly-tool/pull/113)
+
 ## 2.1.0
 
 _2024-Jul-09_
