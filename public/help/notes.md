@@ -3,9 +3,9 @@
 - Data acquisition is as close to real-time as possible given the sources. Same-day data is _not_ available on all networks.
 - Some stations report precipitation values in a format that causes the WAV to compute erroneous values. These values are flagged by a contrasting colour different from the normal data range colours. These values occur more often in recent years than in past years (prior to 2020). We are working to correct this problem.
 
-## Weather anomalies
+## Climate anomalies
 
-A weather anomaly is a measure, at a given station, of the departure of weather observations for a given variable (e.g. total precipitation) over a given period (e.g., a specific month) from a historical baseline value for that period at that station.
+A climate anomaly is a measure, at a given station, of the departure of weather observations for a given variable (e.g. total precipitation) over a given period (e.g., a specific month) from a historical baseline value for that period at that station.
 
 - The periods available are calendar months.
 - The variables available are total precipitation, average minimum temperature, and average maximum temperature over the period.

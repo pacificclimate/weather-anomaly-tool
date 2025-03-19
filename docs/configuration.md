@@ -1,6 +1,6 @@
 # Configuration
 
-Most configuration of the Weather Anomaly Viewer frontend is done via a YAML
+Most configuration of the Climate Anomaly Viewer frontend is done via a YAML
 file, `public/config.yaml`. For details, see below.
 
 For technical reasons, a few configuration parameters must be supplied via

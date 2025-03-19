@@ -1,5 +1,5 @@
 # App title
-title: Weather Anomaly Viewer
+title: Climate Anomaly Viewer
 
 # The `variables` object defines important information about each variable. Its
 # keys must be exactly the set `precip`, `tmin`, `tmax`.
@@ -275,7 +275,7 @@ ui:
         variant: outline-dark
 
 backends:
-  # URL of weather anomaly data service backend
+  # URL of climate anomaly data service backend
   weatherAnomalyDataService: |
     https://services.pacificclimate.org/weather-anomaly/weather/monthly
 

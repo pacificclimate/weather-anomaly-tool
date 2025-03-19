@@ -1,6 +1,6 @@
-# Weather Anomaly Viewer
+# Climate Anomaly Viewer
 
-Frontend for visualizing weather anomaly data.
+Frontend for visualizing climate anomaly data.
 
 ## Documentation
 
