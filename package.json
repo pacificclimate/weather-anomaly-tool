@@ -16,7 +16,7 @@
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
-    "pcic-react-leaflet-components": "git+https://git@github.com/pacificclimate/pcic-react-leaflet-components.git#3.2.0",
+    "pcic-react-leaflet-components": "git+https://github.com/pacificclimate/pcic-react-leaflet-components.git#node24-npm12-security-policy",
     "proj4": "^2.11.0",
     "proj4leaflet": "^1.0.2",
     "prop-types": "^15.8.1",
@@ -43,7 +43,7 @@
     "build": "craco build",
     "test": "craco test --env=jsdom --transformIgnorePatterns \"node_modules/(?!pcic-react-leaflet-components)/\"",
     "eject": "react-scripts eject",
-    "reinstall": "rm -rf ./node_modules; npm install --include=dev",
+    "reinstall": "npm ci",
     "format": "prettier --write .",
     "check-format": "prettier --check ."
   },
@@ -52,5 +52,13 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "engines": {
+    "node": "24.x",
+    "npm": "12.x"
+  },
+  "allowScripts": {
+    "core-js@3.37.1": true,
+    "core-js-pure@3.37.1": true
+  }
 }
