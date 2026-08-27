@@ -1,5 +1,18 @@
 # News / Release Notes
 
+## 2.3.0
+
+_2026-Aug-27
+
+Summary:
+
+- Require Node 24 and npm 12.
+- Add an .npmrc security policy to reduce npm supply-chain risk
+- Bump CI actions, pin commit SHAs
+
+Includes these PRs:
+-[Add npm policy, node 24, pin CI](https://github.com/pacificclimate/weather-anomaly-tool/pull/116)
+
 ## 2.2.0
 
 _2025-Mar-19
