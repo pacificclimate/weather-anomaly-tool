@@ -32,6 +32,7 @@ datasets:
 map:
   # Options passed to MapContainer.
   options:
+    minZoom: 5
     maxZoom: 13
   # Station marker appearance
   markers:
