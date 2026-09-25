@@ -10,7 +10,6 @@ environment variables.
 
 This [file](../public/config.yaml) is largely self-documenting, via comments and naming.
 
-
 ## Environment variables (Build Time)
 
 CRA also provides a convenient system for setting default values of  
@@ -73,3 +72,9 @@ Configuration values in `config.js`:
 - URL template (includes x, y, z) for YNWT base map tiles.
 - Type: string.
 - Required if YAML config.baseMap === "YNWT"
+
+`REACT_APP_EEZ_GEOJSON_URL`
+
+- URL for BC's Exclusive Economic Zone GeoJSON overlay.
+- Type: string.
+- Optional. Defaults to the EEZ GeoJSON hosted by Pacific Climate Impacts Consortium.

@@ -8,7 +8,7 @@ import flow from "lodash/fp/flow";
 import map from "lodash/fp/map";
 import compact from "lodash/fp/compact";
 
-import { BCBaseMap } from "pcic-react-leaflet-components";
+import { BCBaseMap, EEZLayer } from "pcic-react-leaflet-components";
 import "@/components/map/DataMap.css";
 import { useConfigContext } from "@/state/context-hooks/use-config-context";
 import MapSpinner from "@/components/map/MapSpinner";
@@ -175,6 +175,7 @@ export default function DataMap({ dataset, variable, date }) {
       baseMapTilesUrl={window.env.REACT_APP_BC_BASE_MAP_TILES_URL}
       {...config.map?.options}
     >
+      <EEZLayer url={window.env.REACT_APP_EEZ_GEOJSON_URL} />
       {makeContent()}
     </BCBaseMap>
   );
