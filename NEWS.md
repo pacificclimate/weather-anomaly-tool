@@ -1,5 +1,16 @@
 # News / Release Notes
 
+## 2.4.0
+
+_2026-Sep-25
+
+Summary:
+
+- Adds BC EEZ
+
+Includes these PRs:
+-[Add BC EEZ](https://github.com/pacificclimate/weather-anomaly-tool/pull/118)
+
 ## 2.3.0
 
 _2026-Aug-27
