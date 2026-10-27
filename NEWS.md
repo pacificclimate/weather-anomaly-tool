@@ -1,5 +1,13 @@
 # News / Release Notes
 
+## 2.4.1
+
+_2026-Oct-27
+
+Summary:
+
+- Rebuild the Docker image with upgraded OS packages (`apt-get upgrade`) to address CVE-2026-111497.
+
 ## 2.4.0
 
 _2026-Sep-25
